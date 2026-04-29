@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Backend\MenuController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\PostController;
+use App\Http\Controllers\Backend\PostNeController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\TeamController;
 use App\Http\Controllers\Backend\UserController;
@@ -86,14 +87,6 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
     Route::get('post/category/{id}/delete', [CategoryController::class, 'destroy'])->name('backend.category.delete');
 
 
-    // category ne routing
-    Route::get('post_ne/category', [CategoryController::class, 'index'])->name('backend.category_ne');
-    Route::post('post_ne/category', [CategoryController::class, 'store'])->name('backend.category_ne.store');
-    Route::get('post_ne/category/{id}/edit', [CategoryController::class, 'edit'])->name('backend.category_ne.edit');
-    Route::post('post_ne/category/{id}/edit', [CategoryController::class, 'update'])->name('backend.category_ne.update');
-    Route::get('post_ne/category/{id}/delete', [CategoryController::class, 'destroy'])->name('backend.category_ne.delete');
-
-
     // category routing
     Route::get('post/tag', [TagController::class, 'index'])->name('backend.tag');
     Route::post('post/tag', [TagController::class, 'store'])->name('backend.tag.store');
@@ -111,12 +104,12 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
 
 
     // post ne routing
-    Route::get('post_ne', [PostController::class, 'index'])->name('backend.post_ne');
-    Route::get('post_ne/create', [PostController::class, 'create'])->name('backend.post_ne.create');
-    Route::post('post_ne', [PostController::class, 'store'])->name('backend.post_ne.store');
-    Route::get('post_ne/{id}/edit', [PostController::class, 'edit'])->name('backend.post_ne.edit');
-    Route::post('post_ne/{id}/edit', [PostController::class, 'update'])->name('backend.post_ne.update');
-    Route::get('post_ne/{id}/delete', [PostController::class, 'destroy'])->name('backend.post_ne.delete');
+    Route::get('post_ne', [PostNeController::class, 'index'])->name('backend.post_ne');
+    Route::get('post_ne/create', [PostNeController::class, 'create'])->name('backend.post_ne.create');
+    Route::post('post_ne', [PostNeController::class, 'store'])->name('backend.post_ne.store');
+    Route::get('post_ne/{id}/edit', [PostNeController::class, 'edit'])->name('backend.post_ne.edit');
+    Route::post('post_ne/{id}/edit', [PostNeController::class, 'update'])->name('backend.post_ne.update');
+    Route::get('post_ne/{id}/delete', [PostNeController::class, 'destroy'])->name('backend.post_ne.delete');
 
     // soft deletes for posts
     Route::get('{type}/trash', [TrashController::class, 'index'])->name('backend.post.trash');
@@ -148,14 +141,6 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
     Route::get('post/author/{id}/edit', [AuthorController::class, 'edit'])->name('backend.author.edit');
     Route::post('post/author/{id}/edit', [AuthorController::class, 'update'])->name('backend.author.update');
     Route::get('post/author/{id}/delete', [AuthorController::class, 'destroy'])->name('backend.author.delete');
-
-    // author nepali
-    Route::get('post_ne/author', [AuthorController::class, 'index'])->name('backend.author_ne');
-    Route::post('post_ne/author', [AuthorController::class, 'store'])->name('backend.author_ne.store');
-    Route::get('post_ne/author/{id}/edit', [AuthorController::class, 'edit'])->name('backend.author_ne.edit');  
-    Route::post('post_ne/author/{id}/edit', [AuthorController::class, 'update'])->name('backend.author_ne.update');
-    Route::get('post_ne/author/{id}/delete', [AuthorController::class, 'destroy'])->name('backend.author_ne.delete');
-
 
     // pages routing
     Route::get('team', [TeamController::class, 'index'])->name('backend.team');

@@ -29,7 +29,7 @@ class CategoryController extends Controller
         $status = $request->get('status', 'all');
         $baseQuery = Category::whereType($this->categoryType);
         $postsQuery = clone $baseQuery;
-        
+
         switch ($status) {
             case 'publish':
                 $postsQuery->PostStatus('publish');
@@ -37,10 +37,10 @@ class CategoryController extends Controller
             case 'trash':
                 $postsQuery->onlyTrashed();
                 break;
-            // case 'draft':
-            //     $postsQuery->PostStatus('draft');
-            //     $posts = (clone $baseQuery)->PostStatus('draft')->get();
-            //     break;
+                // case 'draft':
+                //     $postsQuery->PostStatus('draft');
+                //     $posts = (clone $baseQuery)->PostStatus('draft')->get();
+                //     break;
         }
 
         $publishPosts = $status === 'publish' ? $postsQuery->count() : (clone $baseQuery)->count();
@@ -71,10 +71,11 @@ class CategoryController extends Controller
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name',
+            'name_ne' => 'nullable|unique:categories,name_ne',
         ]);
 
 
-        $type = isset( $request->type ) ? $this->categoryRepository->decodeType($request->type) : 'NOT FOUND';
+        $type = isset($request->type) ? $this->categoryRepository->decodeType($request->type) : 'NOT FOUND';
 
         // check category type exists or not
         $this->categoryRepository->checkCategoryTypeExists($type);
@@ -89,7 +90,6 @@ class CategoryController extends Controller
             session()->flash('success', 'Category Created.');
 
             return redirect()->route('backend.category');
-
         } catch (\Exception $e) {
 
             session()->flash('error', 'Error While Creating: ' . $e->getMessage());
@@ -104,16 +104,16 @@ class CategoryController extends Controller
 
         $metaDatas = $this->categoryRepository->getMetaDatas($category);
 
-        if ( $category == NULL  ) {
+        if ($category == NULL) {
             abort(404);
         }
 
         $categories = Category::with('children')
-        ->where('type', $this->categoryType)
-        ->where('id', '!=', $id)
-        ->where('parent', 0)
-        ->orderBy('name', 'ASC')
-        ->get();
+            ->where('type', $this->categoryType)
+            ->where('id', '!=', $id)
+            ->where('parent', 0)
+            ->orderBy('name', 'ASC')
+            ->get();
 
         return view('backend.categories.edit-category', [
             'id' => $id,
@@ -128,13 +128,14 @@ class CategoryController extends Controller
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name,' . $id->id,
+            'name_ne' => 'nullable|unique:categories,name_ne,' . $id->id,
         ]);
 
         try {
 
             $data = $this->categoryRepository->updateCategory($request, $id, $this->categoryType);
 
-            if ( $data['status'] && $data['category'] ) {
+            if ($data['status'] && $data['category']) {
 
                 $category = $data['category'];
 
@@ -143,14 +144,10 @@ class CategoryController extends Controller
                 session()->flash('success', 'Category Updated.');
 
                 return redirect()->route('backend.category.edit', $id);
-
-            }
-            else {
+            } else {
 
                 session()->flash('error', 'Error While Updating: Unable to update the post.');
-
             }
-
         } catch (\Exception $e) {
 
             session()->flash('error', 'Error While Updating: ' . $e->getMessage());
@@ -168,7 +165,7 @@ class CategoryController extends Controller
             'parent_id_backup' => $category->id,
             'parent' => 0,
         ]);
-        
+
         $category->delete();
 
         session()->flash('success', 'Category Deleted.');

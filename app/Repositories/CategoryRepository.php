@@ -6,6 +6,7 @@ use App\Enums\CategoryType;
 use App\Models\Category;
 use App\Models\Post;
 use App\Traits\SlugGenerateTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository
@@ -15,8 +16,7 @@ class CategoryRepository
     // check post type exists or not
     public function checkCategoryTypeExists($type)
     {
-        if ( !in_array( $type, CategoryType::toArray() ) )
-        {
+        if (!in_array($type, CategoryType::toArray())) {
             abort(403, 'Post Type Not Found');
         }
 
@@ -33,9 +33,10 @@ class CategoryRepository
         $model = new Category();
 
         $cat = Category::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id() ?? NULL,
             'name' => $request->name,
-            'slug' => $this->createSlug( $request->name, $request->slug, $model),
+            'name_ne' => $request->name_ne,
+            'slug' => $this->createSlug($request->name, $request->slug, $model),
             'type' => $type,
             'description' => isset($request->description) ?  $request->description : NULL,
             'parent' => isset($request->parent) ?  $request->parent : 0,
@@ -51,7 +52,8 @@ class CategoryRepository
 
         $status = $category->update([
             'name' => $request->name,
-            'slug' => $this->getSlug( $category, $request->name, $request->slug),
+            'name_ne' => $request->name_ne,
+            'slug' => $this->getSlug($category, $request->name, $request->slug),
             'type' => $type,
             'description' => isset($request->description) ?  $request->description : NULL,
             'parent' => isset($request->parent) ?  $request->parent : 0,
@@ -60,26 +62,26 @@ class CategoryRepository
 
         $this->updateMenuItemTitle($category);
 
-        return [ 'status' => $status, 'category' => $category];
+        return ['status' => $status, 'category' => $category];
     }
 
     public function updateMenuItemTitle($payload)
     {
         $postIds = DB::table('post_metas as pm1')
-        ->leftJoin('post_metas as pm2', function ($join) {
-            $join->on('pm1.post_id', '=', 'pm2.post_id')
-                ->where('pm2.meta_key', 'menu_item_custom_title');
-        })
-        ->where('pm1.meta_key', 'menu_item_object_id')
-        ->where('pm1.meta_value', $payload->id)
-        ->where(function ($query) {
-            $query->whereNull('pm2.meta_value')
-                ->orWhereNull('pm2.post_id');  
-        })
-        ->pluck('pm1.post_id')
-        ->toArray();
-        
-        if ( !empty($postIds) ) {
+            ->leftJoin('post_metas as pm2', function ($join) {
+                $join->on('pm1.post_id', '=', 'pm2.post_id')
+                    ->where('pm2.meta_key', 'menu_item_custom_title');
+            })
+            ->where('pm1.meta_key', 'menu_item_object_id')
+            ->where('pm1.meta_value', $payload->id)
+            ->where(function ($query) {
+                $query->whereNull('pm2.meta_value')
+                    ->orWhereNull('pm2.post_id');
+            })
+            ->pluck('pm1.post_id')
+            ->toArray();
+
+        if (!empty($postIds)) {
             Post::whereIn('id', $postIds)->update([
                 'post_title' => $payload->name,
             ]);
@@ -136,7 +138,7 @@ class CategoryRepository
     {
         $cat = Category::withTrashed()->findOrFail($id);
 
-        if ( !empty( $cat ) ) {
+        if (!empty($cat)) {
             $cat->restore();
             Category::where('parent_id_backup', $cat->id)->update([
                 'parent' => $cat->id,
@@ -151,8 +153,8 @@ class CategoryRepository
     {
         $cat = Category::withTrashed()->findOrFail($id);
 
-        if ( !empty( $cat ) ) {
-            
+        if (!empty($cat)) {
+
             Category::where('parent_id_backup', $cat->id)->update([
                 'parent_id_backup' => null,
             ]);

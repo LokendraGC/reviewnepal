@@ -20,6 +20,7 @@
                 <div class="card-body">
                     <h4 class="header-title mb-2">Add New {{ ucfirst($categoryType) }}</h4>
                     <?php
+                    if (!function_exists('displaySubCat')) {
                     function displaySubCat($categories, $level = 0)
                     {
                         $space = '';
@@ -35,6 +36,7 @@
                                 displaySubCat($category->children, $level + 1);
                             }
                         }
+                    }
                     }
                     ?>
                     <form method="POST" action="{{ route('backend.author.store') }}">
@@ -137,6 +139,7 @@
                                 @isset($categories)
                                 {{-- children  --}}
                                 <?php
+                                if (!function_exists('displaySubCategories')) {
                                 function displaySubCategories($categories, $level = 0, $cat = NULL)
                                 {
                                     // $dashed = '';
@@ -184,6 +187,7 @@
                                         //     displaySubCategories($category->children, $level + 1);
                                         // }
                                     }
+                                }
                                 }
                                 ?>
 

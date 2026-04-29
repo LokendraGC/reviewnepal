@@ -92,14 +92,14 @@
 
             <li class="side-nav-title text-success">Content Management</li>
             @canany(['create_post', 'read_post'])
-            <li class="side-nav-item {{ request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
+            <li class="side-nav-item {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'menuitem-active' : '' }}">
                 <a data-bs-toggle="collapse" href="#post" aria-expanded="false" aria-controls="post"
                     class="side-nav-link">
                     <i class="ri-file-ppt-line"></i>
                     <span> English Posts </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse {{ request()->segment(2) === 'post' ? 'show' : '' }}" id="post">
+                <div class="collapse {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'show' : '' }}" id="post">
                     <ul class="side-nav-second-level">
                         @can('read_post')
                         <li>
@@ -112,23 +112,21 @@
                         </li>
                         @endcan
                         @can(['create_category', 'read_category'])
-                        <li
+                        <!-- <li
                             class="{{ request()->segment(3) === 'category' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
                             <a href="{{ route('backend.category') }}">Categories</a>
-                        </li>
+                        </li> -->
                         @endcan
 
-                        <li
+                        <!-- <li
                             class="{{ request()->segment(3) === 'author' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
                             <a href="{{ route('backend.author') }}">Authors</a>
-                        </li>
+                        </li> -->
 
                     </ul>
                 </div>
             </li>
             @endcanany
-
-
 
             @canany(['create_post', 'read_post'])
             <li class="side-nav-item {{ request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
@@ -150,26 +148,28 @@
                             <a href="{{ route('backend.post_ne.create') }}">Add New Post</a>
                         </li>
                         @endcan
-                        @can(['create_category', 'read_category'])
-                        <li
-                            class="{{ request()->segment(3) === 'category' && request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
-                            <a href="{{ route('backend.category_ne') }}">Categories</a>
-                        </li>
-                        @endcan
-                        <li
-                            class="{{ request()->segment(3) === 'author' && request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
-                            <a href="{{ route('backend.author_ne') }}">Authors</a>
-                        </li>
-                        <!-- @can(['create_tag', 'read_tag'])
-                        <li
-                            class="{{ request()->segment(3) === 'tag' && request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
-                            <a href="{{ route('backend.tag') }}">Tags</a>
-                        </li>
-                        @endcan -->
+
                     </ul>
                 </div>
             </li>
             @endcanany
+
+            @can(['create_category', 'read_category'])
+            <li class="side-nav-item {{ request()->segment(3) === 'category' ? 'menuitem-active' : '' }}">
+                <a href="{{ route('backend.category') }}" class="side-nav-link">
+                    <i class="ri-file-list-3-line"></i>
+                    <span> Categories </span>
+                </a>
+            </li>
+            @endcan
+
+
+            <li class="side-nav-item {{ request()->segment(3) === 'author' ? 'menuitem-active' : '' }}">
+                <a href="{{ route('backend.author') }}" class="side-nav-link">
+                    <i class="ri-user-3-line"></i>
+                    <span> Authors </span>
+                </a>
+            </li>
 
 
             <li class="side-nav-item {{ request()->segment(2) === 'page' ? 'menuitem-active' : '' }}">

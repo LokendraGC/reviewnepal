@@ -25,9 +25,9 @@ class PostNeController extends Controller
 
     public function __construct(PostService $service, CategoryPostRepository $categoryPostRepository, PostRepository $postRepository)
     {
-        $this->middleware('permission:create_post', ['only' => ['create','store']] );
-        $this->middleware('permission:read_post', ['only' => ['index']] );
-        $this->middleware('permission:update_post', ['only' => ['update','edit']] );
+        $this->middleware('permission:create_post', ['only' => ['create', 'store']]);
+        $this->middleware('permission:read_post', ['only' => ['index']]);
+        $this->middleware('permission:update_post', ['only' => ['update', 'edit']]);
         $this->middleware('permission:delete_post', ['only' => 'destroy']);
 
         $this->postType = 'post_ne';
@@ -39,10 +39,11 @@ class PostNeController extends Controller
     public function index(Request $request)
     {
         $status = $request->get('status', 'all');
+        $type = $request->get('type', 'all');
 
         return view('backend.posts_ne.index-post_ne', [
             'status' => $status,
-            'postType' => $this->postType,
+            'postType' => $type,
         ]);
     }
 
@@ -63,13 +64,16 @@ class PostNeController extends Controller
 
     public function store(PostStoreRequest $request)
     {
+
         $request->validate([
             'post_name' => 'required',
             // 'featured_image' => 'required',
             // 'categories' => 'required',
         ]);
 
-        $type = isset( $request->type ) ? $this->postRepository->decodeType($request->type) : 'NOT FOUND';
+        // $type = isset($request->type) ? $this->postRepository->decodeType($request->type) : 'NOT FOUND';
+        $type = $this->postType;
+
 
         // check post type exists or not
         $this->postRepository->checkPostTypeExists($type);
@@ -83,12 +87,12 @@ class PostNeController extends Controller
             $post = $this->postRepository->createPost($request, $this->postType);
 
             // store categories
-            $categories = isset( $request->categories ) ? $request->categories : [];
-            $authors = isset( $request->authors ) ? $request->authors : [];
-            $tags = isset( $request->tags ) ? $request->tags : [];
+            $categories = isset($request->categories) ? $request->categories : [];
+            $authors = isset($request->authors) ? $request->authors : [];
+            $tags = isset($request->tags) ? $request->tags : [];
             // $tags = isset( $request->tags ) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
 
-            $cats = array_unique( array_merge($categories, $authors, $tags) );
+            $cats = array_unique(array_merge($categories, $authors, $tags));
             $this->categoryPostRepository->assignCategory($post, $cats);
 
             $this->postRepository->storeMetaData($post, $request);
@@ -101,7 +105,6 @@ class PostNeController extends Controller
             session()->flash('success', 'Post Created.');
 
             return to_route('backend.post_ne.edit', $post->id);
-
         } catch (\Exception $e) {
 
             session()->flash('error', 'Error While Creating: ' . $e->getMessage());
@@ -144,17 +147,17 @@ class PostNeController extends Controller
 
             $data = $this->postRepository->updatePost($request, $id, $this->postType);
 
-            if ( $data['status'] && $data['post'] ) {
+            if ($data['status'] && $data['post']) {
 
                 $post = $data['post'];
 
                 // get all categories
-                $categories = isset( $request->categories ) ? $request->categories : [];
-                $authors = isset( $request->authors ) ? $request->authors : [];
+                $categories = isset($request->categories) ? $request->categories : [];
+                $authors = isset($request->authors) ? $request->authors : [];
                 // $tags = isset( $request->tags ) ? $request->tags : [];
-                $tags = isset( $request->tags ) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
+                $tags = isset($request->tags) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
 
-                $cats = array_unique( array_merge($categories, $authors, $tags) );
+                $cats = array_unique(array_merge($categories, $authors, $tags));
                 $this->categoryPostRepository->assignCategory($post, $cats);
 
                 $this->postRepository->storeMetaData($post, $request);
@@ -166,11 +169,9 @@ class PostNeController extends Controller
 
                 session()->flash('success', 'Post Updated.');
                 return redirect()->back();
-            }
-            else {
+            } else {
                 session()->flash('error', 'Error While Updating: Unable to update the post.');
             }
-
         } catch (\Exception $e) {
 
             session()->flash('error', 'Error While Updating: ' . $e->getMessage());
@@ -185,7 +186,7 @@ class PostNeController extends Controller
         // get home page id for settings
         $pageId = Setting::where('setting_name', 'page_on_front')->value('setting_value');
 
-        if ( $id->id == $pageId ) {
+        if ($id->id == $pageId) {
 
             session()->flash('warning', 'Nepali Home page cannot be deleted.');
             return redirect()->back();

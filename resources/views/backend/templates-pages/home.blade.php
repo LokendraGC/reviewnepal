@@ -16,9 +16,9 @@
                     {{-- <li class="nav-item">
                         <a href="#banner" data-bs-toggle="tab"
                             aria-expanded="{{ request()->query('tab') == 'banner' ? 'true' : 'false' }}"
-                            class="nav-link {{ request()->query('tab') == 'banner' ? 'active' : '' }}">
-                            Banner
-                        </a>
+                    class="nav-link {{ request()->query('tab') == 'banner' ? 'active' : '' }}">
+                    Banner
+                    </a>
                     </li> --}}
                 </ul>
             </div>

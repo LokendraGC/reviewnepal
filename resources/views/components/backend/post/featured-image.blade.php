@@ -3,7 +3,7 @@
         <div>
             <label for="featured_image" class="form-label">Featured Image
                 @if ($required)
-                    <span class="text-danger">*</span>
+                <span class="text-danger">*</span>
                 @endif
             </label>
             <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -16,47 +16,68 @@
             </div>
             <div class="preview-closer">
                 @if (isset($metaDatas['featured_image']) &&
-                        ($media = MediaHelper::getModel()->where('id', $metaDatas['featured_image'])->first()))
-                    <input type="hidden" id="featured_image" name="featured_image" class="selected-files"
-                        value="{{ $metaDatas['featured_image'] }}">
-                    @error('featured_image')
-                        <div class="valid-feedback d-block text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                    <div id="featured_image_select">
-                        <div class="file-preview box sm">
-                            <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
-                                <div
-                                    class="align-items-center align-self-stretch d-flex justify-content-center thumb h-auto">
-                                    <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
-                                        alt="image" />
-                                </div>
-                                <div class="col body">
-                                    <h6 class="d-flex">
-                                        <span class="text-truncate title">{{ $media->file_original_name }}</span>
-                                        <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
-                                    </h6>
-                                    <p>{{ MediaHelper::getKBorMB($media->file_size) }}
-                                </div>
-                                <div class="remove"><button data-id="{{ $media->id }}" data-slug="featured_image"
-                                        class="btn btn-sm btn-link remove-attachment" type="button"><i
-                                            class="bi bi-x-circle"></i></button>
-                                </div>
+                ($media = MediaHelper::getModel()->where('id', $metaDatas['featured_image'])->first()))
+                <input type="hidden" id="featured_image" name="featured_image" class="selected-files"
+                    value="{{ $metaDatas['featured_image'] }}">
+                @error('featured_image')
+                <div class="valid-feedback d-block text-danger">
+                    {{ $message }}
+                </div>
+                @enderror
+                <div id="featured_image_select">
+                    <div class="file-preview box sm">
+                        <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                            <div
+                                class="align-items-center align-self-stretch d-flex justify-content-center thumb h-auto">
+                                <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                    alt="image" />
+                            </div>
+                            <div class="col body">
+                                <h6 class="d-flex">
+                                    <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                    <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                </h6>
+                                <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                            </div>
+                            <div class="remove"><button data-id="{{ $media->id }}" data-slug="featured_image"
+                                    class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                        class="bi bi-x-circle"></i></button>
                             </div>
                         </div>
                     </div>
+                </div>
                 @else
-                    <input type="hidden" id="featured_image" name="featured_image" class="selected-files"
-                        value="" />
-                    @error('featured_image')
-                        <div class="valid-feedback d-block ">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                    <div id="featured_image_select"></div>
+                <input type="hidden" id="featured_image" name="featured_image" class="selected-files"
+                    value="" />
+                @error('featured_image')
+                <div class="valid-feedback d-block ">
+                    {{ $message }}
+                </div>
+                @enderror
+                <div id="featured_image_select"></div>
                 @endisset
+            </div>
+
+
+            @if (request()->segment(2) == 'post')
+            <span class="form-text text-muted">
+                <small><i>Recommended Image size: 895 by 495 px</i></small>
+            </span>
+            @elseif(request()->segment(2) == 'post_ne')
+            <span class="form-text text-muted">
+                <small><i>Recommended Image size: 895 by 495 px</i></small>
+            </span>
+            @elseif (request()->segment(3) == 2)
+            <span class="form-text text-muted">
+                <small><i>Recommended Image size: 2301 by 1536 px</i></small>
+            </span>
+            @elseif (request()->segment(3) == 3)
+            <span class="form-text text-muted">
+                <small><i>Recommended Image size: 500 by 582 px</i></small>
+            </span>
+            @endif
+
+
         </div>
     </div>
-</div>
 </div>

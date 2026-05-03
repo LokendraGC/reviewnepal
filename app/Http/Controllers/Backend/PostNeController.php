@@ -25,10 +25,10 @@ class PostNeController extends Controller
 
     public function __construct(PostService $service, CategoryPostRepository $categoryPostRepository, PostRepository $postRepository)
     {
-        $this->middleware('permission:create_post', ['only' => ['create', 'store']]);
-        $this->middleware('permission:read_post', ['only' => ['index']]);
-        $this->middleware('permission:update_post', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete_post', ['only' => 'destroy']);
+        // $this->middleware('permission:create_post', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:read_post', ['only' => ['index']]);
+        // $this->middleware('permission:update_post', ['only' => ['update', 'edit']]);
+        // $this->middleware('permission:delete_post', ['only' => 'destroy']);
 
         $this->postType = 'post_ne';
         $this->postRepository = $postRepository;
@@ -51,12 +51,12 @@ class PostNeController extends Controller
     {
         $type = $this->postRepository->encodeType($this->postType);
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
-        // $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
+        $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         return view('backend.posts_ne.create-post_ne', [
             'categories' => $categories,
-            // 'authors' => $authors,
+            'authors' => $authors,
             // 'tags' => $tags,
             'type' => $type,
         ]);
@@ -116,9 +116,9 @@ class PostNeController extends Controller
     public function edit($id)
     {
         $post = Post::with(['categories', 'lastUpdatedBy'])->where('post_type', $this->postType)->findOrFail($id);
-
+        
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
-        // $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
+        $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         $metaDatas = $this->postRepository->getMetaDatas($post);
@@ -126,7 +126,7 @@ class PostNeController extends Controller
         return view('backend.posts_ne.edit-post_ne', [
             'post' => $post,
             'categories' => $categories,
-            // 'authors' => $authors,
+            'authors' => $authors,
             // 'tags' => $tags,
             'metaDatas' => $metaDatas,
         ]);

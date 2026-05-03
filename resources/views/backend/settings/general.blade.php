@@ -93,6 +93,22 @@
                                         name="admin_email_address" required />
                                 </div>
                             </div>
+
+                        
+
+                            <div class="mb-2 row">
+                                <label for="colFormLabel" class="col-sm-3 col-form-label">Select Homepage Language<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-5">
+                                    <select class="form-select" id="example-select" name="language" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="en" @isset($settings['language']) @if ($settings['language'] == 'en') selected @endif @endisset>English</option>
+                                        <option value="ne" @isset($settings['language']) @if ($settings['language'] == 'ne') selected @endif @endisset>Nepali</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
                             @role('Super Admin')
                                 <div class="mb-2 row">
                                     <label for="admin_email_address" class="col-sm-3 col-form-label col-form-label-sm">Site

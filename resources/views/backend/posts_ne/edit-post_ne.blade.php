@@ -21,7 +21,7 @@
                                 {{-- excerpt --}}
                                 <x-backend.post.excerpt :content="$post->post_excerpt" />
 
-                                @include('backend.posts.fields-post')
+                                @include('backend.posts_ne.fields-post_ne')
 
                                 {{-- seo --}}
                                 <x-backend.seo.seo-section :metaDatas="$metaDatas" />
@@ -38,21 +38,20 @@
                                         <x-backend.post.featured-image :metaDatas="$metaDatas" required="true" />
                                     </div>
 
+
                                     <div class="col-12">
                                         {{-- categories --}}
-                                        <x-backend.post.category title="Categories" name="categories[]" type="multiple"
+                                        <x-backend.post-ne.category title="Categories" name="categories[]" type="multiple"
                                             :categories="$categories" :post="$post" />
                                     </div>
 
-                                    {{-- <div class="col-12">
-                                        <x-backend.post.category title="Author" name="authors[]" type="single"
-                                            :categories="$authors" :post="$post" />
-                                    </div> --}}
+                                    <div class="col-12">
+                                        {{-- authors --}}
+                                        <x-backend.post-ne.author title="Authors" name="authors[]" type="multiple"
+                                            :authors="$authors" :post="$post" />
+                                    </div>
 
-                                    {{-- <div class="col-12">
-                                        <x-backend.post.category title="Tags" name="tags[]" type="multiple"
-                                            :categories="$tags" :post="$post" custom="create_custom" />
-                                    </div> --}}
+
                                 </div>
                             </div>
                         </div>

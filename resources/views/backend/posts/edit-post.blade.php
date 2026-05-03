@@ -45,18 +45,10 @@
                                 </div>
 
                                 {{-- authors --}}
-                                <x-backend.post.category title="Authors" name="authors[]" type="multiple"
-                                    :categories="$authors" :post="$post" />
+                                <x-backend.post.author title="Authors" name="authors[]" type="multiple"
+                                    :authors="$authors" :post="$post" />
 
-                                {{-- <div class="col-12">
-                                        <x-backend.post.category title="Author" name="authors[]" type="single"
-                                            :categories="$authors" :post="$post" />
-                                    </div> --}}
-
-                                {{-- <div class="col-12">
-                                        <x-backend.post.category title="Tags" name="tags[]" type="multiple"
-                                            :categories="$tags" :post="$post" custom="create_custom" />
-                                    </div> --}}
+                           
                             </div>
                         </div>
                     </div>

@@ -55,8 +55,6 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 Route::get('reset-password/{token}', [AuthController::class, 'resetPassword']);
 
-
-
 Route::group(['prefix' => 'test'], function () {
     Route::get('', [RoutingController::class, 'index'])->name('root');
     Route::get('/home', fn() => view('index'))->name('home');

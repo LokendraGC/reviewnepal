@@ -1,5 +1,7 @@
 <div class="tab-pane fade {{ request()->query('tab') == 'footer' ? 'active show' : '' }}" id="footer" role="tabpanel"
     aria-labelledby="footer-tab">
+   
+   {{-- Footer Logo --}}
     <div class="mb-1">
         <div class="row">
             <div class="col-md-12">
@@ -59,7 +61,21 @@
 
     <hr class="mt-0">
 
-    <div class="mb-1">
+{{-- Footer Text --}}
+    <div class="mb-3">
+        <label for="copyright_text" class="form-label">Footer Text</label>
+        <textarea class="form-control" name="footer_text" id="footer_text" cols="30" rows="10">{{ isset($settings['footer_text']) ? $settings['footer_text'] : '' }}</textarea>
+    </div>
+    
+    <hr class="mt-0">
+
+    {{-- Footer Social Media --}}
+    <div class="mb-3">
+        <label for="subscribe_text" class="form-label">Subscribe Text</label>
+        <input type="text" class="form-control" name="subscribe_text" id="subscribe_text" value="{{ isset($settings['subscribe_text']) ? $settings['subscribe_text'] : '' }}">
+    </div>
+
+    {{-- <div class="mb-1">
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
@@ -114,7 +130,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- <hr class="mt-0"> -->
     <!-- <div class="mb-3">
@@ -125,4 +141,6 @@
     </p>
     <textarea class="form-control" name="copyright_text" id="copyright_text" cols="30" rows="10">{{ isset($settings['copyright_text']) ? $settings['copyright_text'] : '' }}</textarea>
 </div> -->
+
+
 </div>

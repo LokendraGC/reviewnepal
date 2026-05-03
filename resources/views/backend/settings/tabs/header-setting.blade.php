@@ -62,7 +62,7 @@
 
 
 
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
@@ -120,5 +120,7 @@
             <hr>
         </div>
     </div>
-</div>
+</div> --}}
+
+
 </div>

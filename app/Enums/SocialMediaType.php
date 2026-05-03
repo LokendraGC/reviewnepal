@@ -5,7 +5,7 @@ namespace App\Enums;
 class SocialMediaType
 {
     const FACEBOOK = 'fa-facebook-f';
-    const TWITTER = 'fa-twitter';
+    const TWITTER = 'fa-x-twitter';
     const INSTAGRAM = 'fa-instagram';
     const YOUTUBE = 'fa-youtube';
     const PINTEREST = 'fa-pinterest-p';

@@ -7,13 +7,14 @@
                 </div>
                 <div class="tab-heading">
                     <ul class="nav nav-tabs mb-3">
-                        <li class="nav-item">
+                       {{--   <li class="nav-item">
                             <a href="#general" data-bs-toggle="tab"
                                 aria-expanded="{{ !request()->has('tab') || request()->query('tab') == 'general' ? 'true' : 'false' }}"
                                 class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'general' ? 'active' : '' }}">
                                 General
                             </a>
                         </li>
+                        --}}
                         {{-- <li class="nav-item">
                             <a href="#breaking-news" data-bs-toggle="tab"
                                 aria-expanded="{{ request()->query('tab') == 'breaking-news' ? 'true' : 'false' }}"

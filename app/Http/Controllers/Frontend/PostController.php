@@ -49,95 +49,41 @@ class PostController extends Controller
     {
         $post = $this->getPayload($slug);
 
+
         if (!$post) {
             return response()->view('frontend.not-found', [], 404);
         }
 
         $metaDatas = $this->getMetaData($post);
 
-        // $homePage = Post::where('slug', 'home')->where('post_status', 'publish')->first();
-        // $homeMeta = $homePage ? $this->getMetaData($homePage) : [];
+        $homePage = Post::where('slug', 'home')->where('post_status', 'publish')->first();
+        $homeMeta = $homePage ? $this->getMetaData($homePage) : [];
 
 
-        // if ($post->post_type === 'page') {
-        //     $bod_cat = Category::where('type', 'team_category')->where('id', 1)->first();
-        //     $management_cat = Category::where('type', 'team_category')->where('id', 2)->first();
+        if ($post->post_type === 'page') {
+         
+            // $companies = Post::where('post_type', 'company')->where('post_status', 'publish')->get();
 
-        //     $all_teams = Post::where('post_type', 'team')->where('post_status', 'publish')->get();
+            $viewName = $this->getViewName($post, $metaDatas);
 
-        //     $bods = $all_teams->filter(function ($team) use ($bod_cat) {
-        //         if (!$bod_cat)
-        //             return false;
-        //         $meta = $team->GetAllMetaData();
-        //         $cats = isset($meta['team_categories']) ? unserialize($meta['team_categories']) : [];
-        //         return is_array($cats) && in_array($bod_cat->id, $cats);
-        //     });
+            $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
+                ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
+                ->latest()->get();
+       
+            // $press_releases = Post::where('post_type', 'post')->where('post_status', 'publish')
+            //     ->whereHas('categories', fn($q) => $q->where('categories.id', 11))
+            //     ->latest()->get();
 
-        //     $management_teams = $all_teams->filter(function ($team) use ($management_cat) {
-        //         if (!$management_cat)
-        //             return false;
-        //         $meta = $team->GetAllMetaData();
-        //         $cats = isset($meta['team_categories']) ? unserialize($meta['team_categories']) : [];
-        //         return is_array($cats) && in_array($management_cat->id, $cats);
-        //     });
-
-        //     $companies = Post::where('post_type', 'company')->where('post_status', 'publish')->get();
-        //     $sectors = Category::where('type', 'sector')->get();
-
-        //     // Media Page Data
-        //     $mediasQuery = Post::where('post_type', 'media')->where('post_status', 'publish')->latest();
-
-        //     // Extract Years from all published media before filtering
-        //     $all_medias = (clone $mediasQuery)->get();
-        //     $media_years = $all_medias->map(function ($media) {
-        //         $meta = $media->GetAllMetaData();
-        //         return $meta['year'] ?? \Carbon\Carbon::parse($media->created_at)->format('Y');
-        //     })->filter()->unique()->sortDesc();
-
-        //     // Apply Filters if template is media or media-coverage (filtering done client-side for no page refresh)
-        //     if (isset($metaDatas['page_template']) && in_array($metaDatas['page_template'], ['media', 'media-coverage'])) {
-        //         $medias = $all_medias;
-
-        //         $stories = Post::where('post_type', 'story')->where('post_status', 'publish')->latest()->get();
-        //     } else {
-        //         $medias = collect();
-        //         $stories = collect();
-        //     }
-
-        //     $viewName = $this->getViewName($post, $metaDatas);
-
-        //     $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
-        //         ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
-        //         ->latest()->get();
-        //     $events = Post::where('post_type', 'post')->where('post_status', 'publish')
-        //         ->whereHas('categories', fn($q) => $q->where('categories.id', 10))
-        //         ->latest()->get();
-        //     $press_releases = Post::where('post_type', 'post')->where('post_status', 'publish')
-        //         ->whereHas('categories', fn($q) => $q->where('categories.id', 11))
-        //         ->latest()->get();
-
-        //     if ($viewName) {
-        //         return view($viewName, [
-        //             'post' => $post,
-        //             'metaData' => $metaDatas,
-        //             'homeMeta' => $homeMeta,
-        //             'bod_cat' => $bod_cat,
-        //             'board_of_directors' => $bods,
-        //             'management_cat' => $management_cat,
-        //             'management_teams' => $management_teams,
-        //             'companies' => $companies,
-        //             'sectors' => $sectors,
-        //             'medias' => $medias,
-        //             'stories' => $stories,
-        //             'media_years' => $media_years,
-        //             'total_medias_count' => $all_medias->count(),
-        //             'total_stories_count' => isset($stories) ? $stories->count() : 0,
-        //             'posts' => $posts,
-        //             'events' => $events,
-        //             'press_releases' => $press_releases,
-        //         ]);
-        //     }
-        // }
+            if ($viewName) {
+                return view($viewName, [
+                    'post' => $post,
+                    'metaData' => $metaDatas,
+                    'homeMeta' => $homeMeta,
+                    'posts' => $posts,
+                 
+                ]);
+            }
+        }
 
         if ($post->post_type === 'post') {
             $related_posts = Post::where('post_type', 'post')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();

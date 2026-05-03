@@ -21,13 +21,29 @@
         <div class="header-right-actions d-none d-lg-block">
             <div class="header-date-container ">
                 <i class="fa-regular fa-calendar-days"></i>
-                <span id="current-date" class="date-text">Apr 19, 2026</span>
+                <span id="current-date" class="date-text"><?php echo date('F d, Y'); ?></span>
             </div>
         </div>
 
+
+        @php
+           $header_logo = SettingHelper::get_field('header_logo');
+           $media = $header_logo ? MediaHelper::getImageById($header_logo) : null;
+           $websiteName = SettingHelper::get_field('site_title');
+
+           if (!empty($media) && !empty($media->file_name)) {
+               $image_url = asset('storage/' . $media->file_name);
+           } else {
+               $image_url = asset('assets/images/reviewnepal-logo.svg');
+           }
+
+       @endphp
+
+
+
         <div class="header-logo">
-            <a href="{{ '/' }}"><img src="{{ asset('assets/images/reviewnepal-logo.svg') }}"
-                    alt="logo"></a>
+            <a href="{{ '/' }}"><img src="{{ $image_url }}"
+                    alt="{{ $websiteName }}"></a>
         </div>
 
         <div class="header-left-actions">
@@ -89,11 +105,16 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
+            @php
+                   $language = LanguageHelper::getUserLanguage();
+                   $checked = $language == 'ne' ? true : false;
+
+            @endphp
             <div class="language-toggle-container">
                 <span class="toggle-label" id="lang-en">EN</span>
 
                 <label class="switch" for="lang-toggle">
-                    <input type="checkbox" id="lang-toggle" aria-labelledby="lang-en lang-np">
+                    <input type="checkbox" id="lang-toggle" aria-labelledby="lang-en lang-np" {{ $checked ? 'checked' : '' }}>
                     <span class="slider">
                         <span class="flag-icon"></span>
                     </span>
@@ -189,8 +210,8 @@
 <div id="nav-overlay" class="nav-overlay">
     <div class="overlay-header">
         <div class="header-logo popup">
-            <a href="{{ '/' }}"><img src="{{ asset('assets/images/reviewnepal-logo.svg') }}"
-                    alt="Logo"></a>
+            <a href="{{ '/' }}"><img src="{{ $image_url }}"
+                    alt="{{ $websiteName }}"></a>
         </div>
         <button id="close-menu-btn" class="close-btn" aria-label="Close Menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"
@@ -319,15 +340,15 @@
     </div>
 
     <div class="overlay-footer">
-        <div class="copyright">© 2024 review nepal. All rights reserved.</div>
+        <div class="copyright">© {{ date('Y') }} {{ $websiteName }}. All rights reserved.</div>
     </div>
 </div>
 
 <div id="sticky-header-fixed" class="sticky-header-container">
     <div class="sticky-inner container">
         <div class="sticky-logo">
-            <a href="{{ '/' }}"><img src="{{ asset('assets/images/reviewnepal-logo.svg') }}"
-                    alt="Logo"></a>
+            <a href="{{ '/' }}"><img src="{{ $image_url }}"
+                    alt="{{ $websiteName }}"></a>
         </div>
 
         <nav class="sticky-nav-links d-none d-lg-block">
@@ -443,8 +464,8 @@
 <div id="search-overlay" class="nav-overlay search-overlay d-none d-lg-block">
     <div class="overlay-header">
         <div class="header-logo popup">
-            <a href="{{ '/' }}"><img src="{{ asset('assets/images/reviewnepal-logo.svg') }}"
-                    alt="Logo"></a>
+            <a href="{{ '/' }}"><img src="{{ $image_url }}"
+                    alt="{{ $websiteName }}"></a>
         </div>
         <button id="close-search-btn" class="close-btn search-close-red" aria-label="Close Search">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"

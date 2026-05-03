@@ -247,6 +247,7 @@ return [
         'UserHelper' => \App\Helpers\UserHelper::class,
         'CommentHelper' => \App\Helpers\CommentHelper::class,
         'isHomePage' => \App\Helpers\isHomePage::class,
+        'LanguageHelper' => \App\Helpers\LanguageHelper::class,
     ],
 
 ];

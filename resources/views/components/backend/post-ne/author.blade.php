@@ -17,10 +17,10 @@
                 @foreach ($authors as $author)
                 @if ($post)
                 <option value="{{ $author->id }}" @if ($post->categories->contains('id', $author->id)) selected @endif>
-                    {{ $author->name }}
+                    {{ CategoryHelper::get_field('name_ne', $author) }}
                 </option>
                 @else
-                <option value="{{ $author->id }}">{{ $author->name }}</option>
+                <option value="{{ $author->id }}">{{ CategoryHelper::get_field('name_ne', $author) }}</option>
                 @endif
                 @endforeach
             </select>

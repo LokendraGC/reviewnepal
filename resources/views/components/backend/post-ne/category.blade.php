@@ -4,7 +4,7 @@
             <h4 class="header-title">
                 {{ $title }}
                 {{-- @if ($required) --}}
-                {{-- <span class="text-danger">*</span> --}}
+                    {{-- <span class="text-danger">*</span> --}}
                 {{-- @endif --}}
             </h4>
         </div>
@@ -12,22 +12,22 @@
             <select class="select2 form-control {{ $type == 'single' ? 'single' : 'select2-multiple' }}"
                 data-toggle="select2" {{ $type == 'single' ? '' : 'multiple = "multiple"' }} name="{{ $name }}">
                 @if ($type == 'single')
-                <option>None</option>
+                    <option>None</option>
                 @endif
-                @foreach ($authors as $author)
-                @if ($post)
-                <option value="{{ $author->id }}" @if ($post->categories->contains('id', $author->id)) selected @endif>
-                    {{ $author->name }}
-                </option>
-                @else
-                <option value="{{ $author->id }}">{{ $author->name }}</option>
-                @endif
+                @foreach ($categories as $category)
+                    @if ($post)
+                        <option value="{{ $category->id }}" @if ($post->categories->contains('id', $category->id)) selected @endif>
+                            {{ CategoryHelper::get_field('name_ne', $category) }}
+                        </option>
+                    @else
+                        <option value="{{ $category->id }}">{{ CategoryHelper::get_field('name_ne', $category) }}</option>
+                    @endif
                 @endforeach
             </select>
             @error(preg_replace('/[\[\]]/', '', $name))
-            <div class="valid-feedback d-block text-danger">
-                {{ $message }}
-            </div>
+                <div class="valid-feedback d-block text-danger">
+                    {{ $message }}
+                </div>
             @enderror
         </div>
     </div>

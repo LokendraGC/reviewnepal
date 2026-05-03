@@ -3,9 +3,9 @@
         <div class="mb-2 d-flex align-content-center border-1 border-bottom">
             <h4 class="header-title">
                 {{ $title }}
-                @if ($required)
-                    <span class="text-danger">*</span>
-                @endif
+                {{-- @if ($required) --}}
+                    {{-- <span class="text-danger">*</span> --}}
+                {{-- @endif --}}
             </h4>
         </div>
         <div class="cat-lists mt-2 {{ $custom ?? '' }}">

@@ -23,6 +23,7 @@ class SettingRepository
 
         // header
         $metaDatas['header_logo'] = $request->header_logo ?? null;
+        $metaDatas['header_logo_nepali'] = $request->header_logo_nepali ?? null;
         $metaDatas['map_url'] = $request->map_url ?? null;
         $metaDatas['office_timing'] = $request->office_timing ?? null;
         // Info Section
@@ -34,7 +35,9 @@ class SettingRepository
 
         // Footer
         $metaDatas['footer_logo'] = $request->footer_logo ?? null;
-        $metaDatas['copyright_text'] = $request->copyright_text ?? null;
+        $metaDatas['footer_logo_nepali'] = $request->footer_logo_nepali ?? null;
+        $metaDatas['footer_text'] = $request->footer_text ?? null;
+        $metaDatas['subscribe_text'] = $request->subscribe_text ?? null;
         $metaDatas['map_link'] = $request->map_link ?? null;
         // Social Medias
         $metaDatas['social_media'] = $request->social_media ? serialize($request->social_media) : null;
@@ -43,7 +46,7 @@ class SettingRepository
         $metaDatas['banner_background_image'] = $request->banner_background_image ?? null;
         $metaDatas['map_iframe_url'] = $request->map_iframe_url ?? null;
 
-  
+
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($setting, $key, $value);

@@ -17,6 +17,7 @@ class GeneralSettingRepository
         $metaDatas['site_title'] = $request->site_title ?? null;
         $metaDatas['admin_email_address'] = $request->admin_email_address ?? null;
         $metaDatas['site_favicon'] = $request->site_favicon ?? null;
+        $metaDatas['language'] = $request->language ?? null;
 
         if ( auth()->user()->hasRole('Super Admin') ) {
             $metaDatas['page_on_front'] = $request->page_on_front ?? 1;

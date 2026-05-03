@@ -248,6 +248,7 @@ return [
         'CommentHelper' => \App\Helpers\CommentHelper::class,
         'isHomePage' => \App\Helpers\isHomePage::class,
         'LanguageHelper' => \App\Helpers\LanguageHelper::class,
+        'NepaliDateHelper' => \App\Helpers\NepaliDateHelper::class,
     ],
 
 ];

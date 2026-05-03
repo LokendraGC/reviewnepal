@@ -16,12 +16,19 @@
 <hr style="border-color: #c7c7c7; margin: 0;">
 @endif
 
+@php
+    $current_date = date('F d, Y');
+    $nepali_date = NepaliDateHelper::toNepaliDate($current_date);
+    $language = LanguageHelper::getUserLanguage();
+    $checked = $language == 'ne' ? true : false;
+@endphp
+
 <header class="amko-header">
     <div class="header-top">
         <div class="header-right-actions d-none d-lg-block">
             <div class="header-date-container ">
                 <i class="fa-regular fa-calendar-days"></i>
-                <span id="current-date" class="date-text"><?php echo date('F d, Y'); ?></span>
+                <span id="current-date" class="date-text">{{ $checked ? $nepali_date : $current_date }}</span>
             </div>
         </div>
 
@@ -108,7 +115,6 @@
             @php
                    $language = LanguageHelper::getUserLanguage();
                    $checked = $language == 'ne' ? true : false;
-
             @endphp
             <div class="language-toggle-container">
                 <span class="toggle-label" id="lang-en">EN</span>

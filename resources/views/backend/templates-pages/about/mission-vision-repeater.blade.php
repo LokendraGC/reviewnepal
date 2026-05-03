@@ -67,27 +67,27 @@
 
     function addMissionVisionRow() {
         let numberOfRow = $('.addMoreMissionVision tr').length;
+        // Stable unique DOM id for media manager (jQuery('#id') must be unique). Row count can
+        // collide with non-sequential PHP array keys; reindexing only updates name[], not this id.
+        let imageFieldId = 'mv_detail_image_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
 
         let tr = `
         <tr>
             <td class="custom-table-no no">${numberOfRow + 1}</td>
             <td>
-                <input type="text" class="form-control" name="mission_and_vision_details[${numberOfRow}][title]" value="" />
-            </td>
-            <td>
                 <textarea class="editor" id="content" name="mission_and_vision_details[${numberOfRow}][description]"></textarea>
             </td>
             <td>
                 <div class="media-input image-input">
-                    <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="mission_and_vision_details_${numberOfRow}_image" data-select="single">
+                    <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="${imageFieldId}" data-select="single">
                         <div class="input-group-prepend">
                             <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
                         </div>
                         <div class="form-control file-amount">Choose File</div>
                     </div>
                     <div class="preview-closer">
-                        <input type="hidden" id="mission_and_vision_details_${numberOfRow}_image" name="mission_and_vision_details[${numberOfRow}][image]" class="selected-files" value="" />
-                        <div id="mission_and_vision_details_${numberOfRow}_image_select"></div>
+                        <input type="hidden" id="${imageFieldId}" name="mission_and_vision_details[${numberOfRow}][image]" class="selected-files" value="" />
+                        <div id="${imageFieldId}_select"></div>
                     </div>
                 </div>
             </td>
@@ -138,14 +138,13 @@
                     $element.attr('name', newName);
                 }
 
-                // Update IDs for image and icon fields
+                // Update IDs for server-rendered rows only (pattern …_0_image). Dynamic rows use
+                // mv_detail_image_* which must stay stable so media manager targets the correct input.
                 let currentId = $element.attr('id');
-                if (currentId && currentId.includes('mission_and_vision_details')) {
-                    if (currentId.includes('_image')) {
-                        $element.attr('id', `mission_and_vision_details_${index}_image`);
-                    } else if (currentId.includes('_icon')) {
-                        $element.attr('id', `mission_and_vision_details_${index}_icon`);
-                    }
+                if (currentId && /^mission_and_vision_details_\d+_image$/.test(currentId)) {
+                    $element.attr('id', `mission_and_vision_details_${index}_image`);
+                } else if (currentId && /^mission_and_vision_details_\d+_icon$/.test(currentId)) {
+                    $element.attr('id', `mission_and_vision_details_${index}_icon`);
                 }
             });
 
@@ -153,12 +152,10 @@
             $row.find('.open-media-manager').each(function() {
                 let $mediaManager = $(this);
                 let currentField = $mediaManager.attr('data-field');
-                if (currentField && currentField.includes('mission_and_vision_details')) {
-                    if (currentField.includes('_image')) {
-                        $mediaManager.attr('data-field', `mission_and_vision_details_${index}_image`);
-                    } else if (currentField.includes('_icon')) {
-                        $mediaManager.attr('data-field', `mission_and_vision_details_${index}_icon`);
-                    }
+                if (currentField && /^mission_and_vision_details_\d+_image$/.test(currentField)) {
+                    $mediaManager.attr('data-field', `mission_and_vision_details_${index}_image`);
+                } else if (currentField && /^mission_and_vision_details_\d+_icon$/.test(currentField)) {
+                    $mediaManager.attr('data-field', `mission_and_vision_details_${index}_icon`);
                 }
             });
 
@@ -166,12 +163,10 @@
             $row.find('div[id*="mission_and_vision_details"]').each(function() {
                 let $div = $(this);
                 let currentId = $div.attr('id');
-                if (currentId) {
-                    if (currentId.includes('_image_select')) {
-                        $div.attr('id', `mission_and_vision_details_${index}_image_select`);
-                    } else if (currentId.includes('_icon_select')) {
-                        $div.attr('id', `mission_and_vision_details_${index}_icon_select`);
-                    }
+                if (currentId && /^mission_and_vision_details_\d+_image_select$/.test(currentId)) {
+                    $div.attr('id', `mission_and_vision_details_${index}_image_select`);
+                } else if (currentId && /^mission_and_vision_details_\d+_icon_select$/.test(currentId)) {
+                    $div.attr('id', `mission_and_vision_details_${index}_icon_select`);
                 }
             });
 
@@ -179,12 +174,10 @@
             $row.find('.remove-attachment').each(function() {
                 let $button = $(this);
                 let currentSlug = $button.attr('data-slug');
-                if (currentSlug && currentSlug.includes('mission_and_vision_details')) {
-                    if (currentSlug.includes('_image')) {
-                        $button.attr('data-slug', `mission_and_vision_details_${index}_image`);
-                    } else if (currentSlug.includes('_icon')) {
-                        $button.attr('data-slug', `mission_and_vision_details_${index}_icon`);
-                    }
+                if (currentSlug && /^mission_and_vision_details_\d+_image$/.test(currentSlug)) {
+                    $button.attr('data-slug', `mission_and_vision_details_${index}_image`);
+                } else if (currentSlug && /^mission_and_vision_details_\d+_icon$/.test(currentSlug)) {
+                    $button.attr('data-slug', `mission_and_vision_details_${index}_icon`);
                 }
             });
         });

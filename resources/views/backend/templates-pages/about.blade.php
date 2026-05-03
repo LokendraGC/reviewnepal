@@ -201,8 +201,7 @@
                                     <thead>
                                         <tr>
                                             <th class="custom-table-sno" style="width:5%">S.No</th>
-                                            <th style="width:20%">Title</th>
-                                            <th style="width:20%">Description</th>
+                                            <th style="width:30%">Description</th>
                                             <th style="width:20%">Upload Image
                                                 <span class="form-text text-muted">
                                                     <small><i>(Recommended image size: 895 by 495 px)</i></small>
@@ -221,12 +220,6 @@
                                         {{-- Fixed variable name --}}
                                         <tr>
                                             <td class="custom-table-no">{{ $loop->iteration }}</td>
-                                            <td>
-                                                <input type="text"
-                                                    name="mission_and_vision_details[{{ $index }}][title]"
-                                                    class="form-control"
-                                                    value="{{ isset($item['title']) ? $item['title'] : '' }}" />
-                                            </td>
                                             <td>
                                                 <textarea class="editor" id="content" name="mission_and_vision_details[{{ $index }}][description]"
                                                     rows="5">{{ isset($item['description']) ? $item['description'] : '' }}</textarea>
@@ -396,7 +389,7 @@
 
                         <div class="mb-1">
                             <textarea class="editor" id="content" name="commitment_description"
-                                rows="5">{{ isset($item['commitment_description']) ? $item['commitment_description'] : '' }}</textarea>
+                                rows="5">{{ isset($metaDatas['commitment_description']) ? $metaDatas['commitment_description'] : '' }}</textarea>
                         </div>
 
                     </div>

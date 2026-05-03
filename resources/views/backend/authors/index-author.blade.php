@@ -44,7 +44,7 @@
                         <input type="hidden" name="type" value="{{ $type }}" />
                         <div class="mb-3">
                             <label class="form-label" for="category-name">Name<span class="text-danger">*</span></label>
-                            <input name="name" type="text" class="form-control" id="category-name" required
+                            <input name="name" type="text" class="form-control" id="category-name"
                                 value="{{ old('name') }}" />
                             @error('name')
                             <div class="invalid-feedback d-block ">
@@ -52,6 +52,18 @@
                             </div>
                             @enderror
                         </div>
+
+                         <div class="mb-3">
+                            <label class="form-label" for="category-name-ne">Name in Nepali</label>
+                            <input name="name_ne" type="text" class="form-control" id="category-name-ne" 
+                                value="{{ old('name_ne') }}" />
+                            @error('name_ne')
+                            <div class="invalid-feedback d-block ">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label" for="category-slug">Slug</label>
                             <input name="slug" type="text" class="form-control" id="category-slug" />
@@ -111,7 +123,7 @@
                                     <span class="@if ($status == 'all') text-black fw-700 @endif">
                                         All
                                     </span>
-                                    ({{ count($all) }})</a>
+                                    ({{ $all }})</a>
                             </span>
                             @if ($trashPosts > 0)
                             <span class="delete">

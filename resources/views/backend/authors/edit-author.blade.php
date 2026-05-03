@@ -31,6 +31,19 @@ $siteURL = SettingHelper::get_field('site_url');
                                             </div>
                                             @enderror
                                         </div>
+
+                                         <div class="mb-3">
+                                            <label class="form-label" for="category-name-ne">Name in Nepali</label>
+                                            <input name="name_ne" type="text" class="form-control" id="category-name-ne"
+                                                value="{{ isset($metaDatas['name_ne']) ? $metaDatas['name_ne'] : '' }}">
+                                            @error('name_ne')
+                                            <div class="invalid-feedback d-block ">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+
+
                                         <div class="mb-3">
                                             <label class="form-label" for="category-slug">Slug</label>
                                             <input name="slug" type="text" class="form-control" id="category-slug"

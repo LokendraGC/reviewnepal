@@ -34,7 +34,7 @@ $siteURL = SettingHelper::get_field('site_url');
                                         <div class="mb-3">
                                             <label class="form-label" for="category-name">Name in Nepali</label>
                                             <input name="name_ne" type="text" class="form-control" id="category-name"
-                                                value="{{ $category->name_ne }}">
+                                                value="{{ isset($metaDatas['name_ne']) ? $metaDatas['name_ne'] : '' }}">
                                             @error('name_ne')
                                             <div class="invalid-feedback d-block ">
                                                 {{ $message }}

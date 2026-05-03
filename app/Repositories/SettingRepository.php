@@ -18,7 +18,6 @@ class SettingRepository
     public function storeOrUpdate($payload, $request)
     {
         $setting = $payload;
-        $request = $request;
 
         $metaDatas = [];
 

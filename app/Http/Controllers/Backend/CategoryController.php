@@ -24,54 +24,12 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index(Request $request)
-    {
-        $status = $request->get('status', 'all');
-        $baseQuery = Category::whereType($this->categoryType);
-        $postsQuery = clone $baseQuery;
-
-        switch ($status) {
-            case 'publish':
-                $postsQuery->PostStatus('publish');
-                break;
-            case 'trash':
-                $postsQuery->onlyTrashed();
-                break;
-                // case 'draft':
-                //     $postsQuery->PostStatus('draft');
-                //     $posts = (clone $baseQuery)->PostStatus('draft')->get();
-                //     break;
-        }
-
-        $publishPosts = $status === 'publish' ? $postsQuery->count() : (clone $baseQuery)->count();
-        $trashPosts = $status === 'trash' ? $postsQuery->count() : (clone $baseQuery)->onlyTrashed()->count();
-        // $draftPosts = $status === 'draft' ? $postsQuery->count() : (clone $baseQuery)->PostStatus('draft')->count();
-        $all = (clone $baseQuery)->count();
-
-        $type = $this->categoryRepository->encodeType($this->categoryType);
-
-        $categories = Category::with('children')
-            ->where('type', $this->categoryType)
-            ->where('parent', 0)
-            ->orderBy('name', 'ASC')
-            ->get();
-
-        return view('backend.categories.index-category', [
-            'status' => $status,
-            'all' => $all,
-            'trashPosts' => $trashPosts,
-            'categories' => $categories,
-            'categoryType' => $this->categoryType,
-            'type' => $type,
-        ]);
-    }
 
     public function store(Request $request)
     {
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name',
-            'name_ne' => 'nullable|unique:categories,name_ne',
         ]);
 
 
@@ -104,6 +62,7 @@ class CategoryController extends Controller
 
         $metaDatas = $this->categoryRepository->getMetaDatas($category);
 
+
         if ($category == NULL) {
             abort(404);
         }
@@ -128,7 +87,6 @@ class CategoryController extends Controller
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name,' . $id->id,
-            'name_ne' => 'nullable|unique:categories,name_ne,' . $id->id,
         ]);
 
         try {

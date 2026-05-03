@@ -35,7 +35,6 @@ class CategoryRepository
         $cat = Category::create([
             'user_id' => Auth::id() ?? NULL,
             'name' => $request->name,
-            'name_ne' => $request->name_ne,
             'slug' => $this->createSlug($request->name, $request->slug, $model),
             'type' => $type,
             'description' => isset($request->description) ?  $request->description : NULL,
@@ -52,7 +51,6 @@ class CategoryRepository
 
         $status = $category->update([
             'name' => $request->name,
-            'name_ne' => $request->name_ne,
             'slug' => $this->getSlug($category, $request->name, $request->slug),
             'type' => $type,
             'description' => isset($request->description) ?  $request->description : NULL,
@@ -112,11 +110,8 @@ class CategoryRepository
         $metaDatas = [];
         $metaDatas['seo_title'] = $request->seo_title ?? null;
         $metaDatas['seo_description'] = $request->seo_description ?? null;
-        // $metaDatas['nepali_title'] = $request->nepali_title ?? null;
-        // $metaDatas['common_banner_image'] = $request->common_banner_image ?? null;
-        // $metaDatas['theme_color'] = $request->theme_color ?? null;
-
-        // add meta data as per form data
+        $metaDatas['name_ne'] = $request->name_ne ?? null;
+        $metaDatas['featured_image'] = $request->featured_image ?? null;
 
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {

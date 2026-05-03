@@ -11,7 +11,7 @@
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:site_name" content="{{ $websiteName }}" />
 @php
-    $dateString = $payload->updated_at;
+    $dateString = isset($payload) ? $payload->updated_at : null;
     $carbonDate = \Carbon\Carbon::parse($dateString);
     $iso8601String = $carbonDate->toIso8601String();
     if (isset($payloadMeta['featured_image']) && url()->current() !== url('/') && ($media = MediaHelper::getModel()->where('id', $payloadMeta['featured_image'])->first())) {

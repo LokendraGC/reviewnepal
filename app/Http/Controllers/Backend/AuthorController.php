@@ -29,30 +29,39 @@ class AuthorController extends Controller
 
     public function index(Request $request)
     {
-        $status = $request->get('status') ? $request->get('status') : 'all';
+        $status = $request->get('status', 'all');
         $baseQuery = Category::whereType($this->categoryType);
-        $all = $categories = $baseQuery->get();
-        $trashPosts = $baseQuery->onlyTrashed()->get()->count();
+        $postsQuery = clone $baseQuery;
+
         switch ($status) {
             case 'publish':
-                $categories = $all;
+                $postsQuery->PostStatus('publish');
                 break;
             case 'trash':
-                $categories = $baseQuery->onlyTrashed()->get();
+                $postsQuery->onlyTrashed();
                 break;
-            // case 'draft':
-            //     $posts = $baseQuery->PostStatus('draft')->get();
-            //     break;
-            default:
-                break;
+                case 'draft':
+                    $postsQuery->PostStatus('draft');
+                    $posts = (clone $baseQuery)->PostStatus('draft')->get();
+                    break;
         }
+
+        $publishPosts = $status === 'publish' ? $postsQuery->count() : (clone $baseQuery)->count();
+        $trashPosts = $status === 'trash' ? $postsQuery->count() : (clone $baseQuery)->onlyTrashed()->count();
+        // $draftPosts = $status === 'draft' ? $postsQuery->count() : (clone $baseQuery)->PostStatus('draft')->count();
+        $all = (clone $baseQuery)->count();
 
         $type = $this->categoryRepository->encodeType($this->categoryType);
 
-        // $categories = Category::with('children')
-        // ->where('type','author')
-        // ->orderBy('name', 'ASC')
-        // ->get();
+        $categoriesQuery = Category::with('children')
+            ->where('type', $this->categoryType)
+            ->orderBy('name', 'ASC');
+
+        if ($status === 'trash') {
+            $categories = (clone $categoriesQuery)->onlyTrashed()->get();
+        } else {
+            $categories = (clone $categoriesQuery)->where('parent', 0)->get();
+        }
 
         return view('backend.authors.index-author', [
             'status' => $status,
@@ -64,12 +73,12 @@ class AuthorController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name',
-            'featured_image' => 'nullable',
         ]);
 
 
@@ -81,17 +90,13 @@ class AuthorController extends Controller
         try {
 
             // create new category
-            $category = $this->categoryRepository->createCategory($request, $this->categoryType);
+            $author = $this->authorRepository->createCategory($request, $this->categoryType);
 
-            $meta = $this->authorRepository->processMetaData($category, $request);
-
-            foreach ($meta as $key => $value) {
-                $this->categoryRepository->updateOrCreateMeta($category, $key, $value);
-            }
+            $this->authorRepository->storeMetaData($author, $request);
 
             session()->flash('success', 'Author Created.');
 
-            return to_route('backend.author');
+            return redirect()->route('backend.author');
         } catch (\Exception $e) {
 
             session()->flash('error', 'Error While Creating: ' . $e->getMessage());
@@ -104,13 +109,14 @@ class AuthorController extends Controller
     {
         $category = Category::where('id', $id)->where('type', $this->categoryType)->FindOrFail($id);
 
-        $metaDatas = $this->categoryRepository->getMetaDatas($category);
+        $metaDatas = $this->authorRepository->getMetaDatas($category);
+
 
         if ($category == NULL) {
             abort(404);
         }
 
-        $categories = Category::with('children')
+        $authors = Category::with('children')
             ->where('type', $this->categoryType)
             ->where('id', '!=', $id)
             ->where('parent', 0)
@@ -120,36 +126,32 @@ class AuthorController extends Controller
         return view('backend.authors.edit-author', [
             'id' => $id,
             'category' => $category,
-            'categories' => $categories,
+            'authors' => $authors,
             'metaDatas' => $metaDatas,
         ]);
     }
 
     public function update(Request $request, Category $id)
     {
+
         // validation
         $request->validate([
             'name' => 'required|unique:categories,name,' . $id->id,
-            'featured_image' => 'required',
         ]);
 
         try {
 
-            $data = $this->categoryRepository->updateCategory($request, $id, $this->categoryType);
+            $data = $this->authorRepository->updateCategory($request, $id, $this->categoryType);
 
             if ($data['status'] && $data['category']) {
 
                 $category = $data['category'];
 
-                $meta = $this->authorRepository->processMetaData($category, $request);
-
-                foreach ($meta as $key => $value) {
-                    $this->categoryRepository->updateOrCreateMeta($category, $key, $value);
-                }
+                $this->authorRepository->storeMetaData($category, $request);
 
                 session()->flash('success', 'Author Updated.');
 
-                return to_route('backend.author.edit', $id);
+                return redirect()->route('backend.author.edit', $id);
             } else {
 
                 session()->flash('error', 'Error While Updating: Unable to update the post.');
@@ -164,8 +166,15 @@ class AuthorController extends Controller
 
     public function destroy($id)
     {
-        $category = Category::where('type', $this->categoryType)->findOrFail($id);
-        $category->delete();
+        $author = Category::findOrFail($id);
+
+        // Backup the relationship
+        Category::where('parent', $author->id)->update([
+            'parent_id_backup' => $author->id,
+            'parent' => 0,
+        ]);
+
+        $author->delete();
 
         session()->flash('success', 'Author Deleted.');
         return redirect()->back();

@@ -1,14 +1,6 @@
 <div class="tab-pane fade {{ request()->query('tab') == 'info-section' ? 'active show' : '' }}" id="info-section"
     role="tabpanel" aria-labelledby="info-section-tab">
-    <div class="row">
-        <div class="col">
-            <label for="emailAddress" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="emailAddress" name="email_address"
-                value="{{ isset($settings['email_address']) ? $settings['email_address'] : '' }}" />
-        </div>
-    </div>
-    <hr />
-    
+
      <div class="row">
         <div class="col-md-6">
             <div class="mb-3">

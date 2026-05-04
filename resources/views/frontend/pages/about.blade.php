@@ -2,7 +2,9 @@
 
 @section('main-section')
     @php
-        $featured_image = $post->GetAllMetaData()['featured_image'];
+
+    $postMeta = $post->GetAllMetaData();
+        $featured_image = $postMeta['featured_image'];
         $media = MediaHelper::getImageById($featured_image);
 
         if (!empty($featured_image) && !empty($media->file_name)) {
@@ -11,10 +13,10 @@
             $image_url = 'https://images.unsplash.com/photo-1497366216548-37526070297c';
         }
 
-        $established_title = $post->GetAllMetaData()['established_title'];
-        $established_date = $post->GetAllMetaData()['established_date'];
+        $established_title = $postMeta['established_title'];
+        $established_date = $postMeta['established_date'];
 
-        $about_first_image = $post->GetAllMetaData()['about_first_image'];
+        $about_first_image = $postMeta['about_first_image'];
         $media = MediaHelper::getImageById($about_first_image);
         if (!empty($about_first_image) && !empty($media->file_name)) {
             $about_first_image_url = asset('storage/' . $media->file_name);
@@ -22,7 +24,7 @@
             $about_first_image_url = null;
         }
 
-        $about_second_image = $post->GetAllMetaData()['about_second_image'];
+        $about_second_image = $postMeta['about_second_image'];
         $media = MediaHelper::getImageById($about_second_image);
         if (!empty($about_second_image) && !empty($media->file_name)) {
             $about_second_image_url = asset('storage/' . $media->file_name);
@@ -32,7 +34,7 @@
 
         $websiteName = SettingHelper::get_field('site_title');
 
-        $commitment_bg_image = $post->GetAllMetaData()['commitment_bg_image'];
+        $commitment_bg_image = $postMeta['commitment_bg_image'];
         $media = MediaHelper::getImageById($commitment_bg_image);
         if (!empty($commitment_bg_image) && !empty($media->file_name)) {
             $commitment_bg_image_url = asset('storage/' . $media->file_name);
@@ -40,7 +42,7 @@
             $commitment_bg_image_url = null;
         }
 
-        $commitment_description = $post->GetAllMetaData()['commitment_description'];
+        $commitment_description = $postMeta['commitment_description'];
     @endphp
 
     <div class="container py-5">
@@ -145,85 +147,104 @@
             </div>
         @endif
 
+            @php
+                $team_title = $postMeta['team_title'];
+                $team_details = $postMeta['team_details'];
+                $team_details = unserialize($team_details);
+                $count = 1;
+            @endphp
 
-        <div class="">
-            <div class="section-header-featured">
-                <h2>Our Team</h2>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-4 mb-4">
-                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6" class="author-img">
-                    <span class="author-label">Kevin Perron</span>
-                    <span class="author-sub">Author</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" class="author-img">
-                    <span class="author-label">Martin McKensey</span>
-                    <span class="author-sub">Senior Reporter</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" class="author-img">
-                    <span class="author-label">Maria Florez</span>
-                    <span class="author-sub">Author</span>
-                </div>
-            </div>
-        </div>
-
+        @if (!empty($team_title) && !empty($team_details))
         <div class="py-5">
             <div class="section-header-featured">
-                <h2>Have Any Questions?</h2>
+                <h2>{{ $team_title }}</h2>
             </div>
             <div class="row mt-4">
+                @foreach ($team_details as $item)
+                    @php
+                        $image = $item['image'];
+                        $media = MediaHelper::getImageById($image);
+                        if (!empty($image) && !empty($media->file_name)) {
+                            $image_url = asset('storage/' . $media->file_name);
+                        } else {
+                            $image_url = null;
+                        }
+                    @endphp
+                    <div class="col-md-4 mb-4">
+                        <img src="{{ $image_url }}" class="author-img">
+                        <span class="author-label">{{ $item['name'] }}</span>
+                        <span class="author-sub">{{ $item['designation'] }}</span>
+                    </div>
+                    @php
+                        $count++;
+                    @endphp
+                @endforeach
+
+            </div>
+        @endif
+        </div>
+
+
+        @php
+        $faq_title = $postMeta['faq_title'];
+        $faq_featured_image = $postMeta['faq_featured_image'];
+        $media = MediaHelper::getImageById($faq_featured_image);
+        if (!empty($faq_featured_image) && !empty($media->file_name)) {
+            $faq_featured_image_url = asset('storage/' . $media->file_name);
+        } else {
+            $faq_featured_image_url = null;
+        }
+        $faq_details = $postMeta['faq_details'];
+        $faq_details = unserialize($faq_details);
+
+        @endphp
+
+@if (!empty($faq_title) || !empty($faq_featured_image_url) || !empty($faq_details))
+<div class="py-5">
+            <div class="section-header-featured">
+                <h2>{{ $faq_title }}</h2>
+            </div>
+            <div class="row mt-4">
+                
+                
+                @if ($faq_featured_image_url)
                 <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sidebar-banner.jpg') }}" class="img-fluid mb-4" alt="Interview">
+                    <img src="{{ $faq_featured_image_url }}" class="img-fluid mb-4" alt="{{ $websiteName }}">
                 </div>
+                @endif
+
                 <div class="col-md-8">
                     <div class="faq-custom-wrapper" id="faqAccordion">
 
-                        <div class="faq-item">
-                            <button class="faq-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                <span class="index-number">1</span>
-                                <span class="faq-question">How can I submit a news tip or story idea?</span>
-                                <span class="toggle-icon"></span>
-                            </button>
-                            <div id="faq1" class="collapse show" data-bs-parent="#faqAccordion">
-                                <div class="faq-body">
-                                    You can submit news tips or story ideas by contacting our editorial team through the
-                                    designated form on our website or via email at <a
-                                        href="mailto:info@morningnews.io">info@morningnews.io</a>.
-                                </div>
-                            </div>
-                        </div>
+                        @php
+                            $count = 1;
+                        @endphp
+                        @foreach ($faq_details as $item)
 
+                        
                         <div class="faq-item">
-                            <button class="faq-trigger collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq2">
-                                <span class="index-number">2</span>
-                                <span class="faq-question">How can I watch your news channel?</span>
+                            <button class="faq-trigger {{ $count == 1 ? 'collapsed' : '' }} " type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ $count }}">
+                                <span class="index-number">{{ $count }}</span>
+                                <span class="faq-question">{{ $item['question'] }}</span>
                                 <span class="toggle-icon"></span>
                             </button>
-                            <div id="faq2" class="collapse" data-bs-parent="#faqAccordion">
+                            <div id="faq{{ $count }}" class="collapse {{ $count == 1 ? 'show' : '' }}" data-bs-parent="#faqAccordion">
                                 <div class="faq-body">
-                                    Details about channel frequency and streaming platforms go here.
+                                    {!! $item['answer'] !!}
                                 </div>
                             </div>
                         </div>
-                        <div class="faq-item">
-                            <button class="faq-trigger collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq3">
-                                <span class="index-number">3</span>
-                                <span class="faq-question">How can I watch your news channel?</span>
-                                <span class="toggle-icon"></span>
-                            </button>
-                            <div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
-                                <div class="faq-body">
-                                    Details about channel frequency and streaming platforms go here.
-                                </div>
-                            </div>
-                        </div>
+                        @php
+                            $count++;
+                        @endphp
+                        @endforeach
+
                     </div>
                 </div>
             </div>
         </div>
+        @endif
+
+
     </div>
 @endsection

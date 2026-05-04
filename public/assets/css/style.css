@@ -501,12 +501,13 @@ body {
   justify-content: flex-start;
 }
 
-.primary-title {
+.primary-title a {
   font-size: 34px;
   line-height: 1.15;
   font-weight: 500;
   margin-bottom: 16px;
   color: #111;
+  text-decoration: none;
 }
 
 .primary-excerpt {
@@ -565,11 +566,12 @@ body {
   margin-bottom: 12px;
 }
 
-.bottom-card .card-title {
+.bottom-card .card-title a {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.3;
   color: #111;
+  text-decoration: none;
 }
 
 /* =========================================

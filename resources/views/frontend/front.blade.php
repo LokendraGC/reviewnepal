@@ -94,113 +94,124 @@
             </div>
         </div>
 
-        <section class="morning-hero-section">
-            <div class="morning-container">
 
-                <div class="hero-left-col">
 
-                    <div class="hero-primary-grid">
 
-                        <div class="primary-content">
-                            <span class="story-tag">WORLD NEWS</span>
-                            <h2 class="primary-title">Global leaders unite to address climate crisis at COP26</h2>
-                            <p class="primary-excerpt">Amid escalating tensions & humanitarian crises in various conflict
-                                hotspots
-                                around the world leaders have convened to address the pressing need for peaceful
-                                resolutions.</p>
-                            <div class="story-meta">
-                                <span class="author">Albert Flores</span>
-                                <span class="date">May 13, 2024</span>
-                            </div>
-                        </div>
-
-                        <div class="primary-image-wrapper">
-                            <img src="{{ asset('assets/images/1.jpg') }}" alt="Global Leaders Conference">
-                            <div class="live-updates-badge">
-                                <span class="pulse-dot"></span> Live Updates
-                            </div>
-                        </div>
-
+            @if(!empty($left_second_posts) && !empty($left_second_posts->posts))
+            <section class="morning-hero-section">
+                <div class="morning-container">
+            
+                    <div class="hero-left-col">
+            
+                        @foreach($left_second_posts->posts as $left_second_post)
+                            @php
+                                $postMeta = $left_second_post->GetAllMetaData();
+            
+                                // POST IMAGE
+                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_media = MediaHelper::getImageById($post_image_id);
+                                $post_image_url = (!empty($post_media->file_name))
+                                    ? asset('storage/' . $post_media->file_name)
+                                    : null;
+            
+                                // AUTHOR
+                                $author = $left_second_post->categories()->where('categories.type', 'author')->first();
+                                $author_meta = $author ? $author->GetAllMetaData() : [];
+            
+                                if($language == 'en') {
+                                    $author_name = $author->name ?? $user->name;
+                                } else {
+                                    $author_name = $author_meta['name_ne'] ?? $user->name;
+                                }
+                            @endphp
+            
+                            {{-- FIRST POST (PRIMARY DESIGN) --}}
+                            @if($loop->first)
+                                <div class="hero-primary-grid">
+            
+                                    <div class="primary-content">
+                                        <span class="story-tag">{{ $left_second_posts->name }}</span>
+            
+                                        <h2 class="primary-title">
+                                            <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
+                                                {{ $left_second_post->post_title }}
+                                            </a>
+                                        </h2>
+            
+                                        <p class="primary-excerpt">
+                                            {!! $left_second_post->post_excerpt ?? \Illuminate\Support\Str::limit($left_second_post->post_content, 150) !!}
+                                        </p>
+            
+                                        <div class="story-meta">
+                                            <span class="author">{{ $author_name }}</span>
+                                            <span class="date">{{ $left_second_post->created_at->format('M d, Y') }}</span>
+                                        </div>
+                                    </div>
+            
+                                    <div class="primary-image-wrapper">
+                                        @if($post_image_url)
+                                           <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
+                                            <img src="{{ $post_image_url }}" alt="{{ $left_second_post->post_title }}">
+                                           </a>
+                                        @endif
+            
+                                        {{-- <div class="live-updates-badge">
+                                            <span class="pulse-dot"></span> Live Updates
+                                        </div> --}}
+                                    </div>
+            
+                                </div>
+            
+                                {{-- START secondary grid container AFTER first item --}}
+                                <div class="hero-secondary-grid">
+            
+                            @else
+                                {{-- OTHER POSTS (SECONDARY DESIGN) --}}
+                                <article class="bottom-card">
+            
+                                    @if($post_image_url)
+                                        <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
+                                            <img src="{{ $post_image_url }}" alt="{{ $left_second_post->post_title }}">
+                                        </a>
+                                    @endif
+            
+                                    <h3 class="card-title">
+                                        <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
+                                            {{ $left_second_post->post_title }}
+                                        </a>
+                                    </h3>
+            
+                                    <div class="story-meta">
+                                        <span class="author">{{ $author_name }}</span>
+                                        <span class="date">{{ $left_second_post->created_at->format('M d, Y') }}</span>
+                                    </div>
+            
+                                </article>
+                            @endif
+            
+                            {{-- CLOSE secondary grid at last --}}
+                            @if($loop->last && !$loop->first)
+                                </div>
+                            @endif
+            
+                        @endforeach
+            
                     </div>
-
-                    <div class="hero-secondary-grid">
-
-                        <article class="bottom-card">
-                            <img src="{{ asset('assets/images/2.jpg') }}" alt="Cybersecurity Padlock">
-                            <h3 class="card-title">Cybersecurity experts warn of increased threats</h3>
-                            <div class="story-meta">
-                                <span class="author">Esther Howard</span>
-                                <span class="date">May 13, 2024</span>
-                            </div>
+            
+                    {{-- RIGHT SIDE (keep static or make dynamic later) --}}
+                    <div class="hero-right-col">
+            
+                        <article class="sidebar-featured">
+                            <img src="{{ asset('assets/images/5.jpg') }}">
+                            <span class="story-tag">SPORTS</span>
+                            <h3 class="sidebar-featured-title">Featured news here</h3>
                         </article>
-
-                        <article class="bottom-card">
-                            <img src="{{ asset('assets/images/3.jpg') }}" alt="Chemistry Beakers">
-                            <h3 class="card-title">Chemical currents breaking news in chemistry and materials science</h3>
-                            <div class="story-meta">
-                                <span class="author">Esther Howard</span>
-                                <span class="date">May 13, 2024</span>
-                            </div>
-                        </article>
-
-                        <article class="bottom-card">
-                            <img src="{{ asset('assets/images/4.jpg') }}" alt="Satellite Dish">
-                            <h3 class="card-title">Updates on environmental science and space exploration</h3>
-                            <div class="story-meta">
-                                <span class="author">Jane Cooper</span>
-                                <span class="date">May 13, 2024</span>
-                            </div>
-                        </article>
-
+            
                     </div>
-
+            
                 </div>
-
-                <div class="hero-right-col">
-
-                    <article class="sidebar-featured">
-                        <img src="{{ asset('assets/images/5.jpg') }}" alt="Football Player">
-                        <span class="story-tag">SPORTS</span>
-                        <h3 class="sidebar-featured-title">Athlete achieves historic win at world championships</h3>
-                        <div class="story-meta">
-                            <span class="author">Wade Warren</span>
-                            <span class="date">May 13, 2024</span>
-                        </div>
-                    </article>
-
-                    <div class="sidebar-list">
-
-                        <article class="list-item">
-                            <img src="{{ asset('assets/images/2.jpg') }}" alt="AI Chip">
-                            <div class="list-content">
-                                <span class="story-tag">TECHNOLOGY</span>
-                                <h4 class="list-title">Artificial intelligence reshape healthcare diagnosis and</h4>
-                            </div>
-                        </article>
-
-                        <article class="list-item">
-                            <img src="{{ asset('assets/images/3.jpg') }}" alt="Martial Arts">
-                            <div class="list-content">
-                                <span class="story-tag">SPORTS</span>
-                                <h4 class="list-title">Scandal rocks professional sports league</h4>
-                            </div>
-                        </article>
-
-
-                        <article class="list-item">
-                            <img src="{{ asset('assets/images/4.jpg') }}" alt="Charts">
-                            <div class="list-content">
-                                <span class="story-tag">BUSINESS</span>
-                                <h4 class="list-title">Blockchain innovations revolutionize supply chain</h4>
-                            </div>
-                        </article>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
+            </section>
+            @endif
 
         <div class="container py-3">
             <div class="row">

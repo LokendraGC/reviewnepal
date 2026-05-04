@@ -12,6 +12,7 @@ use App\Repositories\PostRepository;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
+use App\Models\Category;
 
 class PageController extends Controller
 {
@@ -113,6 +114,8 @@ class PageController extends Controller
 
         $pageTemplate = isset( $metaDatas['page_template'] ) ? $metaDatas['page_template'] : NULL;
 
+        $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
+
         if ( $pageTemplate ) {
 
             if (in_array($pageTemplate, TemplateType::toArray()) && $pageTemplate != 'default') {
@@ -121,9 +124,15 @@ class PageController extends Controller
 
                     $viewName = "backend.templates-pages.$pageTemplate";
 
+
                     if (View::exists($viewName)) {
 
-                        $view = View::make($viewName)->with('metaDatas', $metaDatas)->render();
+                        $view = View::make($viewName)->with(
+                            [
+                            'metaDatas' => $metaDatas,
+                            'categories' => $categories
+                            ])->render();
+
                     } else {
                         $view = NULL;
                     }
@@ -147,11 +156,14 @@ class PageController extends Controller
         ->orderBy('post_title', 'ASC')
         ->get();
 
+      
+
         return view('backend.pages.edit-page', [
             'post' => $post,
             'metaDatas' => $metaDatas,
             'view' => $view,
             'pages' => $pages,
+            'categories' => $categories,
         ]);
     }
 

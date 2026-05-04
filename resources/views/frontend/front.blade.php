@@ -206,6 +206,35 @@
                             <span class="story-tag">SPORTS</span>
                             <h3 class="sidebar-featured-title">Featured news here</h3>
                         </article>
+
+                        <div class="sidebar-list">
+
+                            <article class="list-item">
+                                <img src="{{ asset('assets/images/2.jpg') }}" alt="AI Chip">
+                                <div class="list-content">
+                                    <span class="story-tag">TECHNOLOGY</span>
+                                    <h4 class="list-title">Artificial intelligence reshape healthcare diagnosis and</h4>
+                                </div>
+                            </article>
+    
+                            <article class="list-item">
+                                <img src="{{ asset('assets/images/3.jpg') }}" alt="Martial Arts">
+                                <div class="list-content">
+                                    <span class="story-tag">SPORTS</span>
+                                    <h4 class="list-title">Scandal rocks professional sports league</h4>
+                                </div>
+                            </article>
+    
+    
+                            <article class="list-item">
+                                <img src="{{ asset('assets/images/4.jpg') }}" alt="Charts">
+                                <div class="list-content">
+                                    <span class="story-tag">BUSINESS</span>
+                                    <h4 class="list-title">Blockchain innovations revolutionize supply chain</h4>
+                                </div>
+                            </article>
+    
+                        </div>
             
                     </div>
             

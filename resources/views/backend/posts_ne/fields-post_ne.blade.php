@@ -7,14 +7,14 @@
                 </div>
                 <div class="tab-heading">
                     <ul class="nav nav-tabs mb-3">
-                      {{--  <li class="nav-item">
+                         <li class="nav-item">
                             <a href="#general" data-bs-toggle="tab"
                                 aria-expanded="{{ !request()->has('tab') || request()->query('tab') == 'general' ? 'true' : 'false' }}"
                                 class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'general' ? 'active' : '' }}">
                                 General
                             </a>
                         </li>
-                        --}}
+                       
                         {{-- <li class="nav-item">
                             <a href="#breaking-news" data-bs-toggle="tab"
                                 aria-expanded="{{ request()->query('tab') == 'breaking-news' ? 'true' : 'false' }}"
@@ -39,9 +39,24 @@
                     </ul>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane {{ !request()->has('tab') || request()->query('tab') == 'general' ? 'show active' : '' }}"
-                        id="general">
-
+                    <div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') === 'general' ? 'active show' : '' }}"
+                        id="general" role="tabpanel">
+    
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="d-flex align-items-center justify-content-between border rounded-3 px-3 py-3 bg-light-subtle">
+                                    <div>
+                                        <label for="show_banner" class="form-label fw-semibold mb-1">Show Banner on Homepage</label>
+                                        <p class="text-muted mb-0 small">Enable this to display the banner on the homepage.</p>
+                                    </div>
+                                    <div class="form-check form-switch mb-0">
+                                        <input type="checkbox" class="form-check-input" id="show_banner" name="show_banner"
+                                            value="1" {{ isset($metaDatas['show_banner']) && $metaDatas['show_banner'] == 1 ? 'checked' : '' }}
+                                            style="width: 3rem; height: 1.5rem; cursor: pointer;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

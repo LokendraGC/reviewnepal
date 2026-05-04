@@ -101,12 +101,12 @@
                         <div class="col-md-6">
                             <label class="form-label">Choose News Category (Left Side)</label>
 
-                            <select name="category_id_left" class="form-control">
+                            <select name="category_id_left_second" class="form-control">
                                 <option value="">Select Category</option>
 
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ isset($metaDatas['category_id_left']) && $metaDatas['category_id_left'] == $category->id ? 'selected' : '' }}>
+                                        {{ isset($metaDatas['category_id_left_second']) && $metaDatas['category_id_left_second'] == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -118,12 +118,12 @@
                         <div class="col-md-6">
                             <label class="form-label">Choose News Category (Right Side)</label>
 
-                            <select name="category_id_right" class="form-control">
+                            <select name="category_id_right_second" class="form-control">
                                 <option value="">Select Category</option>
 
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ isset($metaDatas['category_id_right']) && $metaDatas['category_id_right'] == $category->id ? 'selected' : '' }}>
+                                        {{ isset($metaDatas['category_id_right_second']) && $metaDatas['category_id_right_second'] == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach

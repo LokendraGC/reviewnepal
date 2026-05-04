@@ -94,6 +94,17 @@ class PostController extends Controller
             ]);
         }
 
+
+        if ($post->post_type === 'post_ne') {
+            $related_posts = Post::where('post_type', 'post_ne')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
+
+            return view('frontend.single-post_ne', [
+                'post' => $post,
+                'postMeta' => $metaDatas,
+                'related_posts' => $related_posts,
+            ]);
+        }
+
         abort(403, 'Not Found');
     }
 

@@ -5,7 +5,7 @@
     <main>
 
         @php
-            // dd($user);
+            // dd($left_second_posts->posts);
         @endphp
 
         @if (!empty($recent_posts))

@@ -1,10 +1,11 @@
 @extends('frontend.layouts.app', ['payload' => $post, 'payloadMeta' => $postMeta, 'title' => $post->post_title])
 
 @section('main-section')
+
     <main>
 
         @php
-            // dd($recent_posts);
+            // dd($user);
         @endphp
 
         @if (!empty($recent_posts))
@@ -18,16 +19,21 @@
                         @php
                             $author = $recent_post->categories()->where('categories.type', 'author')->first();
 
-                            $author_meta = $author->GetAllMetaData();
-                            $author_name = $author->name;
+                            $author_meta = $author ? $author->GetAllMetaData() : [];
+                            
+                            if($language == 'en') {
+                                $author_name = isset($author->name) ? $author->name : $user->name;
+                            } else {
+                                $author_name = isset($author_meta['name_ne']) ? $author_meta['name_ne'] :  $user->name;
+                            }
                           
-                            $featured_image = $author_meta['featured_image'];
+                            $featured_image = isset($author_meta['featured_image']) ? $author_meta['featured_image'] : null;
                             $media = MediaHelper::getImageById($featured_image);
                             if (!empty($featured_image) && !empty($media->file_name)) {
                                 $featured_image_url = asset('storage/' . $media->file_name);
                             } else {
                                 $featured_image_url = null;
-                            }
+                            } 
                         @endphp
 
                         <div class="news-meta">

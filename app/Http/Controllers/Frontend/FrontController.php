@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Helpers\LanguageHelper;
+use Illuminate\Support\Facades\Auth;
 
 
 class FrontController extends Controller
@@ -47,12 +48,16 @@ class FrontController extends Controller
         ->whereHas('categories', fn($q) => $q->where('categories.id', $category_id_right_second))
         ->latest()->get();
 
+        $user = Auth::user();
+
         return view('frontend.front', [
             'post' => $post,
             'postMeta' => $postMeta,
             'recent_posts' => $recent_posts,
             'left_second_posts' => $left_second_posts,
             'right_second_posts' => $right_second_posts,
+            'user' => $user,
+            'language' => $language,
         ]);
     }
 }

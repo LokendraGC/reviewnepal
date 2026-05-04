@@ -115,7 +115,7 @@ class PostController extends Controller
 
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
-        // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
+        
 
 
         $metaDatas = $this->postRepository->getMetaDatas($post);

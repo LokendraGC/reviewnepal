@@ -2330,11 +2330,12 @@ form input[type=search]{
         }
 
         /* Headline Styling */
-        .main-headline {
+        .main-headline a{
             font-size: 2.8rem;
             line-height: 1;
-            color: #c70000; /* Dark Navy Blue from the image */
+            color: #c70000 !important; /* Dark Navy Blue from the image */
             margin-bottom: 20px;
+            text-decoration: none !important;
         }
 
         /* Meta Information (Author, Time, Comments) */

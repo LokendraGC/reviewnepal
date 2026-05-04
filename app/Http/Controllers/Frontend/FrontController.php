@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Post;
-use App\Models\Setting;
 use App\Http\Controllers\Controller;
+use App\Helpers\LanguageHelper;
 
 
 class FrontController extends Controller
@@ -14,25 +14,45 @@ class FrontController extends Controller
         $pageId = 1;
         $post = Post::findOrFail($pageId);
         $postMeta = $post->GetAllMetaData();
+        $language = LanguageHelper::getUserLanguage();
+        $post_type = $language == 'en' ? 'post' : 'post_ne';
 
-        $pages = Post::query()
-            ->where('post_type', 'page')
-            ->where('post_status', 'publish')
-            ->orderBy('menu_order')
-            ->latest()
-            ->get();
+        $category_id_left_second = $postMeta['category_id_left_second'];
+        $category_id_right_second = $postMeta['category_id_right_second'];
+        $number_of_news_to_show_in_banner = $postMeta['number_of_news_to_show_in_banner'] ?? 1;
+        $category_id_fifth = $postMeta['category_id_fifth'];
+        $category_id_fourth = $postMeta['category_id_fourth'];
+        $category_id_left_fifth = $postMeta['category_id_left_fifth'];
+        $category_id_middle_fifth = $postMeta['category_id_middle_fifth'];
+        $category_id_right_fifth = $postMeta['category_id_right_fifth'];
+        $category_id_seventh = $postMeta['category_id_seventh'];
+        $category_id_sixth = $postMeta['category_id_sixth'];
+        $category_id_third = $postMeta['category_id_third'];
 
-        // $page_id = 4;
+        // $cat = Category::where([ 'id' => $id, 'type' => 'author' ])->firstOrFail();
 
-        // $media_page = Post::query()->where('id', $page_id)->where('post_status', 'publish')->first();
+        // $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        // $media_page_meta = $media_page ? $media_page->GetAllMetaData() : null;
+        // $posts = $cat->posts()->orderBy('created_at', 'desc')->get();
 
+
+       $recent_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
+       ->latest()->take($number_of_news_to_show_in_banner)->get();
+       
+        $left_second_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
+        ->whereHas('categories', fn($q) => $q->where('categories.id', $category_id_left_second))
+        ->latest()->get();
+
+        $right_second_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
+        ->whereHas('categories', fn($q) => $q->where('categories.id', $category_id_right_second))
+        ->latest()->get();
 
         return view('frontend.front', [
             'post' => $post,
             'postMeta' => $postMeta,
-            'pages' => $pages
+            'recent_posts' => $recent_posts,
+            'left_second_posts' => $left_second_posts,
+            'right_second_posts' => $right_second_posts,
         ]);
     }
 }

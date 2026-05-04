@@ -24,6 +24,53 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
+    public function index(Request $request)
+    {
+        $status = $request->get('status', 'all');
+        $baseQuery = Category::whereType($this->categoryType);
+        $postsQuery = clone $baseQuery;
+
+        switch ($status) {
+            case 'publish':
+                $postsQuery->PostStatus('publish');
+                break;
+            case 'trash':
+                $postsQuery->onlyTrashed();
+                break;
+                case 'draft':
+                    $postsQuery->PostStatus('draft');
+                    $posts = (clone $baseQuery)->PostStatus('draft')->get();
+                    break;
+        }
+
+        $publishPosts = $status === 'publish' ? $postsQuery->count() : (clone $baseQuery)->count();
+        $trashPosts = $status === 'trash' ? $postsQuery->count() : (clone $baseQuery)->onlyTrashed()->count();
+        // $draftPosts = $status === 'draft' ? $postsQuery->count() : (clone $baseQuery)->PostStatus('draft')->count();
+        $all = (clone $baseQuery)->count();
+
+        $type = $this->categoryRepository->encodeType($this->categoryType);
+
+        $categoriesQuery = Category::with('children')
+            ->where('type', $this->categoryType)
+            ->orderBy('name', 'ASC');
+
+        if ($status === 'trash') {
+            $categories = (clone $categoriesQuery)->onlyTrashed()->get();
+        } else {
+            $categories = (clone $categoriesQuery)->where('parent', 0)->get();
+        }
+
+        return view('backend.categories.index-category', [
+            'status' => $status,
+            'publishPosts' => $publishPosts,
+            'trashPosts' => $trashPosts,
+            'all' => $all,
+            'type' => $type,
+            'categories' => $categories,
+            'categoryType' => $this->categoryType,
+        ]);
+    }
+
 
     public function store(Request $request)
     {

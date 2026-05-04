@@ -53,6 +53,8 @@
                         @php
                             $postMeta = $recent_post->GetAllMetaData();
                             $featured_image = $postMeta['featured_image'];
+                            $show_banner = $postMeta['show_banner'] ?? '0';
+
 
                             $media = MediaHelper::getImageById($featured_image);
                             if (!empty($featured_image) && !empty($media->file_name)) {
@@ -62,7 +64,7 @@
                             }
                         @endphp
 
-                        @if (!empty($featured_image_url))
+                        @if (!empty($featured_image_url) && $show_banner == '1')
                             <a href="{{ route('frontend.post.index', $recent_post->slug) }}">
                                 <img src="{{ $featured_image_url }}" alt="{{ $recent_post->post_title }}"
                                 class="featured-image">

@@ -7,23 +7,23 @@
   <div class="row">
     <div class="post-header">
       <h1 class="post-title-inner mb-2">
-        How countries use art and culture for global influence
+        {{ $post->post_title }}
       </h1>
 
       <div class="post-meta d-flex flex-wrap align-items-center">
         <div class="meta-item">
           <span class="meta-label">by.</span>
-          <span class="meta-value author">Theresa Webb</span>
+          <span class="meta-value author">{{ $author->name ?? $user->name ?? 'Unknown' }}</span>
         </div>
 
         <div class="meta-item">
           <i class="fa-solid fa-layer-group"></i>
-          <span class="meta-value">Culture</span>
+          <span class="meta-value">{{ $category->name ?? 'Unknown' }}</span>
         </div>
 
         <div class="meta-item">
           <i class="fa-regular fa-calendar-days"></i>
-          <span class="meta-value">Dec 14, 2024</span>
+          <span class="meta-value">{{ $post->created_at->format('M d, Y') }}</span>
         </div>
       </div>
     </div>
@@ -47,10 +47,24 @@
           </div>
         </div>
       </div>
-      <div class="main-featured-img my-4">
-        <img src="{{ asset('assets/images/2.jpg') }}" alt="Leader" />
-      </div>
 
+      @php
+        $featured_image = $postMeta['featured_image'] ?? null;
+        $media = MediaHelper::getImageById($featured_image);
+        if (!empty($featured_image) && !empty($media->file_name)) {
+          $featured_image_url = asset('storage/' . $media->file_name);
+        } else {
+          $featured_image_url = null;
+        }
+      @endphp
+
+      @if ($featured_image_url)
+      <div class="main-featured-img my-4">
+        <img src="{{ $featured_image_url }}" alt="{{ $post->post_title }}" />
+      </div>
+      @endif
+
+      {{-- ADVERTISEMENT START --}}
       <div class="container py-3">
         <div class="row">
           <div class="col-12">
@@ -66,48 +80,16 @@
           </div>
         </div>
       </div>
+      {{-- ADVERTISEMENT END --}}
 
-      <p class="intro-text">
-        Welcome to <strong>Business</strong>, your premier destination for
-        staying informed, entertained, and inspired...
-      </p>
 
-      <h4 class="section-subhead">
-        Exclusive interview insights from industry leaders
-      </h4>
-      <ul class="bullet-list">
-        <li>
-          Nibh libero condimentum vitae habitant interdum molestie tellus
-          turpis
-        </li>
-        <li>Turpis lous sed sagittis mollis aliquam lorem</li>
-        <li>Feugiat maecenas ultricies viverra sollicitudin venenatis</li>
-      </ul>
-
-      <div class="quote-container my-5">
-        <p>
-          Exploit our curated selection of articles, interviews, and
-          analysis meticulously crafted to keep you informed and engaged...
-        </p>
+      {{-- POST CONTENT START --}}
+      <div class="single-post-content py-3">
+      {!! $post->post_content !!}
       </div>
+      {{-- POST CONTENT END --}}
 
-      <p class="standard-text">
-        Odio augue habitant elementum lectus metus nisl pharetra. Donec non
-        auctor tellus nibh elementum nunc elementum. Aenean diam est
-        tincidunt urna.
-      </p>
 
-      <h4 class="section-subhead">
-        Trending topics stay informed with hot discussions
-      </h4>
-      <p class="standard-text">
-        Sollicitudin feugiat orci, lorem interdum pellentesque. Massa,
-        scelerisque in placerat venenatis scelerisque habitasse.
-      </p>
-
-      <div class="secondary-img my-4">
-        <img src="{{ asset('assets/images/3.jpg') }}" alt="Office" />
-      </div>
     </div>
 
     <div class="col-lg-3">
@@ -161,7 +143,12 @@
         </div>
       </div>
     </div>
+
+
   </div>
+  
+  
+  
   <hr style="border-color: #c7c7c7; margin: 0" />
   <div class="container py-3">
     <div class="row">
@@ -179,47 +166,49 @@
     </div>
   </div>
 
+
+  {{-- SIMILAR NEWS START --}}
+  @if (!empty($relatedPosts))
   <div class="mt-5">
     <h2 class="similar-news-title">Similar News</h2>
     <hr class="heading-line" />
     <div class="row mt-4">
+    
+      @foreach ($relatedPosts as $relatedPost)
+      @php
+
+        $postMeta = $relatedPost->GetAllMetaData();
+        $featured_image = $postMeta['featured_image'] ?? null;
+
+        $media = MediaHelper::getImageById($featured_image);
+        if (!empty($featured_image) && !empty($media->file_name)) {
+          $featured_image_url = asset('storage/' . $media->file_name);
+        } else {
+          $featured_image_url = null;
+        }
+      @endphp
       <div class="col-md-3">
         <div class="recent-news">
-          <img src="{{ asset('assets/images/1.jpg') }}" alt="News 1" />
-          <small class="text-muted d-block mt-2">May 12, 2024</small>
-          <h6 class="fw-bold mt-1">
-            Local community called to support homeless.
+
+          @if ($featured_image_url)
+         <a href="{{ route('frontend.post.index', $relatedPost->slug) }}">
+          <img src="{{ $featured_image_url }}" alt="{{ $relatedPost->post_title }}" />
+         </a>
+          @endif
+
+          <small class="text-muted d-block mt-2">{{ $relatedPost->created_at->format('M d, Y') }}</small>
+          <h6 class="fw-bold mt-1 similar-news-item-title">
+           <a href="{{ route('frontend.post.index', $relatedPost->slug) }}">{{ $relatedPost->post_title }}</a>
           </h6>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="recent-news">
-          <img src="{{ asset('assets/images/2.jpg') }}" alt="News 1" />
-          <small class="text-muted d-block mt-2">May 12, 2024</small>
-          <h6 class="fw-bold mt-1">
-            Local community called to support homeless.
-          </h6>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="recent-news">
-          <img src="{{ asset('assets/images/3.jpg') }}" alt="News 1" />
-          <small class="text-muted d-block mt-2">May 12, 2024</small>
-          <h6 class="fw-bold mt-1">
-            Local community called to support homeless.
-          </h6>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="recent-news">
-          <img src="{{ asset('assets/images/4.jpg') }}" alt="News 1" />
-          <small class="text-muted d-block mt-2">May 12, 2024</small>
-          <h6 class="fw-bold mt-1">
-            Local community called to support homeless.
-          </h6>
-        </div>
-      </div>
+      @endforeach
+
+    
     </div>
   </div>
+  @endif
+  {{-- SIMILAR NEWS END --}}
+
 </div>
 @endsection

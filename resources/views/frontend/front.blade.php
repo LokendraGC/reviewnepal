@@ -314,15 +314,15 @@
         @endif
         {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
 
-       {{-- MIDDLE ADVERTISEMENT START --}}
-       <div class="container py-3">
+        {{-- MIDDLE ADVERTISEMENT START --}}
+        <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
                         <a href="#">
                             <img src="{{ asset('assets/images/OnlinePortal_1230X100-ezgif.com-video-to-gif-converter.gif') }}"
-                            alt="Full Width Ad" class="ad-full-width">
+                                alt="Full Width Ad" class="ad-full-width">
                         </a>
                     </div>
                 </div>
@@ -349,61 +349,64 @@
 
                 {{-- THIRD LEFT COLUMN START --}}
                 @if (!empty($third_cat) && !empty($third_cat->posts))
-                <div class="col-lg-7">
+                    <div class="col-lg-7">
 
 
-                    @foreach ($third_cat->posts as $third_post)
-                    @php
-                        // CATEGORY
-                        $cate = $third_post->categories()->first();
-                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                        @foreach ($third_cat->posts as $third_post)
+                            @php
+                                // CATEGORY
+                                $cate = $third_post->categories()->first();
+                                $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
-                        // POST META
-                        $postMeta = $third_post->GetAllMetaData();
+                                // POST META
+                                $postMeta = $third_post->GetAllMetaData();
 
-                        // IMAGE
-                        $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = MediaHelper::getImageById($post_image_id);
-                        $post_image_url = !empty($post_media->file_name)
-                            ? asset('storage/' . $post_media->file_name)
-                            : null;
+                                // IMAGE
+                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_media = MediaHelper::getImageById($post_image_id);
+                                $post_image_url = !empty($post_media->file_name)
+                                    ? asset('storage/' . $post_media->file_name)
+                                    : null;
 
-                        $author = $third_post->categories()->where('categories.type', 'author')->first();
+                                $author = $third_post->categories()->where('categories.type', 'author')->first();
 
-                        $author_meta = $author ? $author->GetAllMetaData() : [];
+                                $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                        $author_name =
-                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                $author_name =
+                                    $language == 'en'
+                                        ? $author->name ?? $user->name
+                                        : $author_meta['name_ne'] ?? $user->name;
 
-                         
-                    @endphp
+                            @endphp
 
-                    <article class="d-flex flex-column flex-md-row gap-4 mb-5">
-                       
-                        @if ($post_image_url)
-                            <a href="{{ route('frontend.post.index', $third_post->slug) }}">
-                                <img src="{{ $post_image_url }}" alt="{{ $third_post->post_title }}"
-                                    class="news-img flex-shrink-0">
-                                </a>
-                        @endif
+                            <article class="d-flex flex-column flex-md-row gap-4 mb-5">
 
-                        <div>
-                            <a href="{{ route('frontend.post.index', $third_post->slug) }}" class="article-title d-block">
-                                {{ $third_post->post_title }}
-                            </a>
+                                @if ($post_image_url)
+                                    <a href="{{ route('frontend.post.index', $third_post->slug) }}">
+                                        <img src="{{ $post_image_url }}" alt="{{ $third_post->post_title }}"
+                                            class="news-img flex-shrink-0">
+                                    </a>
+                                @endif
 
-                            <p class="article-excerpt">
-                                {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($third_post->post_content)), 40) }}
-                            </p>
-                            <div class="meta-text">
-                                <span class="meta-category">{{ $cat_name }}</span> | <span class="ms-2">{{ $language == 'en' ? $third_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($third_post->created_at) }}</span>
-                            </div>
-                        </div>
-                    </article>
-                    @endforeach
+                                <div>
+                                    <a href="{{ route('frontend.post.index', $third_post->slug) }}"
+                                        class="article-title d-block">
+                                        {{ $third_post->post_title }}
+                                    </a>
 
-                </div>
+                                    <p class="article-excerpt">
+                                        {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($third_post->post_content)), 40) }}
+                                    </p>
+                                    <div class="meta-text">
+                                        <span class="meta-category">{{ $cat_name }}</span> | <span
+                                            class="ms-2">{{ $language == 'en' ? $third_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($third_post->created_at) }}</span>
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+
+                    </div>
                 @endif
                 {{-- THIRD LEFT COLUMN END --}}
 
@@ -514,69 +517,72 @@
         {{--  THIRD ADVERTISEMENT END --}}
 
         {{--  NEPAL INSIGHTS START --}}
-        @if (!empty($fourth_cat) && !empty($fourth_cat->posts)) 
-        <div class="container py-5">
+        @if (!empty($fourth_cat) && !empty($fourth_cat->posts))
+            <div class="container py-5">
 
-            @php
-                $postMeta = $post->GetAllMetaData();
-                $main_title = $language == 'en' ? $postMeta['main_title_fourth'] : $postMeta['main_title_nepali_fourth'];
-                $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
-            @endphp
+                @php
+                    $postMeta = $post->GetAllMetaData();
+                    $main_title =
+                        $language == 'en' ? $postMeta['main_title_fourth'] : $postMeta['main_title_nepali_fourth'];
+                    $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
+                @endphp
 
-            <div class="section-header-featured d-flex justify-content-between">
-                <h2>{{ $main_title }}</h2>
-                <a href="#" class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
-            </div>
-
-            <div class="row gy-5">
-
-                @foreach ($fourth_cat->posts as $fourth_post)
-                    @php
-                        // CATEGORY
-                        $cate = $fourth_post->categories()->first();
-                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
-
-                        // POST META
-                        $postMeta = $fourth_post->GetAllMetaData();
-
-                        // IMAGE
-                        $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = MediaHelper::getImageById($post_image_id);
-                        $post_image_url = !empty($post_media->file_name)
-                            ? asset('storage/' . $post_media->file_name)
-                            : null;
-
-                        $author = $fourth_post->categories()->where('categories.type', 'author')->first();
-
-                        $author_meta = $author ? $author->GetAllMetaData() : [];
-
-                        $author_name =
-                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
-
-                         
-                    @endphp
-                <div class="col-md-6">
-                    <a href="{{ route('frontend.post.index', $fourth_post->slug) }}" class="featured-article">
-                        <div class="featured-content">
-                            <h3 class="featured-title">
-                            {{ $fourth_post->post_title }}
-                            </h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">{{ $cat_name }}</span>
-                                <span class="meta-divider">|</span>
-                                <span>{{ $language == 'en' ? $fourth_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fourth_post->created_at) }}</span>
-                            </div>
-                        </div>
-                        @if ($post_image_url)
-                            <img src="{{ $post_image_url }}" alt="{{ $fourth_post->post_title }}" class="featured-img">
-                        @endif
-                    </a>
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>{{ $main_title }}</h2>
+                    <a href="#" class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
                 </div>
-                @endforeach
-  
+
+                <div class="row gy-5">
+
+                    @foreach ($fourth_cat->posts as $fourth_post)
+                        @php
+                            // CATEGORY
+                            $cate = $fourth_post->categories()->first();
+                            $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                            $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                            // POST META
+                            $postMeta = $fourth_post->GetAllMetaData();
+
+                            // IMAGE
+                            $post_image_id = $postMeta['featured_image'] ?? null;
+                            $post_media = MediaHelper::getImageById($post_image_id);
+                            $post_image_url = !empty($post_media->file_name)
+                                ? asset('storage/' . $post_media->file_name)
+                                : null;
+
+                            $author = $fourth_post->categories()->where('categories.type', 'author')->first();
+
+                            $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                            $author_name =
+                                $language == 'en'
+                                    ? $author->name ?? $user->name
+                                    : $author_meta['name_ne'] ?? $user->name;
+
+                        @endphp
+                        <div class="col-md-6">
+                            <a href="{{ route('frontend.post.index', $fourth_post->slug) }}" class="featured-article">
+                                <div class="featured-content">
+                                    <h3 class="featured-title">
+                                        {{ $fourth_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $fourth_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fourth_post->created_at) }}</span>
+                                    </div>
+                                </div>
+                                @if ($post_image_url)
+                                    <img src="{{ $post_image_url }}" alt="{{ $fourth_post->post_title }}"
+                                        class="featured-img">
+                                @endif
+                            </a>
+                        </div>
+                    @endforeach
+
+                </div>
             </div>
-        </div>
         @endif
         {{--  NEPAL INSIGHTS END --}}
 
@@ -604,190 +610,279 @@
 
                 {{-- FIFTH LEFT CATEGORY START --}}
                 @if (!empty($fifth_left_cat) && !empty($fifth_left_cat->posts))
-                <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
-                    <h2 class="section-title">Social/Cultural</h2>
+                    <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
+                        <h2 class="section-title">
+                            {{ $language == 'en' ? $fifth_left_cat->name : $fifth_left_cat->GetAllMetaData()['name_ne'] ?? $fifth_left_cat->name }}
+                        </h2>
 
-                    @foreach ($fifth_left_cat->posts as $fifth_left_post)
-                    @php
-                        // CATEGORY
-                        $cate = $fifth_left_post->categories()->first();
-                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                        @foreach ($fifth_left_cat->posts as $fifth_left_post)
+                            @php
+                                // CATEGORY
+                                $fifth_left_cate = $fifth_left_post->categories()->first();
+                                $fifth_left_cateMeta = $fifth_left_cate ? $fifth_left_cate->GetAllMetaData() : [];
+                                $cat_name =
+                                    $language == 'en'
+                                        ? $fifth_left_cate->name ?? ''
+                                        : $fifth_left_cateMeta['name_ne'] ?? '';
 
-                        // POST META
-                        $postMeta = $fifth_left_post->GetAllMetaData();
+                                // POST META
+                                $postMeta = $fifth_left_post->GetAllMetaData();
 
-                        // IMAGE
-                        $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = MediaHelper::getImageById($post_image_id);
-                        $post_image_url = !empty($post_media->file_name)
-                            ? asset('storage/' . $post_media->file_name)
-                            : null;
+                                // IMAGE
+                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_media = MediaHelper::getImageById($post_image_id);
+                                $post_image_url = !empty($post_media->file_name)
+                                    ? asset('storage/' . $post_media->file_name)
+                                    : null;
 
-                        $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
+                                $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
 
-                        $author_meta = $author ? $author->GetAllMetaData() : [];
+                                $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                        $author_name =
-                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                $author_name =
+                                    $language == 'en'
+                                        ? $author->name ?? $user->name
+                                        : $author_meta['name_ne'] ?? $user->name;
 
-                         
-                    @endphp
+                            @endphp
 
-                    <a href="{{ route('frontend.post.index', $fifth_left_post->slug) }}" class="news-item">
-                        @if ($post_image_url)
-                            <img src="{{ $post_image_url }}" alt="{{ $fifth_left_post->post_title }}" class="small-thumb">
-                        @endif
-                        <div class="news-content">
-                            <h3 class="news-title">
-                                {{ $fifth_left_post->post_title }}
-                            </h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">{{ $cat_name }}</span>
-                                <span class="meta-divider">|</span>
-                                <span>{{ $language == 'en' ? $fifth_left_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fifth_left_post->created_at) }}</span>
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
+                            <a href="{{ route('frontend.post.index', $fifth_left_post->slug) }}" class="news-item">
+                                @if ($post_image_url)
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_left_post->post_title }}"
+                                        class="small-thumb">
+                                @endif
+                                <div class="news-content">
+                                    <h3 class="news-title">
+                                        {{ $fifth_left_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $fifth_left_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fifth_left_post->created_at) }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
 
-                    <a href="{{ route('frontend.category.index', $fifth_left_cat->slug) }}" class="cat-link mt-auto">{{ $fifth_left_cat->name }} <span>&rarr;</span></a>
-                </div>
+                        <a href="{{ route('frontend.category.index', $fifth_left_cat->slug) }}"
+                            class="cat-link mt-auto">{{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                            <span>&rarr;</span></a>
+                    </div>
                 @endif
                 {{-- FIFTH LEFT CATEGORY END --}}
 
                 {{-- FIFTH MIDDLE CATEGORY START --}}
                 @if (!empty($fifth_middle_cat) && !empty($fifth_middle_cat->posts))
-                <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
-                    <h2 class="section-title">Economics</h2>
+                    <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
 
-                    @foreach ($fifth_middle_cat->posts as $fifth_middle_post)
-                    @php
-                        // CATEGORY
-                        $cate = $fifth_middle_post->categories()->first();
-                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                        {{-- CATEGORY TITLE --}}
+                        <h2 class="section-title">
+                            {{ $language == 'en' ? $fifth_middle_cat->name : $fifth_middle_cat->GetAllMetaData()['name_ne'] ?? $fifth_middle_cat->name }}
+                        </h2>
 
-                        // POST META
-                        $postMeta = $fifth_middle_post->GetAllMetaData();
+                        @foreach ($fifth_middle_cat->posts as $fifth_middle_post)
+                            @php
+                                // CATEGORY
+                                $cate = $fifth_middle_post->categories()->first();
+                                $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
-                        // IMAGE
-                        $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = MediaHelper::getImageById($post_image_id);
-                        $post_image_url = !empty($post_media->file_name)
-                            ? asset('storage/' . $post_media->file_name)
-                            : null;
+                                // POST META
+                                $postMeta = $fifth_middle_post->GetAllMetaData();
 
-                        $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
+                                // IMAGE
+                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
-                        $author_meta = $author ? $author->GetAllMetaData() : [];
+                                $post_image_url =
+                                    !empty($post_media) && !empty($post_media->file_name)
+                                        ? asset('storage/' . $post_media->file_name)
+                                        : asset('assets/images/default.jpg');
 
-                        $author_name =
-                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                // AUTHOR (FIXED VARIABLE)
+                                $author = $fifth_middle_post->categories()->where('categories.type', 'author')->first();
 
-                         
-                    @endphp
-                    <a href="#" class="featured-item">
-                        <img src="{{ asset('assets/images/4.jpg') }}" alt="Space Rocket" class="large-thumb">
-                        <h3 class="news-title">Report breaking down the latest scientific discoveries</h3>
-                        <div class="featured-meta">
-                            <span class="meta-category">Economics</span>
-                            <span class="meta-divider">|</span>
-                            <span>May 13, 2024</span>
-                        </div>
-                    </a>
+                                $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/1.jpg') }}" alt="Padlock" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Cybersecurity experts warn of increased threats</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Economics</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
+                                $author_name =
+                                    $language == 'en'
+                                        ? $author->name ?? $user->name
+                                        : $author_meta['name_ne'] ?? $user->name;
 
-                    <a href="#" class="cat-link mt-auto">Go to Economics <span>&rarr;</span></a>
-                </div>
+                                $date = $fifth_middle_post->created_at;
+                            @endphp
+
+                            {{-- 🔥 FIRST POST (FEATURED DESIGN) --}}
+                            @if ($loop->first)
+                                <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}"
+                                    class="featured-item">
+
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}"
+                                        class="large-thumb">
+
+                                    <h3 class="news-title">
+                                        {{ $fifth_middle_post->post_title }}
+                                    </h3>
+
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>
+                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                        </span>
+                                    </div>
+
+                                </a>
+
+                                {{-- 📰 OTHER POSTS (LIST DESIGN) --}}
+                            @else
+                                <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="news-item">
+
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}"
+                                        class="small-thumb">
+
+                                    <div class="news-content">
+
+                                        <h3 class="news-title">
+                                            {{ $fifth_middle_post->post_title }}
+                                        </h3>
+
+                                        <div class="featured-meta">
+                                            <span class="meta-category">{{ $cat_name }}</span>
+                                            <span class="meta-divider">|</span>
+                                            <span>
+                                                {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                </a>
+                            @endif
+                        @endforeach
+
+                        {{-- CATEGORY LINK --}}
+                        <a href="{{ route('frontend.category.index', $fifth_middle_cat->slug) }}"
+                            class="cat-link mt-auto">
+                            {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                            <span>&rarr;</span>
+                        </a>
+
+                    </div>
                 @endif
                 {{-- FIFTH MIDDLE CATEGORY END --}}
 
                 {{-- FIFTH RIGHT CATEGORY START --}}
                 @if (!empty($fifth_right_cat) && !empty($fifth_right_cat->posts))
-                <div class="col-lg-4 col-md-12 d-flex flex-column mt-5">
-                    <h2 class="section-title">Politics</h2>
+                    <div class="col-lg-4 col-md-12 d-flex flex-column mt-5">
 
-                    <div class="row">
-                        <div class="col-md-6 col-lg-12">
-                            <a href="#" class="news-item">
-                                <img src="{{ asset('assets/images/5.jpg') }}" alt="Football" class="small-thumb">
-                                <div class="news-content">
-                                    <h3 class="news-title">Athlete achieves historic win at world championships</h3>
-                                    <div class="featured-meta">
-                                        <span class="meta-category">Politics</span>
-                                        <span class="meta-divider">|</span>
-                                        <span>May 13, 2024</span>
-                                    </div>
-                                </div>
-                            </a>
+                        {{-- CATEGORY TITLE --}}
+                        <h2 class="section-title">
+                            {{ $language == 'en'
+                                ? $fifth_right_cat->name
+                                : $fifth_right_cat->GetAllMetaData()['name_ne'] ?? $fifth_right_cat->name }}
+                        </h2>
 
-                            <a href="#" class="news-item">
-                                <img src="{{ asset('assets/images/1.jpg') }}" alt="Volleyball" class="small-thumb">
-                                <div class="news-content">
-                                    <h3 class="news-title">Rival teams clash in intense playoff showdown</h3>
-                                    <div class="featured-meta">
-                                        <span class="meta-category">Politics</span>
-                                        <span class="meta-divider">|</span>
-                                        <span>May 13, 2024</span>
-                                    </div>
-                                </div>
-                            </a>
+                        <div class="row">
 
-                            <a href="#" class="news-item">
-                                <img src="{{ asset('assets/images/2.jpg') }}" alt="Martial Arts" class="small-thumb">
-                                <div class="news-content">
-                                    <h3 class="news-title">Scandal rocks professional sports league</h3>
-                                    <div class="featured-meta">
-                                        <span class="meta-category">Politics</span>
-                                        <span class="meta-divider">|</span>
-                                        <span>May 13, 2024</span>
-                                    </div>
-                                </div>
-                            </a>
+                            <div class="col-md-6 col-lg-12">
+
+                                @foreach ($fifth_right_cat->posts as $fifth_right_post)
+                                    @php
+                                        // CATEGORY
+                                        $cate = $fifth_right_post->categories()->first();
+                                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                                        // POST META
+                                        $postMeta = $fifth_right_post->GetAllMetaData();
+
+                                        // IMAGE
+                                        $post_image_id = $postMeta['featured_image'] ?? null;
+                                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                                        $post_image_url =
+                                            !empty($post_media) && !empty($post_media->file_name)
+                                                ? asset('storage/' . $post_media->file_name)
+                                                : asset('assets/images/default.jpg');
+
+                                        // AUTHOR
+                                        $author = $fifth_right_post
+                                            ->categories()
+                                            ->where('categories.type', 'author')
+                                            ->first();
+
+                                        $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                                        $author_name =
+                                            $language == 'en'
+                                                ? $author->name ?? $user->name
+                                                : $author_meta['name_ne'] ?? $user->name;
+
+                                        $date = $fifth_right_post->created_at;
+                                    @endphp
+
+                                    {{-- 🔥 FIRST POST (BIG ITEM STYLE) --}}
+                                    @if ($loop->first)
+                                        <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}"
+                                            class="featured-item">
+
+                                            <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
+                                                class="large-thumb">
+
+                                            <h3 class="news-title">
+                                                {{ $fifth_right_post->post_title }}
+                                            </h3>
+
+                                            <div class="featured-meta">
+                                                <span class="meta-category">{{ $cat_name }}</span>
+                                                <span class="meta-divider">|</span>
+                                                <span>
+                                                    {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                </span>
+                                            </div>
+
+                                        </a>
+                                    @else
+                                        {{-- 📰 OTHER POSTS --}}
+                                        <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}"
+                                            class="news-item">
+
+                                            <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
+                                                class="small-thumb">
+
+                                            <div class="news-content">
+
+                                                <h3 class="news-title">
+                                                    {{ $fifth_right_post->post_title }}
+                                                </h3>
+
+                                                <div class="featured-meta">
+                                                    <span class="meta-category">{{ $cat_name }}</span>
+                                                    <span class="meta-divider">|</span>
+                                                    <span>
+                                                        {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                        </a>
+                                    @endif
+                                @endforeach
+
+                            </div>
+
                         </div>
 
-                        <div class="col-md-6 col-lg-12">
-                            <a href="#" class="news-item">
-                                <img src="{{ asset('assets/images/3.jpg') }}" alt="Rugby" class="small-thumb">
-                                <div class="news-content">
-                                    <h3 class="news-title">Trailblazers of sport athletes paving the way</h3>
-                                    <div class="featured-meta">
-                                        <span class="meta-category">Politics</span>
-                                        <span class="meta-divider">|</span>
-                                        <span>May 13, 2024</span>
-                                    </div>
-                                </div>
-                            </a>
+                        {{-- CATEGORY LINK --}}
+                        <a href="{{ route('frontend.category.index', $fifth_right_cat->slug) }}"
+                            class="cat-link mt-auto">
+                            {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                            <span>&rarr;</span>
+                        </a>
 
-                            <a href="#" class="news-item">
-                                <img src="{{ asset('assets/images/4.jpg') }}" alt="Skiing" class="small-thumb">
-                                <div class="news-content">
-                                    <h3 class="news-title">Highlighting importance of well-being</h3>
-                                    <div class="featured-meta">
-                                        <span class="meta-category">Politics</span>
-                                        <span class="meta-divider">|</span>
-                                        <span>May 13, 2024</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
                     </div>
-
-                    <a href="#" class="cat-link mt-auto">Go to Politics <span>&rarr;</span></a>
-                </div>
                 @endif
                 {{-- FIFTH RIGHT CATEGORY END --}}
 
@@ -808,142 +903,173 @@
             </div>
         </div>
 
-        <div class="container py-5">
-            <div class="section-header-featured d-flex justify-content-between">
-                <h2>Brands</h2>
-                <a href="#" class="cat-link mt-auto">View All Brands <span>&rarr;</span></a>
-            </div>
-            <div class="row g-4">
 
-                <div class="col-lg-8 full-height-col">
-                    <div class="row g-4 h-100">
+        {{-- BRANDS START --}}
+        @if (!empty($sixth_cat) && !empty($sixth_cat->posts))
+            <div class="container py-5">
 
-                        <div class="col-12">
-                            <div class="card overflow-hidden">
-                                <div class="row g-0 h-100">
-                                    <div class="col-md-5">
-                                        <img src="{{ asset('assets/images/1.jpg') }}"
-                                            class="img-fluid h-100 object-fit-cover" alt="Storytelling">
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="card-body d-flex flex-column h-100 p-4">
-                                            <p class="small-text mb-2">Dec 16, 2024</p>
-                                            <h2 class=" h4 mb-3">The power of storytelling connecting generations through
-                                                shared narratives
-                                            </h2>
-                                            <p class="small-text">By passing down experiences and wisdom, storytelling
-                                                preserves traditions,
-                                                fosters understanding & strengthens bonds.</p>
-                                            <p class="author-text mb-0">by. <span class=" text-dark">Leslie
-                                                    Alexander</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card overflow-hidden">
-                                <div class="row g-0 h-100">
-                                    <div class="col-4">
-                                        <img src="{{ asset('assets/images/2.jpg') }}"
-                                            class="img-fluid h-100 object-fit-cover" alt="Art">
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="card-body p-3">
-                                            <p class="small-text mb-1">Dec 16, 2024</p>
-                                            <h3 class=" mb-2" style="font-size: 0.9rem;">How art, music, and literature
-                                                shape the identity of
-                                                societies</h3>
-                                            <p class="author-text mb-0">Theresa Webb</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                {{-- HEADER --}}
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>
+                        {{ $language == 'en' ? $sixth_cat->name : $sixth_cat->GetAllMetaData()['name_ne'] ?? $sixth_cat->name }}
+                    </h2>
 
-                        <div class="col-md-6">
-                            <div class="card overflow-hidden">
-                                <div class="row g-0 h-100">
-                                    <div class="col-4">
-                                        <img src="{{ asset('assets/images/3.jpg') }}"
-                                            class="img-fluid h-100 object-fit-cover" alt="Global Influence">
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="card-body p-3">
-                                            <p class="small-text mb-1">Dec 14, 2024</p>
-                                            <h3 class=" mb-2" style="font-size: 0.9rem;">How countries use art and
-                                                culture for global
-                                                influence
-                                            </h3>
-                                            <p class="author-text mb-0">Theresa Webb</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card overflow-hidden">
-                                <div class="row g-0 h-100">
-                                    <div class="col-4">
-                                        <img src="{{ asset('assets/images/4.jpg') }}"
-                                            class="img-fluid h-100 object-fit-cover" alt="Art">
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="card-body p-3">
-                                            <p class="small-text mb-1">Dec 16, 2024</p>
-                                            <h3 class=" mb-2" style="font-size: 0.9rem;">How art, music, and literature
-                                                shape the identity of
-                                                societies</h3>
-                                            <p class="author-text mb-0">Theresa Webb</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card overflow-hidden">
-                                <div class="row g-0 h-100">
-                                    <div class="col-4">
-                                        <img src="{{ asset('assets/images/5.jpg') }}"
-                                            class="img-fluid h-100 object-fit-cover" alt="Global Influence">
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="card-body p-3">
-                                            <p class="small-text mb-1">Dec 14, 2024</p>
-                                            <h3 class=" mb-2" style="font-size: 0.9rem;">How countries use art and
-                                                culture for global
-                                                influence
-                                            </h3>
-                                            <p class="author-text mb-0">Theresa Webb</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <a href="{{ route('frontend.category.index', $sixth_cat->slug) }}" class="cat-link mt-auto">
+                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                        <span>&rarr;</span>
+                    </a>
                 </div>
 
-                <div class="col-lg-4">
-                    <div class="ad-wrapper py-3">
-                        <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
-                                alt="Sidebar Ad" class="ad-one-third">
-                        </a>
+                <div class="row g-4">
+
+                    {{-- LEFT CONTENT --}}
+                    <div class="col-lg-8 full-height-col">
+                        <div class="row g-4 h-100">
+
+                            @foreach ($sixth_cat->posts as $sixth_post)
+                                @php
+                                    // CATEGORY
+                                    $cate = $sixth_post->categories()->first();
+                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                    $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                                    // POST META
+                                    $postMeta = $sixth_post->GetAllMetaData();
+
+                                    // IMAGE
+                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                                    $post_image_url =
+                                        !empty($post_media) && !empty($post_media->file_name)
+                                            ? asset('storage/' . $post_media->file_name)
+                                            : asset('assets/images/default.jpg');
+
+                                    // AUTHOR
+                                    $author = $sixth_post->categories()->where('categories.type', 'author')->first();
+
+                                    $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                                    $author_name =
+                                        $language == 'en'
+                                            ? $author->name ?? $user->name
+                                            : $author_meta['name_ne'] ?? $user->name;
+
+                                    $date = $sixth_post->created_at;
+                                @endphp
+
+                                {{-- FIRST POST (BIG FEATURED CARD) --}}
+                                @if ($loop->first)
+                                    <div class="col-12">
+                                        <div class="card overflow-hidden">
+
+                                            <div class="row g-0 h-100">
+
+                                                <div class="col-md-5">
+                                                    <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                        <img src="{{ $post_image_url }}"
+                                                            class="img-fluid h-100 object-fit-cover"
+                                                            alt="{{ $sixth_post->post_title }}">
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-md-7">
+                                                    <div class="card-body d-flex flex-column h-100 p-4">
+
+                                                        <p class="small-text mb-2">
+                                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                        </p>
+
+                                                        <h2 class="h4 mb-3 brands-title">
+                                                            <a
+                                                                href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                                {{ $sixth_post->post_title }}
+                                                            </a>
+                                                        </h2>
+
+                                                        <p class="small-text">
+                                                            {{ \Illuminate\Support\Str::words(strip_tags($sixth_post->post_content), 25) }}
+                                                        </p>
+
+                                                        <p class="author-text mb-0">
+                                                            by. <span class="text-dark">{{ $author_name }}</span>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @else
+                                    {{-- SMALL CARDS --}}
+                                    <div class="col-md-6">
+                                        <div class="card overflow-hidden">
+
+                                            <div class="row g-0 h-100">
+
+                                                <div class="col-4">
+                                                    <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                        <img src="{{ $post_image_url }}"
+                                                            class="img-fluid h-100 object-fit-cover"
+                                                            alt="{{ $sixth_post->post_title }}">
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-8">
+                                                    <div class="card-body p-3">
+
+                                                        <p class="small-text mb-1">
+                                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                        </p>
+
+                                                        <h3 class="mb-2 brands-title" style="font-size: 0.9rem;">
+                                                            <a
+                                                                href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                                {{ $sixth_post->post_title }}
+                                                            </a>
+                                                        </h3>
+
+                                                        <p class="author-text mb-0">{{ $author_name }}</p>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
+                        </div>
                     </div>
-                    <div class="ad-wrapper py-3">
-                        <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/300x218.gif') }}" alt="Sidebar Ad" class="ad-one-third">
-                        </a>
+
+                    {{-- ADVERTISEMENT --}}
+                    <div class="col-lg-4">
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisement -</span>
+                            <a href="#">
+                                <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
+                                    class="ad-one-third">
+                            </a>
+                        </div>
+
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisement -</span>
+                            <a href="#">
+                                <img src="{{ asset('assets/images/300x218.gif') }}" class="ad-one-third">
+                            </a>
+                        </div>
                     </div>
+
                 </div>
-
             </div>
-        </div>
+        @endif
+        {{-- BRANDS END --}}
 
+        {{-- ADVERTISEMENT START --}}
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
@@ -957,140 +1083,80 @@
                 </div>
             </div>
         </div>
+        {{-- ADVERTISEMENT END --}}
 
-        <hr style="border-color: #c7c7c7; margin: 0;">
+        {{-- NOTICE START --}}
+        @if (!empty($seventh_cat) && !empty($seventh_cat->posts))
+            <hr style="border-color: #c7c7c7; margin: 0;">
+            <div class="container py-5">
 
-        <div class="container py-5">
-
-            <div class="section-header-featured d-flex justify-content-between">
-                <h2>Notice</h2>
-                <a href="#" class="cat-link mt-auto">View all Notice <span>&rarr;</span></a>
-            </div>
-            <div class="row gy-5 mt-4">
-
-                <div class="col-lg-4 col-md-6 mt-0">
-
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/1.jpg') }}" alt="Leaders" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Global leaders unite to address climate crisis at COP26</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Sports</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>{{ $language == 'en' ? $seventh_cat->name : $seventh_cat->GetAllMetaData()['name_ne'] ?? $seventh_cat->name }}</h2>
+                    <a href="{{ route('frontend.category.index', $seventh_cat->slug) }}" class="cat-link mt-auto">
+                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                        <span>&rarr;</span>
                     </a>
                 </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/2.jpg') }}" alt="Doctor" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">New study reveals alarming rise in childhood</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Health</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/3.jpg') }}" alt="Meeting" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Tech giants clash over data privacy regulations</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Technology</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/4.jpg') }}" alt="Chamber" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Local community rallies to support homeless</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Community</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/5.jpg') }}" alt="Podium" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Democratic backsliding challenges to democracy and</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Politics</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
+                <div class="row gy-5 mt-4">
 
-                </div>
 
-                <div class="col-lg-4 col-md-6 mt-0 ">
+                    @foreach ($seventh_cat->posts as $seventh_post)
+                    @php
+                        // CATEGORY
+                        $cate = $seventh_post->categories()->first();
+                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/1.jpg') }}" alt="Leaders" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Global leaders unite to address climate crisis at COP26</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Sports</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
+                        // POST META
+                        $postMeta = $seventh_post->GetAllMetaData();
+
+                        // IMAGE
+                        $post_image_id = $postMeta['featured_image'] ?? null;
+                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                        $post_image_url =
+                            !empty($post_media) && !empty($post_media->file_name)
+                                ? asset('storage/' . $post_media->file_name)
+                                : asset('assets/images/default.jpg');
+
+                        // AUTHOR
+                        $author = $seventh_post->categories()->where('categories.type', 'author')->first();
+
+                        $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                        $author_name =
+                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+
+                        $date = $seventh_post->created_at;
+                    @endphp
+                        <div class="col-lg-4 col-md-6 mt-0">
+                            <a href="{{ route('frontend.post.index', $seventh_post->slug) }}" class="news-item">
+
+                                @if ($post_image_url)
+                                <img src="{{ $post_image_url }}" alt="{{ $seventh_post->post_title }}" class="small-thumb">
+                                @endif
+
+                                <div class="news-content">
+                                    <h3 class="news-title">
+                                        {{ $seventh_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}</span>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/2.jpg') }}" alt="Doctor" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">New study reveals alarming rise in childhood</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Health</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/3.jpg') }}" alt="Meeting" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Tech giants clash over data privacy regulations</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Technology</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-0 ">
-                    <a href="#" class="news-item">
-                        <img src="{{ asset('assets/images/4.jpg') }}" alt="Chamber" class="small-thumb">
-                        <div class="news-content">
-                            <h3 class="news-title">Local community rallies to support homeless</h3>
-                            <div class="featured-meta">
-                                <span class="meta-category">Community</span>
-                                <span class="meta-divider">|</span>
-                                <span>May 13, 2024</span>
-                            </div>
-                        </div>
-                    </a>
+                    @endforeach
+
+
                 </div>
             </div>
-        </div>
+        @endif
+        {{-- NOTICE END --}}
+
+
     </main>
 
 @endsection

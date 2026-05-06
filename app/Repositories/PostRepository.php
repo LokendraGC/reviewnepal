@@ -231,29 +231,39 @@ class PostRepository
     }
 
     // get related posts
-    public function getRelatedPosts($id)
+    public function getRelatedPosts($id, $postType = null)
     {
-        $post = Post::with('categories')->find($id);
+        $post = Post::with('categories')->where('post_status', 'publish')->find($id);
 
-        if ( !$post ) { return NULL; }
+        if ( !$post ) { return collect(); }
 
             $categories = $post->categories;
 
-            if ( !$categories ) { return NULL; }
+            if ( !$categories ) { return collect(); }
 
-            $relatedPosts = [];
+            $relatedPosts = collect();
 
             foreach ($categories as $category) {
-                $relatedPosts = array_merge($relatedPosts, $category->posts()->where('posts.id', '!=', $id)->latest()->get()->toArray());
+                $query = $category->posts()
+                    ->where('posts.id', '!=', $id)
+                    ->where('posts.post_status', 'publish');
+
+                if ($postType) {
+                    $query->where('posts.post_type', $postType);
+                }
+
+                $relatedPosts = $relatedPosts->merge($query->latest()->get());
             }
 
-            $relatedPosts = array_unique($relatedPosts, SORT_REGULAR);
+            $relatedPosts = $relatedPosts
+                ->unique('id')
+                ->values();
 
             // shuffle($relatedPosts);
 
             // return $relatedPosts;
 
-            return array_slice($relatedPosts, 0, 8);
+            return $relatedPosts->take(8);
     }
 
     // Insert a new record if it doesn’t exist, or update it if it does — all in one query.

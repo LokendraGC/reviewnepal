@@ -2319,7 +2319,7 @@ form input[type=search]{
 
 .object-fit-cover { object-fit: cover; }
         .card { height: 100%; border: none; border: 1px solid #dfdfdf; }
-        .small-text { font-size: 0.85rem; color: #6c757d; }
+        .small-text a{ font-size: 0.85rem; color: #6c757d; text-decoration: none; }
         .author-text { font-size: 0.8rem; margin-top: auto; }
         /* Ensures the two bottom cards and top card align with the tall right card */
         @media (min-width: 992px) {
@@ -2424,4 +2424,35 @@ form input[type=search]{
 
 .footer-contact-info a:hover{
   color: #c70000 !important;
+}
+
+
+.brands-title a{
+  text-decoration: none !important;
+}
+
+.single-post-content ul{
+  font-size: 14px;
+  color: #555;
+  padding-left: 20px;
+}
+
+.single-post-content ol{
+  font-size: 14px;
+  color: #555;
+  padding-left: 20px;
+}
+
+.single-post-content blockquote{
+  margin: 20px 0;
+  border: 1px solid #ffd2d2;
+  padding: 30px;
+  text-align: center;
+  font-size: 16px;
+  color: #000000;
+  background-color: #ffeeee;
+}
+
+.similar-news-item-title a{
+  text-decoration: none !important;
 }

@@ -7,14 +7,19 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Repositories\PostRepository;
 
 class PostController extends Controller
 {
     private $categoryRepository;
+    private $postRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
+
+    public function __construct(CategoryRepository $categoryRepository, PostRepository $postRepository)
     {
         $this->categoryRepository = $categoryRepository;
+        $this->postRepository = $postRepository;
     }
 
     public function index($slug)
@@ -85,23 +90,42 @@ class PostController extends Controller
         }
 
         if ($post->post_type === 'post') {
-            $related_posts = Post::where('post_type', 'post')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
+            // $related_posts = Post::where('post_type', 'post')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
+
+            $author = $post->categories()->where('categories.type', 'author')->first();
+            $user = Auth::user();
+
+            $category = $post->categories()->first();
+
+            $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
+
 
             return view('frontend.single-post', [
                 'post' => $post,
                 'postMeta' => $metaDatas,
-                'related_posts' => $related_posts,
+                'author' => $author,
+                'user' => $user,
+                'category' => $category,
+                'relatedPosts' => $relatedPosts,
             ]);
         }
 
 
         if ($post->post_type === 'post_ne') {
-            $related_posts = Post::where('post_type', 'post_ne')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
+            // $related_posts = Post::where('post_type', 'post_ne')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
+            $author = $post->categories()->where('categories.type', 'author')->first();
+            $user = Auth::user();
+            $category = $post->categories()->first();
+
+            $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
 
             return view('frontend.single-post_ne', [
                 'post' => $post,
                 'postMeta' => $metaDatas,
-                'related_posts' => $related_posts,
+                'author' => $author,
+                'user' => $user,
+                'category' => $category,
+                'relatedPosts' => $relatedPosts,
             ]);
         }
 

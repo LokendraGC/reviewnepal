@@ -15,7 +15,7 @@
                     <option>None</option>
                 @endif
                 @foreach ($categories as $category)
-                    @if ($post)
+                    @if (!empty($post))
                         <option value="{{ $category->id }}" @if ($post->categories->contains('id', $category->id)) selected @endif>
                             {{ CategoryHelper::get_field('name_ne', $category) }}
                         </option>

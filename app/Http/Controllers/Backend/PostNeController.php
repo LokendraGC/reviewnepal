@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Post;
 use App\Models\Setting;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Services\PostService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\PostRepository;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Repositories\CategoryPostRepository;
 use App\Http\Requests\Post\PostUpdateRequest;

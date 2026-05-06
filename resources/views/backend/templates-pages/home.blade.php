@@ -14,7 +14,7 @@
                     <li class="nav-item">
                         <a href="#info-section" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab', 'info-section') === 'info-section' ? 'active' : '' }}">
-                            Info
+                            Latest News
                         </a>
                     </li>
 
@@ -30,7 +30,7 @@
                     <li class="nav-item">
                         <a href="#third-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'third-tab-news' ? 'active' : '' }}">
-                            Third Section News
+                            View News
                         </a>
                     </li>
 
@@ -38,7 +38,7 @@
                     <li class="nav-item">
                         <a href="#fourth-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'fourth-tab-news' ? 'active' : '' }}">
-                            Fourth Section News
+                            Nepal Insights
                         </a>
                     </li>
 
@@ -46,7 +46,7 @@
                     <li class="nav-item">
                         <a href="#fifth-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'fifth-tab-news' ? 'active' : '' }}">
-                            Fifth Section News
+                            Below News Insights
                         </a>
                     </li>
 
@@ -54,7 +54,7 @@
                     <li class="nav-item">
                         <a href="#sixth-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'sixth-tab-news' ? 'active' : '' }}">
-                            Sixth Section News
+                            Brands
                         </a>
                     </li>
 
@@ -62,7 +62,7 @@
                     <li class="nav-item">
                         <a href="#seventh-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'seventh-tab-news' ? 'active' : '' }}">
-                            Seventh Section News
+                            Notices
                         </a>
                     </li>
 
@@ -140,10 +140,31 @@
                 <div class="tab-pane fade {{ request()->query('tab') === 'third-tab-news' ? 'show active' : '' }}"
                     id="third-tab-news" role="tabpanel">
 
+
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Main Title</label>
+
+                            <input type="text" name="main_title_third" class="form-control"
+                                value="{{ $metaDatas['main_title_third'] ?? '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Main Title in Nepali</label>
+
+                            <input type="text" name="main_title_nepali_third" class="form-control"
+                                value="{{ $metaDatas['main_title_nepali_third'] ?? '' }}">
+                        </div>
+                    </div>
+
+
                     <div class="row mb-3">
 
                         <!-- LEFT CATEGORY -->
                         <div class="col-md-12">
+
+
+
                             <label class="form-label">Choose News Category</label>
 
                             <select name="category_id_third" class="form-control">
@@ -167,12 +188,27 @@
                 <!-- FOURTH TAB NEWS -->
                 <div class="tab-pane fade {{ request()->query('tab') === 'fourth-tab-news' ? 'show active' : '' }}"
                     id="fourth-tab-news" role="tabpanel">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Main Title</label>
+
+                            <input type="text" name="main_title_fourth" class="form-control"
+                                value="{{ $metaDatas['main_title_fourth'] ?? '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Main Title in Nepali</label>
+
+                            <input type="text" name="main_title_nepali_fourth" class="form-control"
+                                value="{{ $metaDatas['main_title_nepali_fourth'] ?? '' }}">
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
 
-
                         <div class="col-md-12">
-                            <label class="form-label">Choose News Category</label>
 
+                            <label class="form-label">Choose News Category</label>
                             <select name="category_id_fourth" class="form-control">
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category)

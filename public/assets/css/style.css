@@ -596,10 +596,11 @@ body {
   object-fit: cover;
 }
 
-.sidebar-featured-title {
+.sidebar-featured-title a{
   font-size: 18px;
   font-weight: 500;
   line-height: 1.3;
+  text-decoration: none;
 }
 
 /* Side List Articles */
@@ -622,11 +623,12 @@ body {
   object-fit: cover;
 }
 
-.list-title {
+.list-title a{
   font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
   color: #111;
+  text-decoration: none;
 }
 
 /* =========================================

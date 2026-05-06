@@ -33,17 +33,20 @@
                                 {{-- feature image --}}
                                 <x-backend.post.featured-image required="true" />
 
-                                {{-- categories --}}
-                                <x-backend.post.category title="Categories" name="categories[]" type="multiple"
-                                    :categories="$categories" />
+                               
+                                <div class="col-12">
+                                    {{-- categories --}}
+                                    <x-backend.post-ne.category title="Categories" name="categories[]" type="multiple"
+                                        :categories="$categories" :post="null" />
+                                </div>
 
-                                {{-- authors --}}
-                                {{-- <x-backend.post.category title="Author" name="authors[]" type="single"
-                                    :categories="$authors" /> --}}
+                                <div class="col-12">
+                                    {{-- authors --}}
+                                    <x-backend.post-ne.author title="Authors" name="authors[]" type="multiple"
+                                        :authors="$authors" :post="null" />
+                                </div>  
 
-                                {{-- tags --}}
-                                {{-- <x-backend.post.category title="Tags" name="tags[]" type="multiple"
-                                    :categories="$tags" custom="create_custom" /> --}}
+
                             </div>
                         </div>
                     </form>

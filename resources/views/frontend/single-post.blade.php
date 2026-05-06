@@ -92,6 +92,8 @@
 
     </div>
 
+    {{-- TRENDING NEWS START --}}
+
     <div class="col-lg-3">
       <div id="sticky-sidear">
         <div class="sidebar-section mb-5">
@@ -143,6 +145,7 @@
         </div>
       </div>
     </div>
+    {{-- TRENDING NEWS END --}}
 
 
   </div>

@@ -249,6 +249,7 @@ return [
         'isHomePage' => \App\Helpers\isHomePage::class,
         'LanguageHelper' => \App\Helpers\LanguageHelper::class,
         'NepaliDateHelper' => \App\Helpers\NepaliDateHelper::class,
+        'TrendingHelper' => \App\Helpers\TrendingHelper::class,
     ],
 
 ];

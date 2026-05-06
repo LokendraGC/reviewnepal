@@ -47,6 +47,13 @@
                                             tabindex="-1">
                                             Info Section
                                         </a>
+                                        <a class="nav-link {{ request()->query('tab') == 'trending' ? 'active' : '' }}"
+                                            id="trending-tab" data-bs-toggle="pill" href="#trending" role="tab"
+                                            aria-controls="trending"
+                                            aria-selected="{{ request()->query('tab') == 'trending' ? 'true' : 'false' }}"
+                                            tabindex="-1">
+                                            Trending
+                                        </a>
                                     </div>
                                 </div>
                                 <!-- end col-->
@@ -57,6 +64,7 @@
                                         @include('backend.settings.tabs.header-setting')
                                         @include('backend.settings.tabs.footer-setting')
                                         @include('backend.settings.tabs.info-setting')
+                                        @include('backend.settings.tabs.trending-setting')
                                     </div> <!-- end tab-content-->
                                 </div> <!-- end col-->
                             </div>

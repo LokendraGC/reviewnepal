@@ -342,7 +342,7 @@
 
             <div class="section-header d-flex justify-content-between">
                 <h2 class="m-0">{{ $main_title }}</h2>
-                <a href="#" class="cat-link mt-auto">{{ $view_all_text }} <span>&rarr;</span></a>
+                <a href="{{ route('frontend.category.index', $third_cat->slug) }}" class="cat-link mt-auto">{{ $view_all_text }} <span>&rarr;</span></a>
             </div>
 
             <div class="row justify-content-between">
@@ -529,7 +529,7 @@
 
                 <div class="section-header-featured d-flex justify-content-between">
                     <h2>{{ $main_title }}</h2>
-                    <a href="#" class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
+                    <a href="{{ route('frontend.category.index', $fourth_cat->slug) }}" class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
                 </div>
 
                 <div class="row gy-5">

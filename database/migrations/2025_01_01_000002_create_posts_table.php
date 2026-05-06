@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('post_parent')->default(0);
             $table->string('post_type', 20)->default('post');
             $table->string('comment_status', 10)->default('open');
+            $table->integer('trending_count')->default(0);
             $table->integer('menu_order')->nullable();
             $table->string('post_password', 60)->nullable();
             $table->foreignId('last_updated_by')->nullable()->constrained('users')->nullOnDelete();

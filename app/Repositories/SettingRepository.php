@@ -39,6 +39,7 @@ class SettingRepository
         $metaDatas['footer_text'] = $request->footer_text ?? null;
         $metaDatas['subscribe_text'] = $request->subscribe_text ?? null;
         $metaDatas['map_link'] = $request->map_link ?? null;
+        $metaDatas['trending_news_time'] = $request->trending_news_time ?? 7;
         // Social Medias
         $metaDatas['social_media'] = $request->social_media ? serialize($request->social_media) : null;
 

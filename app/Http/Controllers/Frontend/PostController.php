@@ -9,6 +9,7 @@ use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\PostRepository;
+use App\Helpers\TrendingHelper;
 
 class PostController extends Controller
 {
@@ -89,6 +90,14 @@ class PostController extends Controller
             }
         }
 
+
+
+        if (in_array($post->post_type, ['post', 'post_ne'])) {
+            $post->increment('trending_count');
+        }
+
+        $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type, 5, $post->id);
+
         if ($post->post_type === 'post') {
             // $related_posts = Post::where('post_type', 'post')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
 
@@ -107,6 +116,7 @@ class PostController extends Controller
                 'user' => $user,
                 'category' => $category,
                 'relatedPosts' => $relatedPosts,
+                'trendingPosts' => $trendingPosts,
             ]);
         }
 
@@ -116,6 +126,7 @@ class PostController extends Controller
             $author = $post->categories()->where('categories.type', 'author')->first();
             $user = Auth::user();
             $category = $post->categories()->first();
+            $categoryMeta = $category ? $category->GetAllMetaData() : [];
 
             $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
 
@@ -125,7 +136,9 @@ class PostController extends Controller
                 'author' => $author,
                 'user' => $user,
                 'category' => $category,
+                'categoryMeta' => $categoryMeta,
                 'relatedPosts' => $relatedPosts,
+                'trendingPosts' => $trendingPosts,
             ]);
         }
 

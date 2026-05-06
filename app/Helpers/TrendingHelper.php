@@ -6,21 +6,35 @@ use App\Models\Post;
 
 class TrendingHelper
 {
-    public static function getTrendingPosts($postType, $limit = 5, $excludePostId = null)
+    public static function getTrendingPosts($post_type, $excludePostId = null)
     {
-        $days = SettingHelper::get_field('trending_news_time') ?? 7;
-
-        $query = Post::where('post_type', $postType)
-            ->where('post_status', 'publish')
-            ->where('created_at', '>=', now()->subDays($days));
-
-        if ($excludePostId) {
-            $query->where('posts.id', '!=', $excludePostId);
+         // TRENDING POSTS
+         $trendingPostQuery = Post::where('post_type', $post_type)
+         ->join('post_metas', 'posts.id', '=', 'post_metas.post_id')
+         ->where('post_metas.meta_key', 'trending_count')
+         ->whereNotNull('post_metas.meta_value')
+         ->select(['posts.id', 'posts.user_id', 'posts.post_title', 'posts.slug', 'posts.created_at','posts.post_type','posts.post_status'])
+         ->orderByDesc('post_metas.meta_value');
+         if ($excludePostId) {
+            $trendingPostQuery->where('posts.id', '!=', $excludePostId);
         }
+     if ( $time = SettingHelper::get_field('trending_news_time') )
+     {
+         $trendingPostQuery->where('posts.created_at', '>=', now()->subDays($time));
+     }
+     $trendingPosts = $trendingPostQuery->take(5)->get();
+     $trendingPosts->load('user:id,name');
 
-        return $query
-            ->orderByDesc('posts.trending_count')
-            ->take($limit)
-            ->get(['posts.*']);
+     if ( $trendingPosts->isEmpty()  ) {
+         $trendingPostQuery = Post::where('post_type', $post_type)
+         ->join('post_metas', 'posts.id', '=', 'post_metas.post_id')
+         ->where('post_metas.meta_key', 'trending_count')
+         ->whereNotNull('post_metas.meta_value')
+         ->select(['posts.id', 'posts.user_id', 'posts.post_title', 'posts.slug', 'posts.created_at','posts.post_type','posts.post_status'])
+         ->orderByDesc('post_metas.meta_value');
+         $trendingPosts = $trendingPostQuery->take(5)->get();
+         $trendingPosts->load('user:id,name');
+     }
+     return $trendingPosts;
     }
 }

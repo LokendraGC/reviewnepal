@@ -6,16 +6,67 @@
     <h1 class="main-category-title">{{ $cat->name }}</h1>
 
     @if ($posts->count())
-        <div class="row gy-5 mt-2">
-            @foreach ($posts as $post)
+        @php
+            $heroPost = $posts->first();
+            $gridPosts = $posts->slice(1);
+        @endphp
+
+        @if ($heroPost)
+            @php
+                $heroMeta = $heroPost->GetAllMetaData();
+                $heroImageId = $heroMeta['featured_image'] ?? null;
+                $heroMedia = MediaHelper::getImageById($heroImageId);
+                $heroImageUrl = !empty($heroMedia?->file_name) ? asset('storage/' . $heroMedia->file_name) : null;
+            @endphp
+            <div class="row mb-5 align-items-start mt-2">
+                <div class="col-lg-4 order-2 order-lg-1">
+                    <h2 class="hero-headline">
+                    <a href="{{ route('frontend.post.index', $heroPost->slug) }}">
+                       {{ $heroPost->post_title }}
+                    </a>
+                </h2>
+                    <div class="hero-divider"></div>
+                    <p class="hero-subtext">
+                        {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($heroPost->post_content)), 25) }}
+                    </p>
+                </div>
+                <div class="col-lg-8 order-1 order-lg-2 mb-4 mb-lg-0">
+                    <div class="img-wrapper hero-height">
+                        @if ($heroImageUrl)
+                            <a href="{{ route('frontend.post.index', $heroPost->slug) }}">
+                                <img src="{{ $heroImageUrl }}" alt="{{ $heroPost->post_title }}" />
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="row gy-5">
+            @foreach ($gridPosts as $post)
+                @php
+                    $postMeta = $post->GetAllMetaData();
+                    $postImageId = $postMeta['featured_image'] ?? null;
+                    $postMedia = MediaHelper::getImageById($postImageId);
+                    $postImageUrl = !empty($postMedia?->file_name) ? asset('storage/' . $postMedia->file_name) : null;
+                @endphp
                 <div class="col-md-4">
+                    <div class="img-wrapper grid-height mb-3">
+                        @if ($postImageUrl)
+                            <a href="{{ route('frontend.post.index', $post->slug) }}">
+                                <img src="{{ $postImageUrl }}" alt="{{ $post->post_title }}" />
+                            </a>
+                        @endif
+                    </div>
                     <div class="post-meta">
                         <i class="fa-regular fa-calendar-days"></i>
                         {{ $post->created_at?->format('F d, Y') }}
                     </div>
+                    <h3 class="post-title">
                     <a href="{{ route('frontend.post.index', $post->slug) }}">
-                        <h3 class="post-title">{{ $post->post_title }}</h3>
+                        {{ $post->post_title }}
                     </a>
+                    </h3>
                 </div>
             @endforeach
 

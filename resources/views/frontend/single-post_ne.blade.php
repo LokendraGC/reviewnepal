@@ -1,7 +1,9 @@
 @extends('frontend.layouts.app', ['payload' => $post, 'payloadMeta' => $postMeta, 'title' => $post->post_title])
 
 @section('main-section')
-
+@php
+  PostHelper::setTrendingPosts($post);
+@endphp
 
 <div class="container main-wrapper py-5">
   <div class="row">
@@ -99,38 +101,44 @@
     </div>
 
     {{-- TRENDING NEWS START --}}
+    @if (!empty($trendingPosts))
     <div class="col-lg-3">
       <div id="sticky-sidear">
         <div class="sidebar-section mb-5">
-          <h5 class="sidebar-heading">Trending News</h5>
+          <h5 class="sidebar-heading">ट्रेंडिंग न्यूज</h5>
           <hr class="heading-line" />
+        
+          @foreach ($trendingPosts as $trendingPost)
+          @php
+            $category = $trendingPost->categories()->first();
+            $catMeta = $category->GetAllMetaData();
+            $category_name = $catMeta['name_ne'] ?? 'Unknown';
+
+            $postMeta = $trendingPost->GetAllMetaData();
+            $featured_image = $postMeta['featured_image'] ?? null;
+            $media = MediaHelper::getImageById($featured_image);
+            if (!empty($featured_image) && !empty($media->file_name)) {
+              $featured_image_url = asset('storage/' . $media->file_name);
+            } else {
+              $featured_image_url = null;
+            }
+          @endphp
           <div class="d-flex mb-3 align-items-center sidebar-item">
-            <img src="{{ asset('assets/images/1.jpg') }}" alt="News 1" />
+            @if ($featured_image_url)
+            <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">
+              <img src="{{ $featured_image_url }}" alt="{{ $trendingPost->post_title }}" />
+            </a>
+            @endif
             <div class="ms-3">
-              <small class="tag-small">TECHNOLOGY</small>
+              <small class="tag-small">{{ $catMeta['name_ne'] ?? 'Unknown' }}</small>
               <h6 class="sidebar-item-title">
-                Cybersecurity: aware alert of released threats
+                <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">{{ $trendingPost->post_title }}</a>
               </h6>
             </div>
           </div>
-          <div class="d-flex mb-3 align-items-center sidebar-item">
-            <img src="{{ asset('assets/images/4.jpg') }}" alt="News 1" />
-            <div class="ms-3">
-              <small class="tag-small">TECHNOLOGY</small>
-              <h6 class="sidebar-item-title">
-                Cybersecurity: aware alert of released threats
-              </h6>
-            </div>
-          </div>
-          <div class="d-flex mb-3 align-items-center sidebar-item">
-            <img src="{{ asset('assets/images/5.jpg') }}" alt="News 1" />
-            <div class="ms-3">
-              <small class="tag-small">TECHNOLOGY</small>
-              <h6 class="sidebar-item-title">
-                Cybersecurity: aware alert of released threats
-              </h6>
-            </div>
-          </div>
+          @endforeach
+
+
         </div>
         <hr style="border-color: #c7c7c7; margin: 0" />
         <!-- <div class="ad-wrapper py-3">
@@ -150,6 +158,7 @@
         </div>
       </div>
     </div>
+    @endif
     {{-- TRENDING NEWS END --}}
 
 

@@ -67,18 +67,13 @@ class PostController extends Controller
 
         if ($post->post_type === 'page') {
          
-            // $companies = Post::where('post_type', 'company')->where('post_status', 'publish')->get();
 
             $viewName = $this->getViewName($post, $metaDatas);
 
             $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
                 ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
                 ->latest()->get();
-       
-            // $press_releases = Post::where('post_type', 'post')->where('post_status', 'publish')
-            //     ->whereHas('categories', fn($q) => $q->where('categories.id', 11))
-            //     ->latest()->get();
-
+ 
             if ($viewName) {
                 return view($viewName, [
                     'post' => $post,
@@ -92,14 +87,7 @@ class PostController extends Controller
 
 
 
-        if (in_array($post->post_type, ['post', 'post_ne'])) {
-            $post->increment('trending_count');
-        }
-
-        $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type, 5, $post->id);
-
         if ($post->post_type === 'post') {
-            // $related_posts = Post::where('post_type', 'post')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
 
             $author = $post->categories()->where('categories.type', 'author')->first();
             $user = Auth::user();
@@ -107,6 +95,8 @@ class PostController extends Controller
             $category = $post->categories()->first();
 
             $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
+
+            $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
 
 
             return view('frontend.single-post', [
@@ -122,13 +112,13 @@ class PostController extends Controller
 
 
         if ($post->post_type === 'post_ne') {
-            // $related_posts = Post::where('post_type', 'post_ne')->where('post_status', 'publish')->where('id', '!=', $post->id)->latest()->take(3)->get();
             $author = $post->categories()->where('categories.type', 'author')->first();
             $user = Auth::user();
             $category = $post->categories()->first();
-            $categoryMeta = $category ? $category->GetAllMetaData() : [];
+            $categoryMeta = $this->categoryRepository->getMetaDatas($category);
 
             $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
+            $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
 
             return view('frontend.single-post_ne', [
                 'post' => $post,

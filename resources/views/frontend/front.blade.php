@@ -342,7 +342,8 @@
 
             <div class="section-header d-flex justify-content-between">
                 <h2 class="m-0">{{ $main_title }}</h2>
-                <a href="{{ route('frontend.category.index', $third_cat->slug) }}" class="cat-link mt-auto">{{ $view_all_text }} <span>&rarr;</span></a>
+                <a href="{{ route('frontend.category.index', $third_cat->slug) }}"
+                    class="cat-link mt-auto">{{ $view_all_text }} <span>&rarr;</span></a>
             </div>
 
             <div class="row justify-content-between">
@@ -411,89 +412,51 @@
                 {{-- THIRD LEFT COLUMN END --}}
 
                 {{-- TRENDING COLUMN START --}}
-                <div class="col-lg-4">
-                    <div class="trending-card">
-                        <h3 class="trending-header">Trending News</h3>
+                @if (!empty($trendingPosts))
+                    @php
+                        $main_title = $language == 'en' ? 'Trending News' : 'ट्रेंडिंग न्यूज';
+                    @endphp
+                    <div class="col-lg-4">
+                        <div class="trending-card">
+                            <h3 class="trending-header">{{ $main_title }}</h3>
 
-                        <div class="d-flex gap-3 mb-4 pb-2">
-                            <div class="trending-number">1</div>
-                            <div class="w-100">
-                                <a href="#" class="trending-title d-block">Tech giants unveil plans for next
-                                    generation AI
-                                    assistants</a>
-                                <div class="meta-text d-flex justify-content-between mt-2">
-                                    <span>May 14, 2024</span>
-                                    <span>Marvin McKinney</span>
+                            @foreach ($trendingPosts as $trendingPost)
+                                @php
+                                    $author = $trendingPost->categories()->where('categories.type', 'author')->first();
+                                    $author_meta = $author ? $author->GetAllMetaData() : [];
+                                    $author_name = $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                @endphp
+                                <div class="d-flex gap-3 mb-4 pb-2">
+                                    <div class="trending-number">{{ $loop->iteration }}</div>
+                                    <div class="w-100">
+                                        <a href="{{ route('frontend.post.index', $trendingPost->slug) }}"
+                                            class="trending-title d-block">{{ $trendingPost->post_title }}</a>
+                                        <div class="meta-text d-flex justify-content-between mt-2">
+                                            <span>{{ $language == 'en' ? $trendingPost->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($trendingPost->created_at) }}</span>
+                                            <span>{{ $author_name }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
+
                         </div>
 
-                        <div class="d-flex gap-3 mb-4 pb-2">
-                            <div class="trending-number">2</div>
-                            <div class="w-100">
-                                <a href="#" class="trending-title d-block">Government faces backlash over proposed
-                                    tax reform
-                                    legislation</a>
-                                <div class="meta-text d-flex justify-content-between mt-2">
-                                    <span>May 14, 2024</span>
-                                    <span>Jane Cooper</span>
-                                </div>
-                            </div>
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisement -</span>
+                            <a href="#">
+                                <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
+                                    alt="Sidebar Ad" class="ad-one-third">
+                            </a>
                         </div>
-
-                        <div class="d-flex gap-3 mb-4 pb-2">
-                            <div class="trending-number">3</div>
-                            <div class="w-100">
-                                <a href="#" class="trending-title d-block">Community health initiative launches
-                                    campaign to combat
-                                    childhood obesity</a>
-                                <div class="meta-text d-flex justify-content-between mt-2">
-                                    <span>May 14, 2024</span>
-                                    <span>Esther Howard</span>
-                                </div>
-                            </div>
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisement -</span>
+                            <a href="#">
+                                <img src="{{ asset('assets/images/300x218.gif') }}" alt="Sidebar Ad"
+                                    class="ad-one-third">
+                            </a>
                         </div>
-
-                        <div class="d-flex gap-3 mb-4 pb-2">
-                            <div class="trending-number">4</div>
-                            <div class="w-100">
-                                <a href="#" class="trending-title d-block">Candidates gear up for highly contested
-                                    race</a>
-                                <div class="meta-text d-flex justify-content-between mt-2">
-                                    <span>May 14, 2024</span>
-                                    <span>Wade Warren</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-3 mb-2">
-                            <div class="trending-number">5</div>
-                            <div class="w-100">
-                                <a href="#" class="trending-title d-block">Entertainment industry mourns loss of
-                                    iconic actor</a>
-                                <div class="meta-text d-flex justify-content-between mt-2">
-                                    <span>May 14, 2024</span>
-                                    <span>Wade Warren</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
-                    <div class="ad-wrapper py-3">
-                        <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
-                                alt="Sidebar Ad" class="ad-one-third">
-                        </a>
-                    </div>
-                    <div class="ad-wrapper py-3">
-                        <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/300x218.gif') }}" alt="Sidebar Ad" class="ad-one-third">
-                        </a>
-                    </div>
-                </div>
+                @endif
                 {{-- TRENDING COLUMN END --}}
 
             </div>
@@ -529,7 +492,8 @@
 
                 <div class="section-header-featured d-flex justify-content-between">
                     <h2>{{ $main_title }}</h2>
-                    <a href="{{ route('frontend.category.index', $fourth_cat->slug) }}" class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
+                    <a href="{{ route('frontend.category.index', $fourth_cat->slug) }}"
+                        class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
                 </div>
 
                 <div class="row gy-5">
@@ -1091,7 +1055,8 @@
             <div class="container py-5">
 
                 <div class="section-header-featured d-flex justify-content-between">
-                    <h2>{{ $language == 'en' ? $seventh_cat->name : $seventh_cat->GetAllMetaData()['name_ne'] ?? $seventh_cat->name }}</h2>
+                    <h2>{{ $language == 'en' ? $seventh_cat->name : $seventh_cat->GetAllMetaData()['name_ne'] ?? $seventh_cat->name }}
+                    </h2>
                     <a href="{{ route('frontend.category.index', $seventh_cat->slug) }}" class="cat-link mt-auto">
                         {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
                         <span>&rarr;</span>
@@ -1101,39 +1066,42 @@
 
 
                     @foreach ($seventh_cat->posts as $seventh_post)
-                    @php
-                        // CATEGORY
-                        $cate = $seventh_post->categories()->first();
-                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                        @php
+                            // CATEGORY
+                            $cate = $seventh_post->categories()->first();
+                            $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                            $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
-                        // POST META
-                        $postMeta = $seventh_post->GetAllMetaData();
+                            // POST META
+                            $postMeta = $seventh_post->GetAllMetaData();
 
-                        // IMAGE
-                        $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                            // IMAGE
+                            $post_image_id = $postMeta['featured_image'] ?? null;
+                            $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
-                        $post_image_url =
-                            !empty($post_media) && !empty($post_media->file_name)
-                                ? asset('storage/' . $post_media->file_name)
-                                : asset('assets/images/default.jpg');
+                            $post_image_url =
+                                !empty($post_media) && !empty($post_media->file_name)
+                                    ? asset('storage/' . $post_media->file_name)
+                                    : asset('assets/images/default.jpg');
 
-                        // AUTHOR
-                        $author = $seventh_post->categories()->where('categories.type', 'author')->first();
+                            // AUTHOR
+                            $author = $seventh_post->categories()->where('categories.type', 'author')->first();
 
-                        $author_meta = $author ? $author->GetAllMetaData() : [];
+                            $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                        $author_name =
-                            $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                            $author_name =
+                                $language == 'en'
+                                    ? $author->name ?? $user->name
+                                    : $author_meta['name_ne'] ?? $user->name;
 
-                        $date = $seventh_post->created_at;
-                    @endphp
+                            $date = $seventh_post->created_at;
+                        @endphp
                         <div class="col-lg-4 col-md-6 mt-0">
                             <a href="{{ route('frontend.post.index', $seventh_post->slug) }}" class="news-item">
 
                                 @if ($post_image_url)
-                                <img src="{{ $post_image_url }}" alt="{{ $seventh_post->post_title }}" class="small-thumb">
+                                    <img src="{{ $post_image_url }}" alt="{{ $seventh_post->post_title }}"
+                                        class="small-thumb">
                                 @endif
 
                                 <div class="news-content">

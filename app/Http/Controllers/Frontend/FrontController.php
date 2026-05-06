@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Helpers\LanguageHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
+use App\Helpers\TrendingHelper;
 
 
 class FrontController extends Controller
@@ -79,14 +80,10 @@ class FrontController extends Controller
         $seventh_cat = Category::with(['posts' => function($query) use ($post_type) {
             $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
         }])->where('id', $category_id_seventh)->first();
-       
-        // $left_second_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
-        // ->whereHas('categories', fn($q) => $q->where('categories.id', $category_id_left_second))
-        // ->latest()->get();
 
-        // $right_second_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
-        // ->whereHas('categories', fn($q) => $q->where('categories.id', $category_id_right_second))
-        // ->latest()->get();
+        // TRENDING POSTS
+      $trendingPosts = TrendingHelper::getTrendingPosts($post_type);
+        
 
         $user = Auth::user();
 
@@ -105,6 +102,7 @@ class FrontController extends Controller
             'seventh_cat' => $seventh_cat,
             'user' => $user,
             'language' => $language,
+            'trendingPosts' => $trendingPosts,
         ]);
     }
 }

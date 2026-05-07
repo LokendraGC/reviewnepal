@@ -47,7 +47,7 @@
                 <div>
                     <label for="" class="form-label">Publish Date</label>
                     <input type="text" class="form-control datetime-datepicker" placeholder="Date and Time"
-                        value="{{ \Carbon\Carbon::parse($post->created_at)->format('Y-m-d H:i a') }}"
+                        value="{{ \Carbon\Carbon::parse($post->created_at)->format('Y-m-d h:i a') }}"
                         name="created_at">
                     @if (auth()->user()->can('read_post_updated_date') && $post->lastUpdatedBy)
                     <hr>
@@ -57,7 +57,7 @@
                                     href="{{ route('backend.user.profile', $post->lastUpdatedBy->id) }}">{{ $post->lastUpdatedBy->email }}</a></small>
                             <br>
                             <small>Updated On:
-                                <b>{{ \Carbon\Carbon::parse($post->updated_at)->format('Y-m-d H:i a') }}</b>
+                                <b>{{ \Carbon\Carbon::parse($post->updated_at)->format('Y-m-d h:i a') }}</b>
                             </small>
                         </span>
                     </div>

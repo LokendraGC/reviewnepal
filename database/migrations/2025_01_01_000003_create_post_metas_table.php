@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,8 +18,6 @@ return new class extends Migration
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->string('meta_key', 191);
             $table->mediumText('meta_value')->nullable();
-            // Disable timestamps
-            $table->timestamps = false;
 
             // Indexing
             $table->index('post_id');

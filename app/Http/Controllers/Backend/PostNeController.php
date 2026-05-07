@@ -95,9 +95,9 @@ class PostNeController extends Controller
             $this->postRepository->storeMetaData($post, $request);
 
             // update slug
-            // $post->update([
-            //     'slug' => date('Y/m/').$post->id,
-            // ]);
+            $post->update([
+                'slug' => date('Y/m/').$post->id,
+            ]);
 
             session()->flash('success', 'Post Created.');
 
@@ -160,10 +160,10 @@ class PostNeController extends Controller
                 $this->postRepository->storeMetaData($post, $request);
 
                 // update slug
-                // $post->update([
-                //     'slug' => $post->created_at->format('Y/m/').$post->id,
-                // ]);
-
+                $post->update([
+                    'slug' => $post->created_at->format('Y/m/').$post->id,
+                ]);
+                
                 session()->flash('success', 'Post Updated.');
                 return redirect()->back();
             } else {

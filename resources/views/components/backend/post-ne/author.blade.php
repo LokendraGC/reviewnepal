@@ -15,12 +15,18 @@
                 <option>None</option>
                 @endif
                 @foreach ($authors as $author)
+                @php
+                    $nameNe = trim((string) CategoryHelper::get_field('name_ne', $author));
+                @endphp
+                @if ($nameNe === '')
+                    @continue
+                @endif
                 @if ($post)
                 <option value="{{ $author->id }}" @if ($post->categories->contains('id', $author->id)) selected @endif>
-                    {{ CategoryHelper::get_field('name_ne', $author) }}
+                    {{ $nameNe }}
                 </option>
                 @else
-                <option value="{{ $author->id }}">{{ CategoryHelper::get_field('name_ne', $author) }}</option>
+                <option value="{{ $author->id }}">{{ $nameNe }}</option>
                 @endif
                 @endforeach
             </select>

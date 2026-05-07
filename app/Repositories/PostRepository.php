@@ -89,6 +89,7 @@ class PostRepository
         $metaDatas = [];
         $metaDatas['seo_title'] = isset( $request->seo_title ) ? $request->seo_title : NULL;
         $metaDatas['seo_description'] = isset( $request->seo_description ) ? $request->seo_description : NULL;
+        $metaDatas['page_keywords'] = isset( $request->page_keywords ) ? $request->page_keywords : NULL;
         $metaDatas['featured_image'] = isset( $request->featured_image ) ? $request->featured_image : NULL;
         $metaDatas['show_banner'] = isset( $request->show_banner ) ? $request->show_banner : 0;
         // add meta data as per form data

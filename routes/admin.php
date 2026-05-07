@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\GeneralSettingController;
 use App\Http\Controllers\Backend\AppearanceSettingController;
+use App\Http\Controllers\Backend\AdsController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/npreview-backend', '/npreview-backend/dashboard')->middleware(['auth']);
@@ -160,6 +161,11 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
 
 
     Route::post('remove-image', [SettingController::class, 'removeImage'])->name('backend.setting.removeImage');
+
+// ads settings
+    Route::get('ads', [AdsController::class, 'index'])->name('backend.ads.setting');
+    Route::post('ads', [AdsController::class, 'store'])->name('backend.ads.store');
+
 
     // Media Uploader
     Route::controller(MediaController::class)->group(function () {

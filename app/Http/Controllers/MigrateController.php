@@ -35,7 +35,7 @@ class MigrateController extends Controller
                         Category::updateOrCreate(
                             ['id' => $row->id], // keep old category id
                             [
-                                'user_id' => $userId,
+                                'user_id' => 2,
                                 'name' => Str::limit($row->category_title, 100),
                                 'slug' => Str::limit($slug, 150),
                                 'type' => 'category',
@@ -62,13 +62,13 @@ class MigrateController extends Controller
         $migrated = 0;
         $skipped = 0;
 
-   $rows =  DB::connection('mysql_old')
+   DB::connection('mysql_old')
             ->table('tblstories')
             ->select('id', 'title','author','date','description','news_category','short_description', 'imagename', 'page_title', 'page_description', 'page_keywords')
             ->orderBy('id')
-            ->limit(1) // test with 1 post
-            ->get();
-            // ->chunk(200, function ($rows) use ($userId, &$migrated, &$skipped) {
+            // ->limit(2) // test with 1 post
+            // ->get();
+            ->chunk(200, function ($rows) use ($userId, &$migrated, &$skipped) {
                 foreach ($rows as $row) {
                     try {
                         DB::transaction(function () use ($row, $userId, &$migrated) {
@@ -108,7 +108,7 @@ class MigrateController extends Controller
                             ) ?? $postContent;
 
                             $post = new Post();
-                            $post->user_id = $userId;
+                            $post->user_id = 2;
                             $post->post_title = (string) $row->title;
                             $post->slug = $slug;
                             $post->post_content = $postContent;
@@ -248,7 +248,7 @@ class MigrateController extends Controller
                         $skipped++;
                     }
                 }
-            // });
+            });
 
         return response()->json([
             'success' => true,

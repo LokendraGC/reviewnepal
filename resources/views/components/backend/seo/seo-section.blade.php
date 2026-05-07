@@ -19,6 +19,12 @@
                         <textarea rows="8" name="seo_description" class="form-control"id="seoDescription">{{ isset($metaDatas['seo_description']) ? $metaDatas['seo_description'] : '' }}</textarea>
                     </div>
                     <p class="text-end">Char Count: <span id="descriptionCharCount">0</span></p>
+               
+               
+                    <div class="mb-2">
+                        <label class="form-label" for="seoDescription">SEO Keywords</label>
+                        <textarea rows="8" name="page_keywords" class="form-control"id="seoKeywords">{{ isset($metaDatas['page_keywords']) ? $metaDatas['page_keywords'] : '' }}</textarea>
+                    </div>
                 </div>
                 <hr>
                 <h5>Note<span class="text-danger">*</span></h5>

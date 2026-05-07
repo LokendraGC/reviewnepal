@@ -32,8 +32,8 @@
                             $featured_image = isset($author_meta['featured_image'])
                                 ? $author_meta['featured_image']
                                 : null;
-                            $media = MediaHelper::getImageById($featured_image);
-                            if (!empty($featured_image) && !empty($media->file_name)) {
+                            $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
+                            if (!empty($featured_image) && !empty($media?->file_name)) {
                                 $featured_image_url = asset('storage/' . $media->file_name);
                             } else {
                                 $featured_image_url = null;
@@ -56,11 +56,12 @@
 
                         @php
                             $postMeta = $recent_post->GetAllMetaData();
-                            $featured_image = $postMeta['featured_image'];
+                            $featured_image = $postMeta['featured_image'] ?? null;
                             $show_banner = $postMeta['show_banner'] ?? '0';
 
-                            $media = MediaHelper::getImageById($featured_image);
-                            if (!empty($featured_image) && !empty($media->file_name)) {
+                            $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
+
+                            if (!empty($featured_image) && !empty($media?->file_name)) {
                                 $featured_image_url = asset('storage/' . $media->file_name);
                             } else {
                                 $featured_image_url = null;
@@ -69,8 +70,11 @@
 
                         @if (!empty($featured_image_url) && $show_banner == '1')
                             <a href="{{ route('frontend.post.index', $recent_post->slug) }}">
+                              
+                                @if( $featured_image_url )
                                 <img src="{{ $featured_image_url }}" alt="{{ $recent_post->post_title }}"
                                     class="featured-image">
+                                @endif
                             </a>
                         @endif
 
@@ -119,8 +123,8 @@
 
                                     // POST IMAGE
                                     $post_image_id = $postMeta['featured_image'] ?? null;
-                                    $post_media = MediaHelper::getImageById($post_image_id);
-                                    $post_image_url = !empty($post_media->file_name)
+                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                                    $post_image_url = !empty($post_media?->file_name)
                                         ? asset('storage/' . $post_media->file_name)
                                         : null;
 
@@ -232,8 +236,8 @@
 
                         // IMAGE
                         $post_image_id = $postMeta['featured_image'] ?? null;
-                        $post_media = MediaHelper::getImageById($post_image_id);
-                        $post_image_url = !empty($post_media->file_name)
+                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                        $post_image_url = !empty($post_media?->file_name)
                             ? asset('storage/' . $post_media->file_name)
                             : null;
 
@@ -365,8 +369,8 @@
 
                                 // IMAGE
                                 $post_image_id = $postMeta['featured_image'] ?? null;
-                                $post_media = MediaHelper::getImageById($post_image_id);
-                                $post_image_url = !empty($post_media->file_name)
+                                $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                                $post_image_url = !empty($post_media?->file_name)
                                     ? asset('storage/' . $post_media->file_name)
                                     : null;
 
@@ -510,8 +514,8 @@
 
                             // IMAGE
                             $post_image_id = $postMeta['featured_image'] ?? null;
-                            $post_media = MediaHelper::getImageById($post_image_id);
-                            $post_image_url = !empty($post_media->file_name)
+                            $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                            $post_image_url = !empty($post_media?->file_name)
                                 ? asset('storage/' . $post_media->file_name)
                                 : null;
 
@@ -594,8 +598,8 @@
 
                                 // IMAGE
                                 $post_image_id = $postMeta['featured_image'] ?? null;
-                                $post_media = MediaHelper::getImageById($post_image_id);
-                                $post_image_url = !empty($post_media->file_name)
+                                $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+                                $post_image_url = !empty($post_media?->file_name)
                                     ? asset('storage/' . $post_media->file_name)
                                     : null;
 

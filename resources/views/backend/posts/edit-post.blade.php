@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-12 order-last order-sm-first">
                                     {{-- publish / submit --}}
-                                    <x-backend.post.status :post="$post" route="/news/" button="Update" />
+                                    <x-backend.post.status :post="$post" route="/" button="Update" />
                                 </div>
                                 <div class="col-12">
                                     {{-- featured image --}}
@@ -47,8 +47,6 @@
                                 {{-- authors --}}
                                 <x-backend.post.author title="Authors" name="authors[]" type="multiple"
                                     :authors="$authors" :post="$post" />
-
-                           
                             </div>
                         </div>
                     </div>

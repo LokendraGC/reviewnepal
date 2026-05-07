@@ -23,8 +23,15 @@ class PostController extends Controller
         $this->postRepository = $postRepository;
     }
 
-    public function index($slug)
+    public function index($slug, $month = null, $id = null)
     {
+        if ($id !== null) {
+            $slug = Post::query()
+                ->where('id', $id)
+                ->where('post_status', 'publish')
+                ->value('slug') ?? $id;
+        }
+
         return $this->handlePost($slug);
     }
 

@@ -34,3 +34,11 @@ Route::post('set-language', [LanguageController::class, 'setLanguage'])->name('s
 // for all dynamic post and pages
 Route::match(['get', 'post'], '{slug}', [PostController::class, 'index'])->name('frontend.post.index');
 
+// for nepali post
+Route::get('{year}/{month}/{id}', [PostController::class, 'index']) 
+    ->name('frontend.post.index')
+    ->where([
+        'year' => '[0-9]{1,4}',
+        'month' => '[0-9]{1,2}',
+        'id' => '[0-9]+'
+    ]);

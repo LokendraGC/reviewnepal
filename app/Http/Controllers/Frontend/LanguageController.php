@@ -18,6 +18,7 @@ class LanguageController extends Controller
         return response()->json([
             'success' => true,
             'lang' => $validated['lang'],
+            'redirect_url' => url('/'),
         ]);
     }
 }

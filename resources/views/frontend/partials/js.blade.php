@@ -30,8 +30,8 @@
                     }
                     return res.json();
                 })
-                .then(function () {
-                    location.reload();
+                .then(function (data) {
+                    location.href = data.redirect_url || '/';
                 })
                 .catch(function () {
                     toggle.checked = !toggle.checked;

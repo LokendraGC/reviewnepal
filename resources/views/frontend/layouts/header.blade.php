@@ -1,17 +1,41 @@
 @if (request()->is('/'))
+
+@php
+    $advertisement = SettingHelper::get_field('header_ads');
+    $link = MediaHelper::getDescriptionById($advertisement);
+    $websiteName = SettingHelper::get_field('site_title');
+
+    if ($advertisement) {
+        $media = MediaHelper::getImageById($advertisement);
+        if (!empty($media->file_name)) {
+            $image_url = asset('storage/' . $media->file_name);
+        } else {
+            $image_url = null;
+        }
+    }
+@endphp
+
+@if (!empty($image_url))
 <div class="container py-3">
     <div class="row">
         <div class="col-12">
             <div class="ad-wrapper">
                 <span class="ad-label">- Advertisement -</span>
-                <a href="#">
-                    <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&h=250&q=80"
-                        alt="Full Width Ad" class="ad-full-width">
+                
+                @if (!empty($link))
+                <a href="{{ $link }}" target="_blank">
+                    <img src="{{ $image_url }}"
+                        alt="{{ $websiteName }}" class="ad-full-width">
                 </a>
+                @else
+                <img src="{{ $image_url }}"
+                        alt="{{ $websiteName }}" class="ad-full-width">
+                @endif
             </div>
         </div>
     </div>
 </div>
+@endif
 
 <hr style="border-color: #c7c7c7; margin: 0;">
 @endif

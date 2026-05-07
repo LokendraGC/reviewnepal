@@ -11,6 +11,12 @@ class MediaHelper
         return new Media();
     }
 
+    public static function getDescriptionById($id)
+    {
+        $media = Media::where('id', $id)->first();
+        return $media->description ?? null;
+    }
+
     public static function getKBorMB($size)
     {
         $fileSize = $size;

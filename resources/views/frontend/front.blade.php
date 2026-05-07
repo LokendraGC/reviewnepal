@@ -4,10 +4,6 @@
 
     <main>
 
-        @php
-            // dd($left_second_posts->posts);
-        @endphp
-
         {{-- RECENT POSTS START --}}
         @if (!empty($recent_posts))
             @foreach ($recent_posts as $recent_post)
@@ -89,19 +85,43 @@
         {{-- RECENT POSTS END --}}
 
         {{-- TOP ADVERTISEMENT START --}}
+        @php
+        $banner_ads = SettingHelper::get_field('banner_ads');
+        $link = MediaHelper::getDescriptionById($banner_ads);
+        $websiteName = SettingHelper::get_field('site_title');
+
+        if ($banner_ads) {
+            $media = MediaHelper::getImageById($banner_ads);
+            if (!empty($media->file_name)) {
+                $image_url = asset('storage/' . $media->file_name);
+            } else {
+                $image_url = null;
+            }
+        }
+        @endphp
+
+        @if (!empty($image_url))
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/OnlinePortal_1230X100-ezgif.com-video-to-gif-converter.gif') }}"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $image_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $image_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
+
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         {{-- TOP ADVERTISEMENT END --}}
 
         {{-- LEFT AND RIGHT SECOND CATEGORY START --}}
@@ -319,19 +339,42 @@
         {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
 
         {{-- MIDDLE ADVERTISEMENT START --}}
+        @php
+        $below_recent_news = SettingHelper::get_field('below_recent_news');
+        $link = MediaHelper::getDescriptionById($below_recent_news);
+        $websiteName = SettingHelper::get_field('site_title');
+
+        if ($below_recent_news) {
+            $media = MediaHelper::getImageById($below_recent_news);
+            if (!empty($media->file_name)) {
+                $below_recent_image_url = asset('storage/' . $media->file_name);
+            } else {
+                $below_recent_image_url = null;
+            }
+        }
+
+        @endphp
+
+        @if (!empty($below_recent_image_url))
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/OnlinePortal_1230X100-ezgif.com-video-to-gif-converter.gif') }}"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $below_recent_image_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $below_recent_image_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         {{-- MIDDLE ADVERTISEMENT END --}}
 
 
@@ -445,21 +488,84 @@
 
                         </div>
 
+                        <!-- below trending news first ad -->
+                    @php
+                        $websiteName = SettingHelper::get_field('site_title');
+
+                        $homepage_below_trending_news_first_ad = SettingHelper::get_field('homepage_below_trending_news_first_ad');
+                        $homepage_below_trending_news_first_ad_link = MediaHelper::getDescriptionById($homepage_below_trending_news_first_ad);
+
+                        $homepage_below_trending_news_first_ad_url = null;
+
+                        if ($homepage_below_trending_news_first_ad) {
+                            $media = MediaHelper::getImageById($homepage_below_trending_news_first_ad);
+
+                            if (!empty($media?->file_name)) {
+                                $homepage_below_trending_news_first_ad_url = asset('storage/' . $media->file_name);
+                            }
+                        }
+                    @endphp
+
+                    @if (!empty($homepage_below_trending_news_first_ad_url))
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisementt -</span>
+
+                            @if (!empty($homepage_below_trending_news_first_ad_link))
+                                <a href="{{ $homepage_below_trending_news_first_ad_link }}" target="_blank">
+                                    <img
+                                        src="{{ $homepage_below_trending_news_first_ad_url }}"
+                                        alt="{{ $websiteName }}"
+                                        class="ad-one-third"
+                                    >
+                                </a>
+                            @else
+                                <img
+                                    src="{{ $homepage_below_trending_news_first_ad_url }}"
+                                    alt="{{ $websiteName }}"
+                                    class="ad-one-third"
+                                >
+                            @endif
+                        </div>
+                    @endif
+
+
+                    <!-- below trending news second ad -->
+                    @php
+                        $homepage_below_trending_news_second_ad = SettingHelper::get_field('homepage_below_trending_news_second_ad');
+                        $homepage_below_trending_news_second_ad_link = MediaHelper::getDescriptionById($homepage_below_trending_news_second_ad);
+
+                        $homepage_below_trending_news_second_ad_url = null;
+
+                        if ($homepage_below_trending_news_second_ad) {
+                            $media = MediaHelper::getImageById($homepage_below_trending_news_second_ad);
+
+                            if (!empty($media?->file_name)) {
+                                $homepage_below_trending_news_second_ad_url = asset('storage/' . $media->file_name);
+                            }
+                        }
+                    @endphp
+
+                    @if (!empty($homepage_below_trending_news_second_ad_url))
                         <div class="ad-wrapper py-3">
                             <span class="ad-label">- Advertisement -</span>
-                            <a href="#">
-                                <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
-                                    alt="Sidebar Ad" class="ad-one-third">
-                            </a>
+
+                            @if (!empty($homepage_below_trending_news_second_ad_link))
+                                <a href="{{ $homepage_below_trending_news_second_ad_link }}" target="_blank">
+                                    <img
+                                        src="{{ $homepage_below_trending_news_second_ad_url }}"
+                                        alt="{{ $websiteName }}"
+                                        class="ad-one-third"
+                                    >
+                                </a>
+                            @else
+                                <img
+                                    src="{{ $homepage_below_trending_news_second_ad_url }}"
+                                    alt="{{ $websiteName }}"
+                                    class="ad-one-third"
+                                >
+                            @endif
                         </div>
-                        <div class="ad-wrapper py-3">
-                            <span class="ad-label">- Advertisement -</span>
-                            <a href="#">
-                                <img src="{{ asset('assets/images/300x218.gif') }}" alt="Sidebar Ad"
-                                    class="ad-one-third">
-                            </a>
-                        </div>
-                    </div>
+                    @endif
                 @endif
                 {{-- TRENDING COLUMN END --}}
 
@@ -468,19 +574,42 @@
         {{-- THIRD SECTION END --}}
 
         {{--  THIRD ADVERTISEMENT START --}}
+        @php
+        $above_nepal_insights_ad = SettingHelper::get_field('above_nepal_insights_ad');
+        $link = MediaHelper::getDescriptionById($above_nepal_insights_ad);
+        $websiteName = SettingHelper::get_field('site_title');
+
+        if ($above_nepal_insights_ad) {
+            $media = MediaHelper::getImageById($above_nepal_insights_ad);
+            if (!empty($media->file_name)) {
+                $above_insight_image_url = asset('storage/' . $media->file_name);
+            } else {
+                $above_insight_image_url = null;
+            }
+        }
+
+        @endphp
+
+        @if (!empty($above_insight_image_url))
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/WhatsApp-GIF-2026-03-10-at-10.52.51.gif') }}"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $above_insight_image_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $above_insight_image_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         {{--  THIRD ADVERTISEMENT END --}}
 
         {{--  NEPAL INSIGHTS START --}}
@@ -555,20 +684,41 @@
         {{--  NEPAL INSIGHTS END --}}
 
         {{--  NEPAL INSIGHTS ADVERTISEMENT START --}}
+        @php
+        $below_nepal_insights_ad = SettingHelper::get_field('below_nepal_insights_ad');
+        $link = MediaHelper::getDescriptionById($below_nepal_insights_ad);
+
+        if ($below_nepal_insights_ad) {
+            $media = MediaHelper::getImageById($below_nepal_insights_ad);
+            if (!empty($media->file_name)) {
+                $below_nepal_insights_image_url = asset('storage/' . $media->file_name);
+            } else {
+                $below_nepal_insights_image_url = null;
+            }
+        }
+        @endphp
+
+        @if (!empty($below_nepal_insights_image_url))
         <hr style="border-color: #c7c7c7; margin: 0;">
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&h=250&q=80"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $below_nepal_insights_image_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $below_nepal_insights_image_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         {{--  NEPAL INSIGHTS ADVERTISEMENT END --}}
 
         <hr style="border-color: #c7c7c7; margin: 0;">
@@ -857,19 +1007,40 @@
             </div>
         </div>
         <hr style="border-color: #c7c7c7; margin: 0;">
+        @php
+        $above_brands_ad = SettingHelper::get_field('above_brands_ad');
+        $link = MediaHelper::getDescriptionById($above_brands_ad);
+
+        if ($above_brands_ad) {
+            $media = MediaHelper::getImageById($above_brands_ad);
+            if (!empty($media->file_name)) {
+                $above_brands_ad_img_url = asset('storage/' . $media->file_name);
+            } else {
+                $above_brands_ad_img_url = null;
+            }
+        }
+        @endphp
+
+        @if (!empty($above_brands_ad_img_url))
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
                         <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/OnlinePortal_1230X100-ezgif.com-video-to-gif-converter.gif') }}"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $above_brands_ad_img_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $above_brands_ad_img_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endif
 
 
         {{-- BRANDS START --}}
@@ -1016,20 +1187,61 @@
 
                     {{-- ADVERTISEMENT --}}
                     <div class="col-lg-4">
-                        <div class="ad-wrapper py-3">
-                            <span class="ad-label">- Advertisement -</span>
-                            <a href="#">
-                                <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}"
-                                    class="ad-one-third">
-                            </a>
-                        </div>
+                        @php
+                        $above_article_second = SettingHelper::get_field('above_article_second');
+                        $link1 = MediaHelper::getDescriptionById($above_article_second);
 
+                        if ($above_article_second) {
+                            $media1 = MediaHelper::getImageById($above_article_second);
+                            if (!empty($media1->file_name)) {
+                                $above_article_second_img_url = asset('storage/' . $media1->file_name);
+                            } else {
+                                $above_article_second_img_url = null;
+                            }
+                        }
+
+                        $above_articles_second_col_sec_row = SettingHelper::get_field('above_articles_second_col_sec_row');
+                        $link2 = MediaHelper::getDescriptionById($above_articles_second_col_sec_row);
+
+                        if ($above_articles_second_col_sec_row) {
+                            $media2 = MediaHelper::getImageById($above_articles_second_col_sec_row);
+                            if (!empty($media2->file_name)) {
+                                $above_articles_second_col_sec_row_img_url = asset('storage/' . $media2->file_name);
+                            } else {
+                                $above_articles_second_col_sec_row_img_url = null;
+                            }
+                        }
+                        @endphp
+
+                        @if (!empty($above_article_second_img_url))
                         <div class="ad-wrapper py-3">
                             <span class="ad-label">- Advertisement -</span>
-                            <a href="#">
-                                <img src="{{ asset('assets/images/300x218.gif') }}" class="ad-one-third">
+                            @if (!empty($link1))
+                            <a href="{{ $link1 }}" target="_blank">
+                                <img src="{{ $above_article_second_img_url }}"
+                                    alt="{{ $websiteName }}" class="ad-one-third">
                             </a>
+                            @else
+                                <img src="{{ $above_article_second_img_url }}"
+                                    alt="{{ $websiteName }}" class="ad-one-third">
+                            @endif
                         </div>
+                        @endif
+
+                        @if (!empty($above_articles_second_col_sec_row_img_url))
+                        <div class="ad-wrapper py-3">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($link2))
+                            <a href="{{ $link2 }}" target="_blank">
+                                <img src="{{ $above_articles_second_col_sec_row_img_url }}"
+                                    alt="{{ $websiteName }}" class="ad-one-third">
+                            </a>
+                            @else
+                                <img src="{{ $above_articles_second_col_sec_row_img_url }}"
+                                    alt="{{ $websiteName }}" class="ad-one-third">
+                            @endif
+                        </div>
+                        @endif
                     </div>
 
                 </div>
@@ -1038,19 +1250,40 @@
         {{-- BRANDS END --}}
 
         {{-- ADVERTISEMENT START --}}
+        @php
+        $above_articles_ad = SettingHelper::get_field('above_articles_ad');
+        $link = MediaHelper::getDescriptionById($above_articles_ad);
+
+        if ($above_articles_ad) {
+            $media = MediaHelper::getImageById($above_articles_ad);
+            if (!empty($media->file_name)) {
+                $above_articles_image_url = asset('storage/' . $media->file_name);
+            } else {
+                $above_articles_image_url = null;
+            }
+        }
+        @endphp
+
+        @if (!empty($above_articles_image_url))
         <div class="container py-3">
             <div class="row">
                 <div class="col-12">
                     <div class="ad-wrapper">
-                        <span class="ad-label">- Advertisement -</span>
-                        <a href="#">
-                            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&h=250&q=80"
-                                alt="Full Width Ad" class="ad-full-width">
-                        </a>
+                        <span class="ad-label">- Advertisementt -</span>
+                        @if (!empty($link))
+                        <a href="{{ $link }}" target="_blank">
+                                <img src="{{ $above_articles_image_url }}"
+                                    alt="{{ $websiteName }}" class="ad-full-width">
+                            </a>
+                        @else
+                            <img src="{{ $above_articles_image_url }}"
+                                alt="{{ $websiteName }}" class="ad-full-width">
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         {{-- ADVERTISEMENT END --}}
 
         {{-- NOTICE START --}}

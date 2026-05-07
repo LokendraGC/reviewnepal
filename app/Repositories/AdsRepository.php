@@ -18,11 +18,14 @@ class AdsRepository
         $metaDatas['below_nepal_insights_ad'] = $request->below_nepal_insights_ad ?? null;
         $metaDatas['below_trending_news_first_ad'] = $request->below_trending_news_first_ad ?? null;
         $metaDatas['below_trending_news_second_ad'] = $request->below_trending_news_second_ad ?? null;
+        $metaDatas['above_brands_ad'] = $request->above_brands_ad ?? null;
         $metaDatas['second_last_homepage_ads'] = $request->second_last_homepage_ads ?? null;
         $metaDatas['homepage_below_trending_news_first_ad'] = $request->homepage_below_trending_news_first_ad ?? null;
         $metaDatas['homepage_below_trending_news_second_ad'] = $request->homepage_below_trending_news_second_ad ?? null;
         $metaDatas['single_news_below_trending_news_first_ad'] = $request->single_news_below_trending_news_first_ad ?? null;
         $metaDatas['single_news_below_trending_news_second_ad'] = $request->single_news_below_trending_news_second_ad ?? null;
+        $metaDatas['above_article_second'] = $request->above_article_second ?? null;
+        $metaDatas['above_articles_second_col_sec_row'] = $request->above_articles_second_col_sec_row ?? null;
         $metaDatas['above_articles_ad'] = $request->above_articles_ad ?? null;
         $metaDatas['single_above_title'] = $request->single_above_title ?? null;
         $metaDatas['single_below_title'] = $request->single_below_title ?? null;
@@ -38,7 +41,7 @@ class AdsRepository
     // update Or insert data
     private function updateOrCreateMeta($setting, $key, $value)
     {
-        $setting->updateOrInsert( ['setting_name' => $key], ['setting_value' => $value] );
+        $setting->updateOrInsert(['setting_name' => $key], ['setting_value' => $value]);
     }
 
     public function index($payload)

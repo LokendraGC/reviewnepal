@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\PostRepository;
 use App\Helpers\TrendingHelper;
+use App\Helpers\LanguageHelper;
 
 class PostController extends Controller
 {
@@ -148,65 +149,70 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('search');
-        $type = $request->input('type');  // optional: 'company', 'story', 'post'
-        $sectorId = $request->input('sector');  // optional: category id
+        $query = trim((string) $request->input('search', ''));
 
-        // Get sector category info (optional)
-        $sector_cat = Category::where('type', 'sector')->first();
-        $sector_catMeta = $sector_cat ? $this->categoryRepository->getMetaDatas($sector_cat) : null;
+        $categoryId = $request->input('category');  // optional: category id
 
-        // Build query - search only in title
+        $language = LanguageHelper::getUserLanguage();
+
+        // Get sector categories for fallback list; filter by search query when provided.
+        $categoriesQuery = Category::query()->where('type', 'category');
+        if ($query !== '') {
+            $categoriesQuery->where('name', 'like', '%' . $query . '%');
+        }
+        $categories = $categoriesQuery->get();
+
+        // Build query
         $postsQuery = Post::query()
             ->where('post_status', 'publish');
 
-        // Filter by type if provided
-        if ($type) {
-            $postsQuery->where('post_type', $type);
-        } else {
-            // If no type, include all 3 types
-            $postsQuery->whereIn('post_type', ['company', 'story', 'post']);
-        }
+        // Include all 3 types
+        $postsQuery->whereIn('post_type', ['post', 'post_ne']);
 
-        // Search in title only (removed slug and content)
-        if ($query) {
-            $postsQuery->where('post_title', 'like', '%' . $query . '%');
-        }
+        // Search by post title or related category name.
+        $postsQuery->when($query !== '', function ($q) use ($query) {
+            $q->where(function ($subQuery) use ($query) {
+                $subQuery->where('post_title', 'like', '%' . $query . '%')
+                    ->orWhereHas('categories', function ($categoryQuery) use ($query) {
+                        $categoryQuery->where('categories.name', 'like', '%' . $query . '%');
+                    });
+            });
+        });
+
 
         // Filter by sector category if provided
-        if ($sectorId) {
-            $postsQuery->whereHas('categories', function ($q) use ($sectorId) {
-                $q->where('categories.id', $sectorId);
+        if ($categoryId) {
+            $postsQuery->whereHas('categories', function ($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
             });
         }
 
         // Get results
-        $posts = $postsQuery->latest()->get();
+        $posts = $postsQuery->latest()->paginate(12)->appends($request->all());
 
-        // Get the selected sector name if sectorId is provided
-        $selectedSector = null;
-        if ($sectorId) {
-            $selectedSector = Category::find($sectorId);
+        // Get the selected category name if categoryId is provided
+        $selectedCategory = null;
+        if ($categoryId) {
+            $selectedCategory = Category::find($categoryId);
         }
 
         // Prepare layout variables
         $payload = $posts->first() ?? new Post();
         $payloadMeta = [
             'seo_title' => $query ? 'Search results for: ' . $query : 'Search Results',
-            'seo_description' => 'Search results for ' . $query . ' on Neev.',
+            'seo_description' => 'Search results for ' . $query . ' on Review Nepal.',
         ];
 
-        return view('frontend.pages.search', [
+        return view('frontend.pages.search_result', [
             'posts' => $posts,
-            'selectedSector' => $selectedSector,
-            'sector_cat' => $sector_cat,
-            'sector_catMeta' => $sector_catMeta,
+            'categories' => $categories,
             'query' => $query,
-            'type' => $type,
-            'sectorId' => $sectorId,
+            'categoryId' => $categoryId,
+            'selectedCategory' => $selectedCategory,
             'payload' => $payload,
             'payloadMeta' => $payloadMeta,
-            'title' => $payloadMeta['seo_title']
+            'title' => $payloadMeta['seo_title'],
+            'language' => $language
         ]);
     }
 }

@@ -50,6 +50,7 @@
                                         </a>
                                     </div>
                                 </div>
+                                <p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>
                                 <hr>
                                 <div class="col-12">
                                     <div class="tab-content" id="v-pills-tabContent">

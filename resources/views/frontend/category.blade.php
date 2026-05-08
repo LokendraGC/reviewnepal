@@ -2,9 +2,6 @@
 
 
 @section('main-section')
-    <div class="container custom-sports-section py-5">
-        <h1 class="main-category-title">{{ $cat->name }}</h1>
-
         @if ($posts->count())
             @php
                 $heroPost = $posts->first();
@@ -18,6 +15,9 @@
                     $heroMedia = MediaHelper::getImageById($heroImageId);
                     $heroImageUrl = !empty($heroMedia?->file_name) ? asset('storage/' . $heroMedia->file_name) : null;
                 @endphp
+    <div class="container custom-sports-section py-5">
+        <h1 class="main-category-title">{{ $cat->name }}</h1>
+
                 <div class="row mb-5 align-items-start mt-2">
                     <div class="col-lg-4 order-2 order-lg-1">
                         <h2 class="hero-headline">
@@ -139,8 +139,11 @@
                     </div>
                 </div>
             </div>
+        </div>
         @else
-            <p class="mt-4">No posts found in this category.</p>
+        <div class="container custom-sports-section py-5">
+            <h1 class="main-category-title text-center">{{ $cat->name }}</h1>
+            <p class="text-center">No posts found in this category.</p>
+        </div>
         @endif
-    </div>
 @endsection

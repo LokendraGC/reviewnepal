@@ -9,6 +9,7 @@ class TemplateType
     const ABOUT = 'about';
     const CONTACT_US = 'contact_us';
     const THANK_YOU = 'thank_you';
+    const SEARCH_RESULT = 'search_result';
 
     public static function toArray()
     {
@@ -18,6 +19,7 @@ class TemplateType
             self::ABOUT,
             self::CONTACT_US,
             self::THANK_YOU,
+            self::SEARCH_RESULT,
         ];
     }
 
@@ -31,6 +33,7 @@ class TemplateType
         $keyValuePairs['About'] = self::ABOUT;
         $keyValuePairs['Contact Us'] = self::CONTACT_US;
         $keyValuePairs['Thank You'] = self::THANK_YOU;
+        $keyValuePairs['Search Result'] = self::SEARCH_RESULT;
         // Extract 'Default' and sort the remaining keys
         $defaultValue = ['Default' => $keyValuePairs['Default']];
         unset($keyValuePairs['Default']);

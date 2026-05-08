@@ -163,86 +163,7 @@
 
         </div>
     </div>
-    {{-- <nav class="header-nav">
-        <ul class="nav-list">
-            <li class="nav-item-dropdown">
-                <a href="#">News/Feature
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </a>
 
-                <ul class="nav-dropdown-menu">
-                    <li><a href="category.html">Political</a></li>
-                    <li><a href="category.html">Economical</a></li>
-                    <li><a href="category.html">Socio-Cultural</a></li>
-                    <li><a href="category.html">Educational</a></li>
-                    <li><a href="category.html">Diaspora</a></li>
-                    <li><a href="category.html">Environmental</a></li>
-                    <li><a href="category.html">Entertainment</a></li>
-                    <li><a href="category.html">Veraties</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-item-dropdown">
-                <a href="#">Sports
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </a>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="category.html">Cricket</a></li>
-                    <li><a href="category.html">Football</a></li>
-                    <li><a href="category.html">Volleyball</a></li>
-                </ul>
-            </li>
-            <li class="nav-item-dropdown">
-                <a href="#">Op-ed
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </a>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="category.html">Articles</a></li>
-                    <li><a href="category.html">Interviews</a></li>
-                </ul>
-            </li>
-            <li class="nav-item-dropdown">
-                <a href="#">Market
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </a>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="category.html">Brand Identity</a></li>
-                    <li><a href="category.html">Products</a></li>
-                    <li><a href="category.html">Service</a></li>
-                </ul>
-            </li>
-            <li class="nav-item-dropdown">
-                <a href="#">Announcement
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </a>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="category.html">Public Notice</a></li>
-                    <li><a href="category.html">Tender</a></li>
-
-                </ul>
-            </li>
-
-        </ul>
-    </nav> --}}
 
     @php
         $menu = CategoryHelper::getModel()
@@ -310,94 +231,6 @@
                     ])
                 @endif
 
-
-                {{-- <ul class="overlay-nav-column">
-                  
-                    <li class="mobile-dropdown">
-                        <a href="#" class="mobile-dropdown-toggle">
-                            News/Features
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </a>
-                        <ul class="mobile-dropdown-menu">
-                            <li><a href="category.html">Political</a></li>
-                            <li><a href="category.html">Economical</a></li>
-                            <li><a href="category.html">Socio-Cultural</a></li>
-                            <li><a href="category.html">Educational</a></li>
-                            <li><a href="category.html">Diaspora</a></li>
-                            <li><a href="category.html">Environmental</a></li>
-                            <li><a href="category.html">Entertainment</a></li>
-                            <li><a href="category.html">Veraties</a></li>
-
-                        </ul>
-                    </li>
-                    <li class="mobile-dropdown">
-                        <a class="mobile-dropdown-toggle" href="#">Sports
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </a>
-
-                        <ul class="mobile-dropdown-menu">
-                            <li><a href="category.html">Cricket</a></li>
-                            <li><a href="category.html">Football</a></li>
-                            <li><a href="category.html">Volleyball</a></li>
-                        </ul>
-                    </li>
-                    <li class="mobile-dropdown">
-                        <a class="mobile-dropdown-toggle" href="#">Op-ed
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </a>
-
-                        <ul class="mobile-dropdown-menu">
-                            <li><a href="category.html">Articles</a></li>
-                            <li><a href="category.html">Interviews</a></li>
-                        </ul>
-                    </li>
-                    <li class="mobile-dropdown">
-                        <a class="mobile-dropdown-toggle" href="#">Market
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </a>
-
-                        <ul class="mobile-dropdown-menu">
-                            <li><a href="category.html">Brand Identity</a></li>
-                            <li><a href="category.html">Products</a></li>
-                            <li><a href="category.html">Service</a></li>
-                        </ul>
-                    </li>
-                    <li class="mobile-dropdown">
-                        <a class="mobile-dropdown-toggle" href="#">Announcement
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </a>
-
-                        <ul class="mobile-dropdown-menu">
-                            <li><a href="category.html">Public Notice</a></li>
-                            <li><a href="category.html">Tender</a></li>
-
-                        </ul>
-                    </li>
-
-                </ul> --}}
-
-
-
             </div>
 
 
@@ -451,55 +284,6 @@
             </nav>
         @endif
 
-
-        {{-- <nav class="sticky-nav-links d-none d-lg-block">
-            <ul class="nav-list">
-                <li class="nav-item-dropdown">
-                    <a href="#">News/Feature</a>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="category.html">Political</a></li>
-                        <li><a href="category.html">Economical</a></li>
-                        <li><a href="category.html">Socio-Cultural</a></li>
-                        <li><a href="category.html">Educational</a></li>
-                        <li><a href="category.html">Diaspora</a></li>
-                        <li><a href="category.html">Environmental</a></li>
-                        <li><a href="category.html">Entertainment</a></li>
-                        <li><a href="category.html">Veraties</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-dropdown">
-                    <a href="#">Sports</a>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="category.html">Cricket</a></li>
-                        <li><a href="category.html">Football</a></li>
-                        <li><a href="category.html">Volleyball</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-dropdown">
-                    <a href="#">Op-ed</a>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="category.html">Brand Identity</a></li>
-                        <li><a href="category.html">Products</a></li>
-                        <li><a href="category.html">Service</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-dropdown">
-                    <a href="#">Market</a>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="category.html">Articles</a></li>
-                        <li><a href="category.html">Interviews</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-dropdown">
-                    <a href="#">Announcement</a>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="category.html">Public Notice</a></li>
-                        <li><a href="category.html">Tender</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav> --}}
-
         <div class="sticky-right-actions">
             <button class="icon-btn d-none d-lg-block search-trigger-btn" aria-label="Search">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -518,39 +302,49 @@
                     <span class="notification-badge"></span>
                 </button>
 
+
+                @php
+                    $language = LanguageHelper::getUserLanguage();
+                    $postType = $language == 'ne' ? 'post_ne' : 'post';
+                    $latestPosts = PostHelper::getModel()
+                        ->where('post_type', $postType)
+                        ->where('post_status', 'publish')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+                @endphp
+
+                @if( !empty($latestPosts) && count($latestPosts) > 0)
                 <div class="notification-dropdown">
                     <div class="dropdown-header-notify">
                         <h4>NEWS ALERTS</h4>
                     </div>
 
-
                     <div class="dropdown-alerts">
+                        
+                        @forelse ($latestPosts as $post)
+                        @php
+                            $postUrl = route('frontend.post.index', $post->slug);
+                            if ($language == 'ne') {
+                                $displayDate = NepaliDateHelper::toNepaliDate($post->created_at);
+                            } else {
+                                $displayDate = $post->created_at->diffForHumans();
+                            }
+                        @endphp
                         <div class="alert-item unread">
-                            <p class="alert-title">D.C. police sought to arrest Rep. Cory Mills (R-Florida) after
-                                assault call,
-                                records show</p>
-                            <p class="alert-meta">Today at 3:04 PM • Breaking News</p>
-                        </div>
-                        <div class="alert-item unread">
-                            <p class="alert-title">Iran says it's closing Strait of Hormuz again, citing U.S.
-                                blockade
+                            <a href="{{ $postUrl }}" class="text-decoration-none">
+                                <p class="alert-title">{{ $post->post_title }}</p>
+                            </a>
+                            <p class="alert-meta">{{ $displayDate }}
+                                {{-- •{{ $language == 'ne' ? 'ब्रेकिङ न्यूज' : 'Breaking News' }} --}}
                             </p>
-                            <p class="alert-meta">Yesterday at 7:20 AM • Breaking News</p>
                         </div>
-                        <div class="alert-item unread">
-                            <p class="alert-title">Satellite images show tankers loading Iranian oil amid U.S.
-                                blockade
-                            </p>
-                            <p class="alert-meta">Friday at 1:08 PM • Breaking News</p>
-                        </div>
-                        <div class="alert-item unread">
-                            <p class="alert-title">Iran says Strait of Hormuz to reopen amid push to end war; oil
-                                prices quickly
-                                fall</p>
-                            <p class="alert-meta">Friday at 9:41 AM • Breaking News</p>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+                @endif
+
+
             </div>
             <button class="open-menu-btn icon-btn" aria-label="Menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -580,10 +374,12 @@
 
     <div class="overlay-content search-content-center">
         <div class="search-form-container">
-            <input type="text" id="search-input-main" placeholder="Search news and articles..." autofocus>
-            <button type="submit" class="search-submit-arrow" aria-label="Submit search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+            <form action="{{ route('frontend.post.search') }}" method="get">
+                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles..." autofocus>
+                <button type="submit" class="search-submit-arrow" aria-label="Submit search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
     </div>
 

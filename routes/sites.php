@@ -35,6 +35,9 @@ Route::post('set-language', [LanguageController::class, 'setLanguage'])->name('s
 // subscribe form
 Route::match(['put', 'post'], 'subscribe-form', [SubscribeFormController::class, 'index'])->name('frontend.subscribe.form');
 
+// search post
+Route::get('search', [PostController::class, 'search'])->name('frontend.post.search');
+
 // for all dynamic post and pages
 Route::match(['get', 'post'], '{slug}/', [PostController::class, 'index'])->name('frontend.post.index');
 

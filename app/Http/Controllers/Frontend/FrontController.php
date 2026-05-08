@@ -22,7 +22,7 @@ class FrontController extends Controller
         $language = LanguageHelper::getUserLanguage();
         $post_type = $language == 'en' ? 'post' : 'post_ne';
 
-        $number_of_news_to_show_in_banner = $postMeta['number_of_news_to_show_in_banner'] ?? 1;
+        $number_of_news_to_show_in_banner = $postMeta['number_of_news_to_show_in_banner'] ?? 2;
         $category_id_left_second = $postMeta['category_id_left_second'];
         $category_id_right_second = $postMeta['category_id_right_second'];
         $category_id_third = $postMeta['category_id_third'];

@@ -54,6 +54,7 @@
                             $featured_image = $itemMeta['featured_image'] ?? null;
                             $show_banner = $itemMeta['show_banner'] ?? '0';
 
+
                             $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
 
                             if (!empty($featured_image) && !empty($media?->file_name)) {
@@ -740,7 +741,7 @@
                                         : $fifth_left_cateMeta['name_ne'] ?? '';
 
                                     // POST META
-                                $itemMeta = $fifth_left_post->GetAllMetaData();
+                                    $itemMeta = $fifth_left_post->GetAllMetaData();
 
                                     // IMAGE
                                     $post_image_id = $itemMeta['featured_image'] ?? null;

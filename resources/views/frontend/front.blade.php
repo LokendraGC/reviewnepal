@@ -5,7 +5,7 @@
     <main>
 
         {{-- RECENT POSTS START --}}
-        @if (!empty($recent_posts))
+        @if (!empty($recent_posts) && $recent_posts->count() > 0)
             @foreach ($recent_posts as $recent_post)
                 <section class="container my-5">
                     <div class="news-header-section">
@@ -122,7 +122,7 @@
         {{-- TOP ADVERTISEMENT END --}}
 
         {{-- LEFT AND RIGHT SECOND CATEGORY START --}}
-        @if (!empty($left_second_posts->posts) || !empty($right_second_posts->posts))
+        @if (!empty($left_second_posts->posts) && $left_second_posts->posts->count() > 0 || !empty($right_second_posts->posts) && $right_second_posts->posts->count() > 0)
             <section class="morning-hero-section">
                 <div class="morning-container">
 
@@ -246,7 +246,7 @@
                     {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
 
                     {{-- RIGHT SIDEBAR CATEGORY START --}}
-                    @if (!empty($right_second_posts) && !empty($right_second_posts->posts))
+                    @if (!empty($right_second_posts) && $right_second_posts->posts->count() > 0 && !empty($right_second_posts->posts))
                         <div class="hero-right-col">
 
                             @foreach ($right_second_posts->posts as $right_second_post)
@@ -409,7 +409,7 @@
             <div class="row justify-content-between">
 
                 {{-- THIRD LEFT COLUMN START --}}
-                @if (!empty($third_cat) && !empty($third_cat->posts))
+                @if (!empty($third_cat) && $third_cat->posts->count() > 0 && !empty($third_cat->posts))
                     <div class="col-lg-7">
 
 
@@ -471,7 +471,7 @@
                 {{-- THIRD LEFT COLUMN END --}}
 
                 {{-- TRENDING COLUMN START --}}
-                @if (!empty($trendingPosts))
+                @if (!empty($trendingPosts) && $trendingPosts->count() > 0)
                     @php
                         $main_title = $language == 'en' ? 'Trending News' : 'ट्रेंडिंग न्यूज';
                     @endphp
@@ -611,7 +611,7 @@
             {{-- THIRD ADVERTISEMENT END --}}
 
             {{-- NEPAL INSIGHTS START --}}
-            @if (!empty($fourth_cat) && !empty($fourth_cat->posts))
+            @if (!empty($fourth_cat) && $fourth_cat->posts->count() > 0 && !empty($fourth_cat->posts))
                 <div class="container py-5">
 
                     @php
@@ -724,7 +724,7 @@
                 <div class="row gy-5">
 
                     {{-- FIFTH LEFT CATEGORY START --}}
-                    @if (!empty($fifth_left_cat) && !empty($fifth_left_cat->posts))
+                    @if (!empty($fifth_left_cat) && $fifth_left_cat->posts->count() > 0 && !empty($fifth_left_cat->posts))
                         <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
                             <h2 class="section-title">
                                 {{ $language == 'en' ? $fifth_left_cat->name : $fifth_left_cat->GetAllMetaData()['name_ne'] ?? $fifth_left_cat->name }}
@@ -786,7 +786,7 @@
                     {{-- FIFTH LEFT CATEGORY END --}}
 
                     {{-- FIFTH MIDDLE CATEGORY START --}}
-                    @if (!empty($fifth_middle_cat) && !empty($fifth_middle_cat->posts))
+                    @if (!empty($fifth_middle_cat) && $fifth_middle_cat->posts->count() > 0 && !empty($fifth_middle_cat->posts))
                         <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
 
                             {{-- CATEGORY TITLE --}}
@@ -826,7 +826,7 @@
                                     $date = $fifth_middle_post->created_at;
                                 @endphp
 
-                                {{-- 🔥 FIRST POST (FEATURED DESIGN) --}}
+                                {{-- FIRST POST (FEATURED DESIGN) --}}
                                 @if ($loop->first)
                                     <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="featured-item">
 
@@ -846,7 +846,7 @@
 
                                     </a>
 
-                                    {{-- 📰 OTHER POSTS (LIST DESIGN) --}}
+                                    {{--  OTHER POSTS (LIST DESIGN) --}}
                                 @else
                                     <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="news-item">
 
@@ -883,7 +883,7 @@
                     {{-- FIFTH MIDDLE CATEGORY END --}}
 
                     {{-- FIFTH RIGHT CATEGORY START --}}
-                    @if (!empty($fifth_right_cat) && !empty($fifth_right_cat->posts))
+                    @if (!empty($fifth_right_cat) && $fifth_right_cat->posts->count() > 0 && !empty($fifth_right_cat->posts))
                                 <div class="col-lg-4 col-md-12 d-flex flex-column mt-5">
 
                                     {{-- CATEGORY TITLE --}}
@@ -932,7 +932,7 @@
                                                     $date = $fifth_right_post->created_at;
                                                 @endphp
 
-                                                {{-- 🔥 FIRST POST (BIG ITEM STYLE) --}}
+                                                {{--  FIRST POST (BIG ITEM STYLE) --}}
                                                 @if ($loop->first)
                                                     <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="featured-item">
 
@@ -953,7 +953,7 @@
 
                                                     </a>
                                                 @else
-                                                    {{-- 📰 OTHER POSTS --}}
+                                                    {{--  OTHER POSTS --}}
                                                     <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="news-item">
 
                                                         <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
@@ -1031,7 +1031,7 @@
 
 
             {{-- BRANDS START --}}
-            @if (!empty($sixth_cat) && !empty($sixth_cat->posts))
+            @if (!empty($sixth_cat) && $sixth_cat->posts->count() > 0 && !empty($sixth_cat->posts))
                 <div class="container py-5">
 
                     {{-- HEADER --}}
@@ -1279,7 +1279,7 @@
             {{-- ADVERTISEMENT END --}}
 
             {{-- NOTICE START --}}
-            @if (!empty($seventh_cat) && !empty($seventh_cat->posts))
+            @if (!empty($seventh_cat) && $seventh_cat->posts->count() > 0 && !empty($seventh_cat->posts))
                 <hr style="border-color: #c7c7c7; margin: 0;">
                 <div class="container py-5">
 

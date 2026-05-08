@@ -22,10 +22,13 @@ class CategoryController extends Controller
        
         $language = LanguageHelper::getUserLanguage();
 
+        $post_type = $language == 'en' ? 'post' : 'post_ne';
+
         $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
         $posts = $cat->posts()
             ->where('posts.post_status', 'publish')
+            ->where('posts.post_type', $post_type)
             ->orderBy('posts.created_at', 'desc')
             ->paginate(10);
 

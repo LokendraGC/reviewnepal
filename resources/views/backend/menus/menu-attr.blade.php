@@ -48,6 +48,12 @@
                 name="menu_item_main_title" value="{{ $item->post_title }}" />
         </div>
         <div class="mb-1">
+            <label for="menu_item_title_ne_{{ $item->id }}" class="form-label mb-0 fw-500">
+                Menu Title in Nepali</label>
+            <input type="text" class="form-control p-1" id="menu_item_title_ne_{{ $item->id }}"
+                name="menu_item_title_ne" value="{{ $item_meta['menu_item_title_ne'] ?? '' }}" />
+        </div>
+        <div class="mb-1">
             <label for="menu_item_classes" class="form-label mb-0 fw-500">CSS Classes
                 (optional)
             </label>

@@ -57,7 +57,7 @@
                 </a>
             </li>
 
-            @can(['read_menu'])
+           
                 <li class="side-nav-title text-success">Menu Management</li>
                 <li class="side-nav-item {{ request()->segment(2) === 'menu' ? 'menuitem-active' : '' }}">
                     <a data-bs-toggle="collapse" href="#menus" aria-expanded="false" aria-controls="menus"
@@ -79,7 +79,7 @@
                         </ul>
                     </div>
                 </li>
-            @endcan
+       
 
 
             @can(['read_site_settings', 'update_site_settings'])
@@ -95,7 +95,7 @@
             <li class="side-nav-title text-success">Ads Management</li>
             <li class="side-nav-item">
                 <a href="{{ route('backend.ads.setting') }}" class="side-nav-link">
-                    <i class="ri-settings-5-line"></i>
+                    <i class="ri-advertisement-line"></i>
                     <span> Ads Settings </span>
                 </a>
             </li>

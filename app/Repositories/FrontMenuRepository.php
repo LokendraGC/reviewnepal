@@ -15,7 +15,8 @@ class FrontMenuRepository
             ->where(['id' => $meta['menu_item_object_id'], 'type' => 'category'])
             ->first();
             $menuTitle = $menu->post_title;
-            $menuLink = route($meta['menu_item_route'], $menuItem->slug);
+            $routeName = $meta['menu_item_route'] ?? 'frontend.category.index';
+            $menuLink = route($routeName, $menuItem->slug);
             $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
             $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';
 
@@ -33,7 +34,8 @@ class FrontMenuRepository
             ->where(['id' => $meta['menu_item_object_id'], 'post_type' => 'page'])
             ->first();
             $menuTitle = $menu->post_title;
-            $menuLink = route($meta['menu_item_route'], $menuItem->slug);
+            $routeName = $meta['menu_item_route'] ?? 'frontend.post.index';
+            $menuLink = route($routeName, $menuItem->slug);
             $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
             $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';
 

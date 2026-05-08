@@ -79,9 +79,10 @@ class MenuRepository
         $data['menu_item_attr_title'] = $request['menu_item_attr_title'] ?? null;
         $data['menu_item_target'] = $request['menu_item_target'] ?? null;
         $data['menu_item_classes'] = $request['menu_item_classes'] ?? null;
-        // $data['menu_item_route'] = isset( $request['menu_item_route'] ) ? $request['menu_item_route'] : NULL;
+        $data['menu_item_route'] = $request['menu_item_route'] ?? null;
         $data['menu_item_type_name'] = $request['menu_item_type_name'] ?? null;
         $data['menu_item_custom_title'] = $request['menu_item_custom_title'] ?? null;
+        $data['menu_item_title_ne'] = isset($request['menu_item_title_ne']) ? $request['menu_item_title_ne'] : NULL;
 
         // insert or update meta data
         foreach ($data as $key => $value) {

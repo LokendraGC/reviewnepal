@@ -21,10 +21,10 @@ class MenuController extends Controller
 
     public function __construct(Post $postModel, Category $catModel, CategoryRepository $categoryRepository, MenuRepository $menuRepository)
     {
-        $this->middleware('permission:create_menu', ['only' => ['create','store']] );
-        $this->middleware('permission:read_menu', ['only' => ['index']] );
-        $this->middleware('permission:update_menu', ['only' => ['update','edit', 'addEditMenuItems', 'updateEditMenuItems']] );
-        $this->middleware('permission:delete_menu', ['only' => 'destroy']);
+        // $this->middleware('permission:create_menu', ['only' => ['create','store']] );
+        // $this->middleware('permission:read_menu', ['only' => ['index']] );
+        // $this->middleware('permission:update_menu', ['only' => ['update','edit', 'addEditMenuItems', 'updateEditMenuItems']] );
+        // $this->middleware('permission:delete_menu', ['only' => 'destroy']);
 
         $this->categoryType = 'nav_menu';
         $this->postModel = $postModel;
@@ -261,6 +261,7 @@ class MenuController extends Controller
             'menu_item_attr_title'   => $request->menu_item_attr_title ?? null,
             'menu_item_url'          => $request->menu_item_url ?? null,
             'menu_item_target'       => $request->menu_item_target ?? null,
+            'menu_item_title_ne'     => $request->menu_item_title_ne ?? null,
         ];
 
         foreach ($meta as $key => $value) {

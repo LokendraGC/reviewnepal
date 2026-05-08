@@ -66,7 +66,7 @@
                 $image_url = asset('assets/images/reviewnepal-logo.svg');
             }
 
-           @endphp
+        @endphp
 
 
 
@@ -77,16 +77,16 @@
         <div class="header-left-actions">
 
             <button class="icon-btn d-none d-lg-block search-trigger-btn" aria-label="Search">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
             <div class="notification-wrapper">
                 <button class="notification-btn icon-btn" aria-label="Notifications">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
@@ -122,8 +122,9 @@
                                 <a href="{{ $postUrl }}" class="text-decoration-none">
                                     <p class="alert-title">{{ $post->post_title }}</p>
                                 </a>
-                                <p class="alert-meta">{{ $displayDate }} •
-                                    {{ $language == 'ne' ? 'ब्रेकिङ न्यूज' : 'Breaking News' }}</p>
+                                <p class="alert-meta">{{ $displayDate }}
+                                    {{-- •{{ $language == 'ne' ? 'ब्रेकिङ न्यूज' : 'Breaking News' }} --}}
+                                </p>
                             </div>
                         @empty
                             <div class="alert-item">
@@ -135,8 +136,8 @@
                 </div>
             </div>
             <button class="open-menu-btn icon-btn" aria-label="Menu">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -150,7 +151,8 @@
                 <span class="toggle-label" id="lang-en">EN</span>
 
                 <label class="switch" for="lang-toggle">
-                    <input type="checkbox" id="lang-toggle" aria-labelledby="lang-en lang-np" {{ $checked ? 'checked' : '' }}>
+                    <input type="checkbox" id="lang-toggle" aria-labelledby="lang-en lang-np"
+                        {{ $checked ? 'checked' : '' }}>
                     <span class="slider">
                         <span class="flag-icon"></span>
                     </span>
@@ -161,12 +163,12 @@
 
         </div>
     </div>
-    <nav class="header-nav">
+    {{-- <nav class="header-nav">
         <ul class="nav-list">
             <li class="nav-item-dropdown">
                 <a href="#">News/Feature
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
@@ -185,8 +187,8 @@
 
             <li class="nav-item-dropdown">
                 <a href="#">Sports
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
@@ -199,8 +201,8 @@
             </li>
             <li class="nav-item-dropdown">
                 <a href="#">Op-ed
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
@@ -212,8 +214,8 @@
             </li>
             <li class="nav-item-dropdown">
                 <a href="#">Market
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
@@ -226,8 +228,8 @@
             </li>
             <li class="nav-item-dropdown">
                 <a href="#">Announcement
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
@@ -240,7 +242,24 @@
             </li>
 
         </ul>
-    </nav>
+    </nav> --}}
+
+    @php
+        $menu = CategoryHelper::getModel()
+            ->where(['id' => 147, 'type' => 'nav_menu'])
+            ->first();
+    @endphp
+
+    @if (!empty($menu))
+        <nav class="header-nav">
+
+
+            @include('frontend.layouts.header-menu', [
+                'menu' => $menu,
+            ])
+
+        </nav>
+    @endif
 
 </header>
 <div id="nav-overlay" class="nav-overlay">
@@ -249,8 +268,8 @@
             <a href="{{ '/' }}"><img src="{{ $image_url }}" alt="{{ $websiteName }}"></a>
         </div>
         <button id="close-menu-btn" class="close-btn" aria-label="Close Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -276,12 +295,30 @@
         <div class="overlay-nav-wrapper">
 
             <div class="mobile-only-pane d-lg-none active" id="mobile-categories">
-                <ul class="overlay-nav-column">
+
+
+                @php
+                    $headerMenu = CategoryHelper::getModel()
+                        ->where(['id' => 147, 'type' => 'nav_menu'])
+                        ->first();
+
+                @endphp
+
+                @if (!empty($headerMenu))
+                    @include('frontend.layouts.header-mobile-menu', [
+                        'menu' => $headerMenu,
+                    ])
+                @endif
+
+
+                {{-- <ul class="overlay-nav-column">
+                  
                     <li class="mobile-dropdown">
                         <a href="#" class="mobile-dropdown-toggle">
-                            News/Feature
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            News/Features
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
@@ -299,8 +336,9 @@
                     </li>
                     <li class="mobile-dropdown">
                         <a class="mobile-dropdown-toggle" href="#">Sports
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
@@ -313,8 +351,9 @@
                     </li>
                     <li class="mobile-dropdown">
                         <a class="mobile-dropdown-toggle" href="#">Op-ed
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
@@ -326,8 +365,9 @@
                     </li>
                     <li class="mobile-dropdown">
                         <a class="mobile-dropdown-toggle" href="#">Market
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
@@ -340,8 +380,9 @@
                     </li>
                     <li class="mobile-dropdown">
                         <a class="mobile-dropdown-toggle" href="#">Announcement
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
@@ -352,19 +393,32 @@
 
                         </ul>
                     </li>
-                </ul>
+
+                </ul> --}}
+
+
+
             </div>
 
-            <div class="general-menu-pane" id="mobile-general">
-                <div class="d-flex flex-row gap-lg-5">
-                    <ul class="overlay-nav-column">
-                        <li><a href="about.html">About us</a></li>
-                        <li><a href="category.html">News</a></li>
-                        <li><a href="#">Advertisements</a></li>
-                        <li><a href="contact.html">Contact us</a></li>
-                    </ul>
+
+            @php
+                $menu = CategoryHelper::getModel()
+                    ->where(['id' => 148, 'type' => 'nav_menu'])
+                    ->first();
+            @endphp
+
+            @if (!empty($menu))
+                <div class="general-menu-pane" id="mobile-general">
+                    <div class="d-flex flex-row gap-lg-5">
+
+
+                        @include('frontend.layouts.header-overlay-menu', [
+                            'menu' => $menu,
+                        ])
+
+                    </div>
                 </div>
-            </div>
+            @endif
 
         </div>
     </div>
@@ -380,7 +434,25 @@
             <a href="{{ '/' }}"><img src="{{ $image_url }}" alt="{{ $websiteName }}"></a>
         </div>
 
-        <nav class="sticky-nav-links d-none d-lg-block">
+
+        @php
+            $headerMenu = CategoryHelper::getModel()
+                ->where(['id' => 147, 'type' => 'nav_menu'])
+                ->first();
+
+        @endphp
+
+        @if (!empty($headerMenu))
+            <nav class="sticky-nav-links d-none d-lg-block">
+
+                @include('frontend.layouts.header-menu', [
+                    'menu' => $headerMenu,
+                ])
+            </nav>
+        @endif
+
+
+        {{-- <nav class="sticky-nav-links d-none d-lg-block">
             <ul class="nav-list">
                 <li class="nav-item-dropdown">
                     <a href="#">News/Feature</a>
@@ -426,20 +498,20 @@
                     </ul>
                 </li>
             </ul>
-        </nav>
+        </nav> --}}
 
         <div class="sticky-right-actions">
             <button class="icon-btn d-none d-lg-block search-trigger-btn" aria-label="Search">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
             <div class="notification-wrapper  ">
                 <button class="notification-btn icon-btn" aria-label="Notifications">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
@@ -460,12 +532,14 @@
                             <p class="alert-meta">Today at 3:04 PM • Breaking News</p>
                         </div>
                         <div class="alert-item unread">
-                            <p class="alert-title">Iran says it's closing Strait of Hormuz again, citing U.S. blockade
+                            <p class="alert-title">Iran says it's closing Strait of Hormuz again, citing U.S.
+                                blockade
                             </p>
                             <p class="alert-meta">Yesterday at 7:20 AM • Breaking News</p>
                         </div>
                         <div class="alert-item unread">
-                            <p class="alert-title">Satellite images show tankers loading Iranian oil amid U.S. blockade
+                            <p class="alert-title">Satellite images show tankers loading Iranian oil amid U.S.
+                                blockade
                             </p>
                             <p class="alert-meta">Friday at 1:08 PM • Breaking News</p>
                         </div>
@@ -479,8 +553,8 @@
                 </div>
             </div>
             <button class="open-menu-btn icon-btn" aria-label="Menu">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -496,8 +570,8 @@
             <a href="{{ '/' }}"><img src="{{ $image_url }}" alt="{{ $websiteName }}"></a>
         </div>
         <button id="close-search-btn" class="close-btn search-close-red" aria-label="Close Search">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>

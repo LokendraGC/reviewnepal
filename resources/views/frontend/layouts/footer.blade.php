@@ -58,9 +58,9 @@
             @endif
 
             <div class="col-lg-4 col-md-6">
-                
+
                 @if ($subscribe_text)
-                <h2 class="subscribe-title">{{ $subscribe_text }}</h2>
+                    <h2 class="subscribe-title">{{ $subscribe_text }}</h2>
                 @endif
 
                 <form class="subscribe-form">
@@ -80,20 +80,24 @@
             </div>
         </div>
 
-        <div class="footer-divider"></div>
-        <div class="footer-nav">
-            <a href="#">About us</a>
-            <a href="#">News</a>
-            <a href="#">Authors</a>
-            <a href="#">Subscriptions</a>
-            <a href="#">Advertise</a>
-            <a href="#">Podcasts</a>
-            <a href="#">Contact us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Licensing</a>
-            <a href="#">Changelog</a>
-        </div>
+        @php
+            $footerMenuFirst = CategoryHelper::getModel()
+                ->where(['id' => 146, 'type' => 'nav_menu'])
+                ->first();
+        @endphp
+
+
+        @if (!empty($footerMenuFirst))
+            <div class="footer-divider"></div>
+            <div class="footer-nav">
+
+                @include('frontend.layouts.footer-menu', [
+                    'footerMenu' => $footerMenuFirst,
+                ])
+
+            </div>
+        @endif
+
 
         <div
             class="footer-bottom-divider d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">

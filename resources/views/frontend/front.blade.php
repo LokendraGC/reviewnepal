@@ -9,9 +9,9 @@
             @foreach ($recent_posts as $recent_post)
                 <section class="container my-5">
                     <div class="news-header-section">
-                        <h1 class="main-headline">
+                        <h2 class="main-headline">
                             <a href="{{ route('frontend.post.index', $recent_post->slug) }}">{{ $recent_post->post_title }}</a>
-                        </h1>
+                        </h2>
 
                         @php
                             $author = $recent_post->categories()->where('categories.type', 'author')->first();
@@ -166,11 +166,11 @@
                                         <div class="primary-content">
                                             <span class="story-tag">{{ $cat_name }}</span>
 
-                                            <h2 class="primary-title">
+                                            <h1 class="primary-title">
                                                 <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
                                                     {{ $left_second_post->post_title }}
                                                 </a>
-                                            </h2>
+                                            </h1>
 
 
                                             <p class="primary-excerpt">

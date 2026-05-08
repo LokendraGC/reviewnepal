@@ -105,7 +105,7 @@
                 @endphp
                 <div class="notification-dropdown">
                     <div class="dropdown-header-notify">
-                        <h4>{{ $language == 'ne' ? 'ताजा समाचार' : 'NEWS ALERTS' }}</h4>
+                        <h3>{{ $language == 'ne' ? 'ताजा समाचार' : 'NEWS ALERTS' }}</h3>
                     </div>
 
                     <div class="dropdown-alerts">

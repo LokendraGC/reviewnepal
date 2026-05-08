@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoutingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Frontend\SitemapController;
 
 
 /*
@@ -48,7 +49,7 @@ Route::get('storage', function () {
     Artisan::call('storage:link');
 });
 
-// Route::get('/sitemap_index.xml', [SitemapController::class, 'index']);
+Route::get('/sitemap_index.xml', [SitemapController::class, 'index']);
 
 Route::get('npreview-login', [AuthController::class, 'login'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

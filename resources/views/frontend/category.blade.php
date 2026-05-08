@@ -84,8 +84,8 @@
                             @php
                                 $currentPage = $posts->currentPage();
                                 $lastPage = $posts->lastPage();
-                                $startPage = max(1, $currentPage - 1);
-                                $endPage = min($lastPage, $currentPage + 1);
+                                $startPage = max(1, $currentPage - 2);
+                                $endPage = min($lastPage, $currentPage + 2);
                             @endphp
                             <nav aria-label="Page navigation">
                                 <ul class="pagination-red">

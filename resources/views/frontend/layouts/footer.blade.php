@@ -63,7 +63,9 @@
                     <h2 class="subscribe-title">{{ $subscribe_text }}</h2>
                 @endif
 
-                <form class="subscribe-form">
+                <form class="subscribe-form" action="{{ route('frontend.subscribe.form') }}" method="post">
+                    @csrf
+                    @method('PUT')
                     <div class="input-group">
                         <span class="input-group-text">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -73,9 +75,12 @@
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </span>
-                        <input type="email" class="form-control" placeholder="Enter your e-mail..." required>
-                        <button class="btn btn-subscribe" type="button">SUBSCRIBE NOW</button>
+                        <input type="email" class="form-control" placeholder="Enter your e-mail..." name="email">
+                        <button class="btn btn-subscribe" type="submit">SUBSCRIBE NOW</button>
                     </div>
+                    @error('email')
+                    <span class="text-danger mt-1">{{ $message }}</span>
+                    @enderror
                 </form>
             </div>
         </div>

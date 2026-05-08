@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\FrontController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\MigrateController;
+use App\Http\Controllers\Frontend\SubscribeFormController;
 
 // for home page
 Route::get('/', [FrontController::class, 'index'])->name('home');
@@ -30,6 +31,9 @@ Route::get('category/{category_slug}/', [CategoryController::class, 'index'])->n
 
 // must be before catch-all `{slug}` so `/set-language` is not treated as a post slug
 Route::post('set-language', [LanguageController::class, 'setLanguage'])->name('set.language');
+
+// subscribe form
+Route::match(['put', 'post'], 'subscribe-form', [SubscribeFormController::class, 'index'])->name('frontend.subscribe.form');
 
 // for all dynamic post and pages
 Route::match(['get', 'post'], '{slug}/', [PostController::class, 'index'])->name('frontend.post.index');

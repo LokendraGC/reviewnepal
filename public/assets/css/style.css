@@ -2468,3 +2468,11 @@ form input[type=search]{
 .similar-news-item-title a{
   text-decoration: none !important;
 }
+
+
+/* latest news */
+@media (max-width: 1399px) {
+  .notification-dropdown{
+      left: -140px
+  }
+}

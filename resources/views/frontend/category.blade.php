@@ -49,8 +49,8 @@
             <div class="row gy-5">
                 @foreach ($gridPosts as $post)
                     @php
-                        $postMeta = $post->GetAllMetaData();
-                        $postImageId = $postMeta['featured_image'] ?? null;
+                        $itemMeta = $post->GetAllMetaData();
+                        $postImageId = $itemMeta['featured_image'] ?? null;
                         $postMedia = MediaHelper::getImageById($postImageId);
                         $postImageUrl = !empty($postMedia?->file_name) ? asset('storage/' . $postMedia->file_name) : null;
                     @endphp

@@ -186,8 +186,8 @@
                   $catMeta = $category->GetAllMetaData();
                   $category_name = $catMeta['name_ne'] ?? 'Unknown';
 
-                  $postMeta = $trendingPost->GetAllMetaData();
-                  $featured_image = $postMeta['featured_image'] ?? null;
+                  $itemMeta = $trendingPost->GetAllMetaData();
+                  $featured_image = $itemMeta['featured_image'] ?? null;
                   $media = MediaHelper::getImageById($featured_image);
                   if (!empty($featured_image) && !empty($media->file_name)) {
                     $featured_image_url = asset('storage/' . $media->file_name);
@@ -334,8 +334,8 @@
           @foreach ($relatedPosts as $relatedPost)
             @php
 
-              $postMeta = $relatedPost->GetAllMetaData();
-              $featured_image = $postMeta['featured_image'] ?? null;
+              $itemMeta = $relatedPost->GetAllMetaData();
+              $featured_image = $itemMeta['featured_image'] ?? null;
 
               $media = MediaHelper::getImageById($featured_image);
               if (!empty($featured_image) && !empty($media->file_name)) {

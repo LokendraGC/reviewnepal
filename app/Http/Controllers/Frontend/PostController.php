@@ -73,21 +73,21 @@ class PostController extends Controller
 
 
         if ($post->post_type === 'page') {
-         
+
 
             $viewName = $this->getViewName($post, $metaDatas);
 
             $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
                 ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
                 ->latest()->get();
- 
+
             if ($viewName) {
                 return view($viewName, [
                     'post' => $post,
                     'metaData' => $metaDatas,
                     'homeMeta' => $homeMeta,
                     'posts' => $posts,
-                 
+
                 ]);
             }
         }
@@ -105,10 +105,12 @@ class PostController extends Controller
 
             $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
 
+            $postMeta = $this->getMetaData($post);
+
 
             return view('frontend.single-post', [
                 'post' => $post,
-                'postMeta' => $metaDatas,
+                'postMeta' => $postMeta,
                 'author' => $author,
                 'user' => $user,
                 'category' => $category,
@@ -127,9 +129,11 @@ class PostController extends Controller
             $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
             $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
 
+            $postMeta = $this->getMetaData($post);
+
             return view('frontend.single-post_ne', [
                 'post' => $post,
-                'postMeta' => $metaDatas,
+                'postMeta' => $postMeta,
                 'author' => $author,
                 'user' => $user,
                 'category' => $category,

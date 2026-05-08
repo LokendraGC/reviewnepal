@@ -8,13 +8,15 @@ use App\Helpers\LanguageHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Helpers\TrendingHelper;
+use App\Helpers\SettingHelper;
+
 
 
 class FrontController extends Controller
 {
     public function index()
     {
-        $pageId = 1;
+        $pageId = SettingHelper::get_home_id() ?? 1;
         $post = Post::findOrFail($pageId);
         $postMeta = $post->GetAllMetaData();
         $language = LanguageHelper::getUserLanguage();
@@ -34,56 +36,74 @@ class FrontController extends Controller
 
         // RECENT POSTS
         $recent_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
-        ->latest()->take($number_of_news_to_show_in_banner)->get();
+            ->latest()->take($number_of_news_to_show_in_banner)->get();
 
         // LEFT SECOND CATEGORY
-        $left_second_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc' )->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
-        }])->where('id', $category_id_left_second)->first();
+        $left_second_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
+            }
+        ])->where('id', $category_id_left_second)->first();
 
         // RIGHT SECOND CATEGORY
-        $right_second_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
-        }])->where('id', $category_id_right_second)->first();
+        $right_second_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
+            }
+        ])->where('id', $category_id_right_second)->first();
 
         // THIRD CATEGORY
-        $third_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-        }])->where('id', $category_id_third)->first();
+        $third_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            }
+        ])->where('id', $category_id_third)->first();
 
         // FOURTH CATEGORY
-        $fourth_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
-        }])->where('id', $category_id_fourth)->first();
+        $fourth_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
+            }
+        ])->where('id', $category_id_fourth)->first();
 
         // FIFTH LEFT CATEGORY
-        $fifth_left_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-        }])->where('id', $category_id_left_fifth)->first();
+        $fifth_left_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            }
+        ])->where('id', $category_id_left_fifth)->first();
 
         // FIFTH MIDDLE CATEGORY
-        $fifth_middle_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(3);
-        }])->where('id', $category_id_middle_fifth)->first();
+        $fifth_middle_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(3);
+            }
+        ])->where('id', $category_id_middle_fifth)->first();
 
         // FIFTH RIGHT CATEGORY
-        $fifth_right_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-        }])->where('id', $category_id_right_fifth)->first();
+        $fifth_right_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            }
+        ])->where('id', $category_id_right_fifth)->first();
 
         // SIXTH CATEGORY
-        $sixth_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-        }])->where('id', $category_id_sixth)->first();
+        $sixth_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            }
+        ])->where('id', $category_id_sixth)->first();
 
         // SEVENTH CATEGORY
-        $seventh_cat = Category::with(['posts' => function($query) use ($post_type) {
-            $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
-        }])->where('id', $category_id_seventh)->first();
+        $seventh_cat = Category::with([
+            'posts' => function ($query) use ($post_type) {
+                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
+            }
+        ])->where('id', $category_id_seventh)->first();
 
         // TRENDING POSTS
-      $trendingPosts = TrendingHelper::getTrendingPosts($post_type);
-        
+        $trendingPosts = TrendingHelper::getTrendingPosts($post_type);
+
 
         $user = Auth::user();
 

@@ -1,21 +1,28 @@
+@if ($headerLogo)
+    @php
+        $media = MediaHelper::getImageById($headerLogo);
+        $logo = $media && isset($media->file_name)
+            ? asset('storage/' . $media->file_name)
+            : asset('assets/img/logo/neev-logo.png');
+    @endphp
+@else
+    @php
+        $logo = asset('assets/img/logo/neev-logo.png');
+    @endphp
+@endif
+
 @php
-    if ($headerLogo) {
-        $logo = unserialize($headerLogo);
-        $logo = asset('storage/' . $logo[0]['file_name']);
-    } else {
-        $logo = asset('front/img/general/logo-1.svg');
-    }
+    $schemaData = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => $websiteName,
+        'alternateName' => $websiteName,
+        'url' => url('/'),
+        'logo' => $logo,
+        'sameAs' => [url('/')],
+    ];
 @endphp
 
-{{-- <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "{{ $websiteName }}",
-      "alternateName": "{{ $websiteName }}",
-      "url": "{{ url('/') }}",
-      "logo": "{{ $logo }}",
-      "sameAs": "{{ url('/') }}"
-    }
-    </script> --}}
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"{{ $websiteName }}","alternateName":"{{ $websiteName }}","url":"{{ url('/') }}","logo":"{{ $logo }}","sameAs":"{{ url('/') }}"}</script>
+<script type="application/ld+json">
+    {!! json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>

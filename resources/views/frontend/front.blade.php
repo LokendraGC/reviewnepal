@@ -50,9 +50,9 @@
                     <div class="featured-image-container">
 
                         @php
-                            $postMeta = $recent_post->GetAllMetaData();
-                            $featured_image = $postMeta['featured_image'] ?? null;
-                            $show_banner = $postMeta['show_banner'] ?? '0';
+                            $itemMeta = $recent_post->GetAllMetaData();
+                            $featured_image = $itemMeta['featured_image'] ?? null;
+                            $show_banner = $itemMeta['show_banner'] ?? '0';
 
                             $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
 
@@ -135,10 +135,10 @@
 
                                     $cat_name = $language == 'en' ? $left_second_posts->name : $cateMeta['name_ne'];
 
-                                    $postMeta = $left_second_post->GetAllMetaData();
+                                    $itemMeta = $left_second_post->GetAllMetaData();
 
                                     // POST IMAGE
-                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                    $post_image_id = $itemMeta['featured_image'] ?? null;
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                     $post_image_url = !empty($post_media?->file_name)
                                         ? asset('storage/' . $post_media->file_name)
@@ -256,10 +256,10 @@
                                     $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                     // POST META
-                                    $postMeta = $right_second_post->GetAllMetaData();
+                                    $itemMeta = $right_second_post->GetAllMetaData();
 
                                     // IMAGE
-                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                    $post_image_id = $itemMeta['featured_image'] ?? null;
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                     $post_image_url = !empty($post_media?->file_name)
                                         ? asset('storage/' . $post_media->file_name)
@@ -394,8 +394,8 @@
         <div class="container py-5">
 
             @php
-                $postMeta = $post->GetAllMetaData();
-                $main_title = $language == 'en' ? $postMeta['main_title_third'] : $postMeta['main_title_nepali_third'];
+                $itemMeta = $post->GetAllMetaData();
+                $main_title = $language == 'en' ? $itemMeta['main_title_third'] : $itemMeta['main_title_nepali_third'];
                 $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
             @endphp
 
@@ -420,10 +420,10 @@
                                 $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                 // POST META
-                                $postMeta = $third_post->GetAllMetaData();
+                                $itemMeta = $third_post->GetAllMetaData();
 
                                 // IMAGE
-                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                 $post_image_url = !empty($post_media?->file_name)
                                     ? asset('storage/' . $post_media->file_name)
@@ -636,10 +636,10 @@
                                 $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                 // POST META
-                                $postMeta = $fourth_post->GetAllMetaData();
+                                $itemMeta = $fourth_post->GetAllMetaData();
 
                                 // IMAGE
-                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                 $post_image_url = !empty($post_media?->file_name)
                                     ? asset('storage/' . $post_media->file_name)
@@ -740,10 +740,10 @@
                                         : $fifth_left_cateMeta['name_ne'] ?? '';
 
                                     // POST META
-                                    $postMeta = $fifth_left_post->GetAllMetaData();
+                                $itemMeta = $fifth_left_post->GetAllMetaData();
 
                                     // IMAGE
-                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                    $post_image_id = $itemMeta['featured_image'] ?? null;
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                     $post_image_url = !empty($post_media?->file_name)
                                         ? asset('storage/' . $post_media->file_name)
@@ -801,10 +801,10 @@
                                     $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                     // POST META
-                                    $postMeta = $fifth_middle_post->GetAllMetaData();
+                                    $itemMeta = $fifth_middle_post->GetAllMetaData();
 
                                     // IMAGE
-                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                    $post_image_id = $itemMeta['featured_image'] ?? null;
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                     $post_image_url =
@@ -904,10 +904,10 @@
                                                     $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                                     // POST META
-                                                    $postMeta = $fifth_right_post->GetAllMetaData();
+                                                    $itemMeta = $fifth_right_post->GetAllMetaData();
 
                                                     // IMAGE
-                                                    $post_image_id = $postMeta['featured_image'] ?? null;
+                                                    $post_image_id = $itemMeta['featured_image'] ?? null;
                                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                                     $post_image_url =
@@ -1059,10 +1059,10 @@
                                         $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                         // POST META
-                                        $postMeta = $sixth_post->GetAllMetaData();
+                                        $itemMeta = $sixth_post->GetAllMetaData();
 
                                         // IMAGE
-                                        $post_image_id = $postMeta['featured_image'] ?? null;
+                                        $post_image_id = $itemMeta['featured_image'] ?? null;
                                         $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                         $post_image_url =
@@ -1301,10 +1301,10 @@
                                 $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                 // POST META
-                                $postMeta = $seventh_post->GetAllMetaData();
+                                $itemMeta = $seventh_post->GetAllMetaData();
 
                                 // IMAGE
-                                $post_image_id = $postMeta['featured_image'] ?? null;
+                                $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                 $post_image_url =

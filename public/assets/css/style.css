@@ -574,6 +574,14 @@ body {
   text-decoration: none;
 }
 
+.post-title{
+  line-height: 1rem !important;
+}
+
+.card-title{
+  line-height: 1rem !important;
+}
+
 /* =========================================
    RIGHT COLUMN
    ========================================= */

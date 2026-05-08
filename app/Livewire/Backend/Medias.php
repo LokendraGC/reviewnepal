@@ -145,11 +145,19 @@ class Medias extends Component
     #[On('media-updated')]
     public function render()
     {
-        // $this->media = Media::latest()->take($this->perPage)->get();
-        // $this->media = Media::latest()->paginate(4);
-        
+        $query = Media::where('file_original_name', 'like', '%'.$this->search.'%');
+
+        // If there are selected media IDs, order them first so they appear at the top
+        $selectedIds = array_filter(array_map('intval', $this->selectedMedia));
+        if (!empty($selectedIds)) {
+            $ids = implode(',', $selectedIds);
+            $query->orderByRaw("CASE WHEN id IN ({$ids}) THEN 0 ELSE 1 END");
+        }
+
+        $query->latest();
+
         return view('livewire.backend.medias', [
-            'medias' => Media::where('file_original_name', 'like', '%'.$this->search.'%')->latest()->paginate($this->perPage),
+            'medias' => $query->paginate($this->perPage),
         ]);
     }
 }

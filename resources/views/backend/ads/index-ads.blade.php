@@ -27,10 +27,10 @@
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <div class="nav  nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'header-ads' ? 'active' : '' }}"
-                                            id="header-ads-tab" data-bs-toggle="pill" href="#header-ads" role="tab"
-                                            aria-controls="header-ads"
-                                            aria-selected="{{ request()->query('tab') == 'header-ads' ? 'true' : 'false' }}"
+                                        <a class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active' : '' }}"
+                                            id="header-advertisements-tab" data-bs-toggle="pill" href="#header-advertisements" role="tab"
+                                            aria-controls="header-advertisements"
+                                            aria-selected="{{ request()->query('tab') == 'header-advertisements' ? 'true' : 'false' }}"
                                             tabindex="-1">
                                             Header
                                         </a>

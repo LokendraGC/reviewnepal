@@ -468,59 +468,6 @@
             </div>
         </div>
 
-
-        {{-- Second Last Homepage ads --}}
-        <!-- <div class="mb-3 col-6">
-            <div>
-                <label for="homepage_second_last_homepage_ads" class="form-label">Second Last Homepage Ads</label>
-                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    style="cursor: pointer;" data-field="homepage_second_last_homepage_ads" data-select="single">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text bg-soft-secondary font-weight-medium">
-                            Browse</div>
-                    </div>
-                    <div class="form-control file-amount">Choose File</div>
-                </div>
-                {{-- preview --}}
-                <div class="preview-closer">
-                    @if (
-                            isset($settings['second_last_homepage_ads']) &&
-                            ($media = MediaHelper::getModel()->where('id', $settings['second_last_homepage_ads'])->first())
-                        )
-                        <input type="hidden" id="homepage_second_last_homepage_ads" name="second_last_homepage_ads"
-                            class="selected-files" value="{{ $settings['second_last_homepage_ads'] }}">
-                        <div id="homepage_second_last_homepage_ads_select">
-                            <div class="file-preview box sm">
-                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
-                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
-                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
-                                            alt="image" />
-                                    </div>
-                                    <div class="col body">
-                                        <h6 class="d-flex">
-                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
-                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
-                                        </h6>
-                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
-                                    </div>
-                                    <div class="remove"><button data-id="{{ $media->id }}"
-                                            data-slug="homepage_second_last_homepage_ads"
-                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
-                                                class="bi bi-x-circle"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <input type="hidden" id="homepage_second_last_homepage_ads" name="second_last_homepage_ads"
-                            class="selected-files" value="" />
-                        <div id="homepage_second_last_homepage_ads_select"></div>
-                    @endif
-                </div>
-            </div>
-        </div> -->
-
-
         {{-- above Article Ads --}}
         <div class="mb-3 col-6">
             <div>

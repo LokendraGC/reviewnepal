@@ -17,12 +17,12 @@
 
     <!-- Brand Logo Dark -->
     {{-- <a href="{{ route('backend.dashboard') }}" class="logo logo-dark">
-    <span class="logo-lg">
-        <img src="/images/logo-dark.png" alt="logo">
-    </span>
-    <span class="logo-sm">
-        <img src="/images/logo-sm.png" alt="small logo">
-    </span>
+        <span class="logo-lg">
+            <img src="/images/logo-dark.png" alt="logo">
+        </span>
+        <span class="logo-sm">
+            <img src="/images/logo-sm.png" alt="small logo">
+        </span>
     </a> --}}
 
     <!-- Sidebar Hover Menu Toggle Button -->
@@ -57,14 +57,39 @@
                 </a>
             </li>
 
+            @can(['read_menu'])
+                <li class="side-nav-title text-success">Menu Management</li>
+                <li class="side-nav-item {{ request()->segment(2) === 'menu' ? 'menuitem-active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#menus" aria-expanded="false" aria-controls="menus"
+                        class="side-nav-link">
+                        <i class="ri-menu-line"></i>
+                        <span> Menus </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->segment(2) === 'menu' ? 'show' : '' }}" id="menus">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="{{ route('backend.menu') }}">All Menu</a>
+                            </li>
+                            @can(['create_menu'])
+                                <li>
+                                    <a href="{{ route('backend.menu.create') }}">Add New Menu</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
+            @endcan
+
+
             @can(['read_site_settings', 'update_site_settings'])
-            <li class="side-nav-title text-success">Site Management</li>
-            <li class="side-nav-item">
-                <a href="{{ route('backend.setting') }}" class="side-nav-link">
-                    <i class="ri-settings-5-line"></i>
-                    <span> Site Settings </span>
-                </a>
-            </li>
+                <li class="side-nav-title text-success">Site Management</li>
+                <li class="side-nav-item">
+                    <a href="{{ route('backend.setting') }}" class="side-nav-link">
+                        <i class="ri-settings-5-line"></i>
+                        <span> Site Settings </span>
+                    </a>
+                </li>
             @endcan
 
             <li class="side-nav-title text-success">Ads Management</li>
@@ -75,100 +100,79 @@
                 </a>
             </li>
 
-            @can(['read_menu'])
-            <li class="side-nav-item {{ request()->segment(2) === 'menu' ? 'menuitem-active' : '' }}">
-                <a data-bs-toggle="collapse" href="#menus" aria-expanded="false" aria-controls="menus"
-                    class="side-nav-link">
-                    <i class="ri-menu-line"></i>
-                    <span> Menus </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse {{ request()->segment(2) === 'menu' ? 'show' : '' }}" id="menus">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="{{ route('backend.menu') }}">All Menu</a>
-                        </li>
-                        @can(['create_menu'])
-                        <li>
-                            <a href="{{ route('backend.menu.create') }}">Add New Menu</a>
-                        </li>
-                        @endcan
-                    </ul>
-                </div>
-            </li>
-            @endcan
-
             <li class="side-nav-title text-success">Content Management</li>
             @canany(['create_post', 'read_post'])
-            <li class="side-nav-item {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'menuitem-active' : '' }}">
-                <a data-bs-toggle="collapse" href="#post" aria-expanded="false" aria-controls="post"
-                    class="side-nav-link">
-                    <i class="ri-file-ppt-line"></i>
-                    <span> English Posts </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'show' : '' }}" id="post">
-                    <ul class="side-nav-second-level">
-                        @can('read_post')
-                        <li>
-                            <a href="{{ route('backend.post') }}">All Posts</a>
-                        </li>
-                        @endcan
-                        @can('create_post')
-                        <li>
-                            <a href="{{ route('backend.post.create') }}">Add New Post</a>
-                        </li>
-                        @endcan
-                        @can(['create_category', 'read_category'])
-                        <!-- <li
-                            class="{{ request()->segment(3) === 'category' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
-                            <a href="{{ route('backend.category') }}">Categories</a>
-                        </li> -->
-                        @endcan
+                <li
+                    class="side-nav-item {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'menuitem-active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#post" aria-expanded="false" aria-controls="post"
+                        class="side-nav-link">
+                        <i class="ri-file-ppt-line"></i>
+                        <span> English Posts </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'show' : '' }}"
+                        id="post">
+                        <ul class="side-nav-second-level">
+                            @can('read_post')
+                                <li>
+                                    <a href="{{ route('backend.post') }}">All Posts</a>
+                                </li>
+                            @endcan
+                            @can('create_post')
+                                <li>
+                                    <a href="{{ route('backend.post.create') }}">Add New Post</a>
+                                </li>
+                            @endcan
+                            @can(['create_category', 'read_category'])
+                                <!-- <li
+                                                                            class="{{ request()->segment(3) === 'category' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
+                                                                            <a href="{{ route('backend.category') }}">Categories</a>
+                                                                        </li> -->
+                            @endcan
 
-                        <!-- <li
-                            class="{{ request()->segment(3) === 'author' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
-                            <a href="{{ route('backend.author') }}">Authors</a>
-                        </li> -->
+                            <!-- <li
+                                                    class="{{ request()->segment(3) === 'author' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
+                                                    <a href="{{ route('backend.author') }}">Authors</a>
+                                                </li> -->
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endcanany
 
             @canany(['create_post', 'read_post'])
-            <li class="side-nav-item {{ request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
-                <a data-bs-toggle="collapse" href="#post_ne" aria-expanded="false" aria-controls="post_ne"
-                    class="side-nav-link">
-                    <i class="ri-file-ppt-line"></i>
-                    <span> Nepali Posts </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse {{ request()->segment(2) === 'post_ne' ? 'show' : '' }}" id="post_ne">
-                    <ul class="side-nav-second-level">
-                        @can('read_post')
-                        <li>
-                            <a href="{{ route('backend.post_ne') }}">All Posts</a>
-                        </li>
-                        @endcan
-                        @can('create_post')
-                        <li>
-                            <a href="{{ route('backend.post_ne.create') }}">Add New Post</a>
-                        </li>
-                        @endcan
+                <li class="side-nav-item {{ request()->segment(2) === 'post_ne' ? 'menuitem-active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#post_ne" aria-expanded="false" aria-controls="post_ne"
+                        class="side-nav-link">
+                        <i class="ri-file-ppt-line"></i>
+                        <span> Nepali Posts </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->segment(2) === 'post_ne' ? 'show' : '' }}" id="post_ne">
+                        <ul class="side-nav-second-level">
+                            @can('read_post')
+                                <li>
+                                    <a href="{{ route('backend.post_ne') }}">All Posts</a>
+                                </li>
+                            @endcan
+                            @can('create_post')
+                                <li>
+                                    <a href="{{ route('backend.post_ne.create') }}">Add New Post</a>
+                                </li>
+                            @endcan
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endcanany
 
             @can(['create_category', 'read_category'])
-            <li class="side-nav-item {{ request()->segment(3) === 'category' ? 'menuitem-active' : '' }}">
-                <a href="{{ route('backend.category') }}" class="side-nav-link">
-                    <i class="ri-file-list-3-line"></i>
-                    <span> Categories </span>
-                </a>
-            </li>
+                <li class="side-nav-item {{ request()->segment(3) === 'category' ? 'menuitem-active' : '' }}">
+                    <a href="{{ route('backend.category') }}" class="side-nav-link">
+                        <i class="ri-file-list-3-line"></i>
+                        <span> Categories </span>
+                    </a>
+                </li>
             @endcan
 
 
@@ -200,24 +204,24 @@
             </li>
 
             {{-- <li class="side-nav-item {{ request()->segment(2) === 'team' ? 'menuitem-active' : '' }}">
-            <a data-bs-toggle="collapse" href="#team" aria-expanded="false" aria-controls="team"
-                class="side-nav-link">
-                <i class="ri-team-line"></i>
-                <span> Teams </span>
-                <span class="menu-arrow"></span>
-            </a>
-            <div class="collapse {{ request()->segment(2) === 'team' ? 'show' : '' }}" id="team">
-                <ul class="side-nav-second-level">
-                    <li>
-                        <a href="{{ route('backend.team') }}">All Teams</a>
-                    </li>
-                    @can('create_team')
-                    <li>
-                        <a href="{{ route('backend.team.create') }}">Add New Team</a>
-                    </li>
-                    @endcan
-                </ul>
-            </div>
+                <a data-bs-toggle="collapse" href="#team" aria-expanded="false" aria-controls="team"
+                    class="side-nav-link">
+                    <i class="ri-team-line"></i>
+                    <span> Teams </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse {{ request()->segment(2) === 'team' ? 'show' : '' }}" id="team">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('backend.team') }}">All Teams</a>
+                        </li>
+                        @can('create_team')
+                        <li>
+                            <a href="{{ route('backend.team.create') }}">Add New Team</a>
+                        </li>
+                        @endcan
+                    </ul>
+                </div>
             </li> --}}
 
             <li class="side-nav-title text-success">Users & Access</li>
@@ -236,9 +240,9 @@
                             <a href="{{ route('backend.user') }}">All Users</a>
                         </li>
                         @can('create_user')
-                        <li>
-                            <a href="{{ route('backend.user.create') }}">Add New</a>
-                        </li>
+                            <li>
+                                <a href="{{ route('backend.user.create') }}">Add New</a>
+                            </li>
                         @endcan
                         <li>
                             <a href="{{ route('backend.user.profile') }}">Profile</a>
@@ -482,8 +486,8 @@
             </li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarLayouts" aria-expanded="false"
-                    aria-controls="sidebarLayouts" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarLayouts" aria-expanded="false" aria-controls="sidebarLayouts"
+                    class="side-nav-link">
                     <i class="ri-layout-line"></i>
                     <span> Layouts </span>
                     <span class="menu-arrow"></span>
@@ -502,8 +506,8 @@
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" target="_blank"
-                                href="{{ route('second', ['layouts-eg', 'full-view']) }}"><span
-                                    class="menu-text">Full View</span></a>
+                                href="{{ route('second', ['layouts-eg', 'full-view']) }}"><span class="menu-text">Full
+                                    View</span></a>
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" target="_blank"
@@ -512,8 +516,8 @@
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" target="_blank"
-                                href="{{ route('second', ['layouts-eg', 'hover-menu']) }}"><span
-                                    class="menu-text">Hover Menu</span></a>
+                                href="{{ route('second', ['layouts-eg', 'hover-menu']) }}"><span class="menu-text">Hover
+                                    Menu</span></a>
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" target="_blank"
@@ -522,8 +526,8 @@
                         </li>
                         <li class="menu-item">
                             <a class="menu-link" target="_blank"
-                                href="{{ route('second', ['layouts-eg', 'icon-view']) }}"><span
-                                    class="menu-text">Icon View</span></a>
+                                href="{{ route('second', ['layouts-eg', 'icon-view']) }}"><span class="menu-text">Icon
+                                    View</span></a>
                         </li>
                     </ul>
                 </div>
@@ -532,8 +536,8 @@
             <li class="side-nav-title">Components</li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarBaseUI" aria-expanded="false"
-                    aria-controls="sidebarBaseUI" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarBaseUI" aria-expanded="false" aria-controls="sidebarBaseUI"
+                    class="side-nav-link">
                     <i class="ri-briefcase-line"></i>
                     <span> Base UI </span>
                     <span class="menu-arrow"></span>
@@ -677,8 +681,8 @@
             </li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarCharts" aria-expanded="false"
-                    aria-controls="sidebarCharts" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarCharts" aria-expanded="false" aria-controls="sidebarCharts"
+                    class="side-nav-link">
                     <i class="ri-bar-chart-line"></i>
                     <span> Charts </span>
                     <span class="menu-arrow"></span>
@@ -703,8 +707,7 @@
                                         <a href="{{ route('second', ['charts', 'apex-bubble']) }}">Bubble</a>
                                     </li>
                                     <li>
-                                        <a
-                                            href="{{ route('second', ['charts', 'apex-candlestick']) }}">Candlestick</a>
+                                        <a href="{{ route('second', ['charts', 'apex-candlestick']) }}">Candlestick</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('second', ['charts', 'apex-column']) }}">Column</a>
@@ -807,8 +810,8 @@
             </li>
 
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarTables" aria-expanded="false"
-                    aria-controls="sidebarTables" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarTables" aria-expanded="false" aria-controls="sidebarTables"
+                    class="side-nav-link">
                     <i class="ri-table-line"></i>
                     <span> Tables </span>
                     <span class="menu-arrow"></span>

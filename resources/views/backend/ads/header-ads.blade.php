@@ -1,7 +1,7 @@
-<div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'header-ads' ? 'active show' : '' }}"
-    id="header-ads" role="tabpanel" aria-labelledby="header-ads-tab">
-    <div class="mb-3">
-        <div class="col-12">
+<div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active show' : '' }}"
+    id="header-advertisements" role="tabpanel" aria-labelledby="header-advertisements-tab">
+    <div class="row">
+        <div class="mb-3 col-12">
             <label for="header_ads" class="form-label">Header Ads</label>
             <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 style="cursor: pointer;" data-field="header_ads" data-select="single">

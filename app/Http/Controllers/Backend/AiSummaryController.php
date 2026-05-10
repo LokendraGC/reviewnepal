@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Ai\Agents\Summarizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Laravel\Ai\Facades\Ai;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Ai\Ai;
+use App\Models\Post;
+
 
 
 class AiSummaryController extends Controller
@@ -42,22 +45,36 @@ class AiSummaryController extends Controller
     // In Text to speech
     public function generateAudio(Post $post)
     {
-        $audio = Ai::driver('gemini')
-            ->audio()
-            ->generate([
-                'input' => strip_tags($post->post_content),
-                'model' => 'gemini-3.1-flash-tts-preview',
-                'voice' => 'Kore', // Choose from available voices
+        // dd('hait');
+        $filePath = 'tts/post-' . $post->id . '.wav';
+
+        // Check if we already generated the audio
+        if (Storage::disk('public')->exists($filePath)) {
+            return response()->json([
+                'audio_url' => Storage::url($filePath)
             ]);
+        }
+
+        // Generate audio from the actual post content (limited to 4000 chars to avoid timeouts)
+        $textToRead = mb_substr(strip_tags($post->post_content), 0, 4000);
+        
+        $audioResponse = Ai::audio(
+            text: $textToRead,
+            voice: 'Kore',
+            instructions: null,
+            model: 'gemini-3.1-flash-tts-preview',
+            timeout: 120 // Increase timeout from 30s to 120s
+        );
 
         // Save the audio file
         Storage::disk('public')->put(
-            'tts/post-' . $post->id . '.wav',
-            $audio
+            $filePath,
+            (string) $audioResponse
         );
 
+        // MUST return JSON so frontend can play it
         return response()->json([
-            'audio_url' => Storage::url('tts/post-' . $post->id . '.wav')
+            'audio_url' => Storage::url($filePath)
         ]);
     }
 }

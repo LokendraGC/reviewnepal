@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\FrontController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\MigrateController;
 use App\Http\Controllers\Frontend\SubscribeFormController;
+use App\Http\Controllers\Backend\AiSummaryController;
 
 // for home page
 Route::get('/', [FrontController::class, 'index'])->name('home');
@@ -37,6 +38,9 @@ Route::match(['put', 'post'], 'subscribe-form', [SubscribeFormController::class,
 
 // search post
 Route::get('search', [PostController::class, 'search'])->name('frontend.post.search');
+
+// tts text to speech
+Route::get('api/post-tts/{post}', [AiSummaryController::class, 'generateAudio'])->name('frontend.post.tts');
 
 // for all dynamic post and pages
 Route::match(['get', 'post'], '{slug}/', [PostController::class, 'index'])->name('frontend.post.index');

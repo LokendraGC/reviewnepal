@@ -409,113 +409,113 @@
   </div>
 @endsection
 
-@push('script')
+@push('frontend-js')
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const playBtn = document.getElementById('tts-play-btn');
       const stopBtn = document.getElementById('tts-stop-btn');
       const playIcon = document.getElementById('tts-play-icon');
       const progressBar = document.getElementById('tts-progress');
-
-      let synth = window.speechSynthesis;
-      let utterance = null;
-      let isPlaying = false;
-      let isPaused = false;
-
-      function initTTS() {
-        const contentDiv = document.querySelector('.single-post-content');
-        if (!contentDiv) return;
-
-        let text = contentDiv.innerText || contentDiv.textContent;
-        text = text.replace(/\s+/g, ' ').trim();
-
-        if (text === '') return;
-
-        utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US'; // Change to 'ne-NP' for Nepali if needed
-
-        utterance.onstart = function () {
-          isPlaying = true;
-          isPaused = false;
-          playIcon.classList.remove('fa-play');
-          playIcon.classList.add('fa-pause');
-          stopBtn.style.display = 'flex';
-        };
-
-        utterance.onend = function () {
-          isPlaying = false;
-          isPaused = false;
-          playIcon.classList.remove('fa-pause');
-          playIcon.classList.add('fa-play');
-          stopBtn.style.display = 'none';
-          progressBar.style.width = '0%';
-        };
-
-        utterance.onpause = function () {
-          isPaused = true;
-          playIcon.classList.remove('fa-pause');
-          playIcon.classList.add('fa-play');
-        };
-
-        utterance.onresume = function () {
-          isPaused = false;
-          playIcon.classList.remove('fa-play');
-          playIcon.classList.add('fa-pause');
-        };
-
-        utterance.onerror = function (event) {
-          console.error('SpeechSynthesis error:', event);
-          isPlaying = false;
-          isPaused = false;
-          playIcon.classList.remove('fa-pause');
-          playIcon.classList.add('fa-play');
-          stopBtn.style.display = 'none';
-        };
-
-        utterance.onboundary = function (event) {
-          if (event.name === 'word') {
-            const progress = (event.charIndex / text.length) * 100;
-            progressBar.style.width = progress + '%';
-          }
-        };
-      }
-
-      if (playBtn) {
-        playBtn.addEventListener('click', function () {
-          if (!synth) {
-            alert("Your browser does not support text to speech!");
-            return;
-          }
-
-          if (!utterance) {
-            initTTS();
-          }
-
-          if (isPlaying && !isPaused) {
-            synth.pause();
-          } else if (isPlaying && isPaused) {
-            synth.resume();
+      const infoSpan = document.querySelector('.tts-info span');
+      
+      let audio = null;
+      let isLoading = false;
+      const postId = '{{ $post->id }}';
+      const apiUrl = '{{ route("frontend.post.tts", ":id") }}'.replace(':id', postId);
+      
+      function setPlayState(playing) {
+          if (playing) {
+              playIcon.className = 'fa-solid fa-pause';
+              stopBtn.style.display = 'flex';
           } else {
-            synth.cancel();
-            initTTS();
-            synth.speak(utterance);
+              playIcon.className = 'fa-solid fa-play';
           }
-        });
       }
 
-      if (stopBtn) {
-        stopBtn.addEventListener('click', function () {
-          if (synth) {
-            synth.cancel();
-          }
-        });
-      }
+      function initAudio(url) {
+          audio = new Audio(url);
+          
+          audio.addEventListener('play', () => setPlayState(true));
+          audio.addEventListener('pause', () => setPlayState(false));
+          audio.addEventListener('ended', () => {
+              setPlayState(false);
+              progressBar.style.width = '0%';
+              stopBtn.style.display = 'none';
+          });
+          
+          audio.addEventListener('timeupdate', () => {
+              if (audio.duration) {
+                  const progress = (audio.currentTime / audio.duration) * 100;
+                  progressBar.style.width = progress + '%';
+              }
+          });
 
-      window.addEventListener('beforeunload', function () {
-        if (synth) {
-          synth.cancel();
-        }
-      });
+          audio.play().catch(e => {
+              console.error("Audio playback failed:", e);
+              infoSpan.textContent = 'Playback failed. Try again.';
+              setPlayState(false);
+          });
+      }
+      
+      if(playBtn) {
+          playBtn.addEventListener('click', async function() {
+              if (isLoading) return;
+              
+              if (audio) {
+                  if (audio.paused) {
+                      audio.play();
+                  } else {
+                      audio.pause();
+                  }
+                  return;
+              }
+              
+              // Need to load audio
+              isLoading = true;
+              playIcon.className = 'fa-solid fa-spinner fa-spin';
+              infoSpan.textContent = 'Generating audio...';
+              
+              try {
+                  const response = await fetch(apiUrl);
+                  
+                  // Read response text first in case there is a dd() or error
+                  const text = await response.text();
+                  
+                  let data;
+                  try {
+                      data = JSON.parse(text);
+                  } catch (e) {
+                      console.error("Server returned non-JSON:", text);
+                      throw new Error("Invalid response from server");
+                  }
+                  
+                  if (data.audio_url) {
+                      infoSpan.textContent = 'Listen to this article';
+                      initAudio(data.audio_url);
+                  } else {
+                      throw new Error("No audio URL returned");
+                  }
+              } catch (error) {
+                  console.error("Failed to generate TTS:", error);
+                  infoSpan.textContent = 'Failed to load audio.';
+                  playIcon.className = 'fa-solid fa-play';
+              } finally {
+                  isLoading = false;
+              }
+          });
+      }
+      
+      if(stopBtn) {
+          stopBtn.addEventListener('click', function() {
+              if (audio) {
+                  audio.pause();
+                  audio.currentTime = 0;
+                  setPlayState(false);
+                  progressBar.style.width = '0%';
+                  stopBtn.style.display = 'none';
+              }
+          });
+      }
     });
   </script>
 @endpush

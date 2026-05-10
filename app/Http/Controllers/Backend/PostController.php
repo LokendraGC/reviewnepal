@@ -16,6 +16,7 @@ use App\Http\Requests\Post\PostStoreRequest;
 use App\Repositories\CategoryPostRepository;
 use App\Http\Requests\Post\PostUpdateRequest;
 
+
 class PostController extends Controller
 {
     private $postType;
@@ -115,7 +116,7 @@ class PostController extends Controller
 
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
-        
+
 
 
         $metaDatas = $this->postRepository->getMetaDatas($post);

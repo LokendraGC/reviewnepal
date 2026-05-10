@@ -69,9 +69,9 @@
       </div>
       <div class="col-lg-9 article-body" id="content-col">
         <!-- <span class="top-tag">WORLD NEWS</span>
-                        <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
-                        <div class="meta-info">World Photo | Author</div>
-                        <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
+                                              <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
+                                              <div class="meta-info">World Photo | Author</div>
+                                              <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
         @php
           $single_below_title = SettingHelper::get_field('single_below_title');
           $link = MediaHelper::getDescriptionById($single_below_title);
@@ -157,6 +157,53 @@
         @endif
         {{-- ADVERTISEMENT END --}}
 
+        <!-- AI Summary -->
+        @php
+          $aiSummary = $postMeta['ai_summary'] ?? null;
+        @endphp
+
+        @if(!empty($aiSummary))
+          <div class="ai-summary-card">
+            <div class="ai-summary-header">
+              <div class="ai-summary-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                  </polygon>
+                </svg>
+                <span>News Summary</span>
+              </div>
+            </div>
+            <div class="ai-summary-body">
+              {!! $aiSummary !!}
+            </div>
+          </div>
+
+        @endif
+
+
+        {{-- TEXT TO SPEECH START --}}
+        <div class="tts-player mb-4 d-flex align-items-center gap-2"
+          style="background: #f8f9fa; padding: 10px 15px; border-radius: 8px; border: 1px solid #e9ecef;">
+          <button id="tts-play-btn" class="btn btn-sm"
+            style="background: rgb(210, 30, 1); color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; outline: none; cursor: pointer;">
+            <i class="fa-solid fa-play" id="tts-play-icon"></i>
+          </button>
+          <div class="tts-info flex-grow-1 mx-2">
+            <span style="font-weight: 600; font-size: 14px; color: #333;">Listen to this article</span>
+            <div class="progress" style="height: 5px; margin-top: 5px; border-radius: 5px; background-color: #e9ecef;">
+              <div class="progress-bar" id="tts-progress" role="progressbar"
+                style="width: 0%; background-color: rgb(210, 30, 1); transition: width 0.1s linear;" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <button id="tts-stop-btn" class="btn btn-sm btn-light"
+            style="border-radius: 50%; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid #ddd; outline: none; display: none; cursor: pointer;">
+            <i class="fa-solid fa-stop text-danger"></i>
+          </button>
+        </div>
+        {{-- TEXT TO SPEECH END --}}
 
         {{-- POST CONTENT START --}}
         <div class="single-post-content py-3">
@@ -208,11 +255,11 @@
             </div>
             <hr style="border-color: #c7c7c7; margin: 0" />
             <!-- <div class="ad-wrapper py-3">
-                                            <span class="ad-label">- Advertisement -</span>
-                                            <a href="#">
-                                              <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
-                                            </a>
-                                          </div> -->
+                                                                                        <span class="ad-label">- Advertisement -</span>
+                                                                                        <a href="#">
+                                                                                          <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
+                                                                                        </a>
+                                                                                      </div> -->
             @php
               $single_news_below_trending_news_first_ad = SettingHelper::get_field('single_news_below_trending_news_first_ad');
               $link = MediaHelper::getDescriptionById($single_news_below_trending_news_first_ad);
@@ -361,3 +408,114 @@
 
   </div>
 @endsection
+
+@push('script')
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const playBtn = document.getElementById('tts-play-btn');
+      const stopBtn = document.getElementById('tts-stop-btn');
+      const playIcon = document.getElementById('tts-play-icon');
+      const progressBar = document.getElementById('tts-progress');
+
+      let synth = window.speechSynthesis;
+      let utterance = null;
+      let isPlaying = false;
+      let isPaused = false;
+
+      function initTTS() {
+        const contentDiv = document.querySelector('.single-post-content');
+        if (!contentDiv) return;
+
+        let text = contentDiv.innerText || contentDiv.textContent;
+        text = text.replace(/\s+/g, ' ').trim();
+
+        if (text === '') return;
+
+        utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; // Change to 'ne-NP' for Nepali if needed
+
+        utterance.onstart = function () {
+          isPlaying = true;
+          isPaused = false;
+          playIcon.classList.remove('fa-play');
+          playIcon.classList.add('fa-pause');
+          stopBtn.style.display = 'flex';
+        };
+
+        utterance.onend = function () {
+          isPlaying = false;
+          isPaused = false;
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          stopBtn.style.display = 'none';
+          progressBar.style.width = '0%';
+        };
+
+        utterance.onpause = function () {
+          isPaused = true;
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+        };
+
+        utterance.onresume = function () {
+          isPaused = false;
+          playIcon.classList.remove('fa-play');
+          playIcon.classList.add('fa-pause');
+        };
+
+        utterance.onerror = function (event) {
+          console.error('SpeechSynthesis error:', event);
+          isPlaying = false;
+          isPaused = false;
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          stopBtn.style.display = 'none';
+        };
+
+        utterance.onboundary = function (event) {
+          if (event.name === 'word') {
+            const progress = (event.charIndex / text.length) * 100;
+            progressBar.style.width = progress + '%';
+          }
+        };
+      }
+
+      if (playBtn) {
+        playBtn.addEventListener('click', function () {
+          if (!synth) {
+            alert("Your browser does not support text to speech!");
+            return;
+          }
+
+          if (!utterance) {
+            initTTS();
+          }
+
+          if (isPlaying && !isPaused) {
+            synth.pause();
+          } else if (isPlaying && isPaused) {
+            synth.resume();
+          } else {
+            synth.cancel();
+            initTTS();
+            synth.speak(utterance);
+          }
+        });
+      }
+
+      if (stopBtn) {
+        stopBtn.addEventListener('click', function () {
+          if (synth) {
+            synth.cancel();
+          }
+        });
+      }
+
+      window.addEventListener('beforeunload', function () {
+        if (synth) {
+          synth.cancel();
+        }
+      });
+    });
+  </script>
+@endpush

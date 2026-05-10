@@ -2484,3 +2484,85 @@ form input[type=search]{
       left: -140px
   }
 }
+
+
+/* ai summary */
+.ai-summary-card {
+              position: relative;
+              background: linear-gradient(135deg, #fff8f7 0%, #fff0ef 100%);
+              border: 1px solid #fddcda;
+              border-left: 4px solid rgb(210, 30, 1);
+              border-radius: 12px;
+              margin: 20px 0;
+              overflow: hidden;
+              box-shadow: 0 2px 12px rgba(210, 30, 1, 0.08);
+            }
+
+            .ai-summary-header {
+              padding: 14px 20px 0;
+            }
+
+            .ai-summary-icon {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: linear-gradient(135deg, rgb(210, 30, 1), rgb(180, 20, 0));
+              color: #fff;
+              padding: 6px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 600;
+              letter-spacing: 0.3px;
+            }
+
+            .ai-summary-icon svg {
+              width: 16px;
+              height: 16px;
+            }
+
+            .ai-summary-body {
+              padding: 16px 20px 20px;
+              font-size: 15px;
+              line-height: 1.7;
+              color: #374151;
+            }
+
+            .ai-summary-body ul {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+            }
+
+            .ai-summary-body ul li {
+              position: relative;
+              padding: 8px 0 8px 24px;
+              border-bottom: 1px solid rgba(210, 30, 1, 0.08);
+            }
+
+            .ai-summary-body ul li:last-child {
+              border-bottom: none;
+              padding-bottom: 0;
+            }
+
+            .ai-summary-body ul li:first-child {
+              padding-top: 0;
+            }
+
+            .ai-summary-body ul li::before {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 16px;
+              width: 8px;
+              height: 8px;
+              background: linear-gradient(135deg, rgb(210, 30, 1), rgb(180, 20, 0));
+              border-radius: 50%;
+            }
+
+            .ai-summary-body ul li:first-child::before {
+              top: 8px;
+            }
+
+            .ai-summary-body p {
+              margin: 0;
+            }

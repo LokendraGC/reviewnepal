@@ -92,6 +92,7 @@ class PostRepository
         $metaDatas['featured_image'] = isset($request->featured_image) ? $request->featured_image : NULL;
         $metaDatas['show_banner'] = isset($request->show_banner) ? $request->show_banner : 0;
         $metaDatas['is_breaking_news'] = isset($request->is_breaking_news) ? $request->is_breaking_news : 0;
+        $metaDatas['ai_summary'] = isset($request->ai_summary) ? $request->ai_summary : NULL;
 
         // add meta data as per form data
 

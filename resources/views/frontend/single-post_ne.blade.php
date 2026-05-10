@@ -74,9 +74,9 @@
       </div>
       <div class="col-lg-9 article-body" id="content-col">
         <!-- <span class="top-tag">WORLD NEWS</span>
-                      <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
-                      <div class="meta-info">World Photo | Author</div>
-                      <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
+                          <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
+                          <div class="meta-info">World Photo | Author</div>
+                          <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
         @php
           $single_below_title = SettingHelper::get_field('single_below_title');
           $link = MediaHelper::getDescriptionById($single_below_title);
@@ -162,6 +162,30 @@
         @endif
         {{-- ADVERTISEMENT END --}}
 
+        @php
+          $aiSummary = $postMeta['ai_summary'] ?? null;
+        @endphp
+
+        @if(!empty($aiSummary))
+          <div class="ai-summary-card">
+            <div class="ai-summary-header">
+              <div class="ai-summary-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                  </polygon>
+                </svg>
+                <span>News Summary</span>
+              </div>
+            </div>
+            <div class="ai-summary-body">
+              {!! $aiSummary !!}
+            </div>
+          </div>
+        @endif
+
+
 
         {{-- POST CONTENT START --}}
         <div class="single-post-content py-3">
@@ -214,11 +238,11 @@
             </div>
             <hr style="border-color: #c7c7c7; margin: 0" />
             <!-- <div class="ad-wrapper py-3">
-                                        <span class="ad-label">- Advertisement -</span>
-                                        <a href="#">
-                                          <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
-                                        </a>
-                                      </div> -->
+                                                <span class="ad-label">- Advertisement -</span>
+                                                <a href="#">
+                                                  <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
+                                                </a>
+                                              </div> -->
             @php
               $single_news_below_trending_news_first_ad = SettingHelper::get_field('single_news_below_trending_news_first_ad');
               $link = MediaHelper::getDescriptionById($single_news_below_trending_news_first_ad);

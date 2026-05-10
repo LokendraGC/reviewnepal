@@ -42,7 +42,7 @@ Route::get('search', [PostController::class, 'search'])->name('frontend.post.sea
 Route::match(['get', 'post'], '{slug}/', [PostController::class, 'index'])->name('frontend.post.index');
 
 // for nepali post
-Route::get('{year}/{month}/{id}/', [PostController::class, 'index']) 
+Route::get('{year}/{month}/{id}/', [PostController::class, 'index'])
     ->name('frontend.post.index_ne')
     ->where([
         'year' => '[0-9]{1,4}',

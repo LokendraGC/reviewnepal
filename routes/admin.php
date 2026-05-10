@@ -162,6 +162,9 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
 
     Route::post('remove-image', [SettingController::class, 'removeImage'])->name('backend.setting.removeImage');
 
+    // AI Summary
+    Route::post('ai/summarize', [\App\Http\Controllers\Backend\AiSummaryController::class, 'generate'])->name('backend.ai.summarize');
+
 // ads settings
     Route::get('ads', [AdsController::class, 'index'])->name('backend.ads.setting');
     Route::post('ads', [AdsController::class, 'store'])->name('backend.ads.store');

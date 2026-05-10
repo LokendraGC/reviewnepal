@@ -19,9 +19,9 @@
                             $author_meta = $author ? $author->GetAllMetaData() : [];
 
                             if ($language == 'en') {
-                                $author_name = isset($author->name) ? $author->name : $user->name;
+                                $author_name = $author->name ?? $user->name ?? 'Review Nepal';
                             } else {
-                                $author_name = isset($author_meta['name_ne']) ? $author_meta['name_ne'] : $user->name;
+                                $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
                             }
 
                             $featured_image = isset($author_meta['featured_image'])
@@ -132,9 +132,10 @@
                             @foreach ($left_second_posts->posts as $left_second_post)
                                 @php
 
-                                    $cateMeta = $left_second_post->categories()->first()->GetAllMetaData();
+                                    $cate = $left_second_post->categories()->first();
+                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
 
-                                    $cat_name = $language == 'en' ? $left_second_posts->name : $cateMeta['name_ne'];
+                                    $cat_name = $language == 'en' ? ($left_second_posts->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                     $itemMeta = $left_second_post->GetAllMetaData();
 
@@ -153,9 +154,9 @@
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
 
                                     if ($language == 'en') {
-                                        $author_name = $author->name ?? $user->name;
+                                        $author_name = $author->name ?? $user->name ?? 'Review Nepal';
                                     } else {
-                                        $author_name = $author_meta['name_ne'] ?? $user->name;
+                                        $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
                                     }
                                 @endphp
 
@@ -254,7 +255,7 @@
                                     // CATEGORY
                                     $cate = $right_second_post->categories()->first();
                                     $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                    $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                     // POST META
                                     $itemMeta = $right_second_post->GetAllMetaData();
@@ -271,7 +272,7 @@
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
 
                                     $author_name =
-                                        $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                        $language == 'en' ? $author->name ?? $user->name ?? 'Review Nepal' : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
                                 @endphp
 
                                 {{-- FIRST POST (FEATURED) --}}
@@ -418,7 +419,7 @@
                                 // CATEGORY
                                 $cate = $third_post->categories()->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                 // POST META
                                 $itemMeta = $third_post->GetAllMetaData();
@@ -436,8 +437,8 @@
 
                                 $author_name =
                                     $language == 'en'
-                                    ? $author->name ?? $user->name
-                                    : $author_meta['name_ne'] ?? $user->name;
+                                    ? $author->name ?? $user->name ?? 'Review Nepal'
+                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                             @endphp
 
@@ -483,7 +484,7 @@
                                 @php
                                     $author = $trendingPost->categories()->where('categories.type', 'author')->first();
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
-                                    $author_name = $language == 'en' ? $author->name ?? $user->name : $author_meta['name_ne'] ?? $user->name;
+                                    $author_name = $language == 'en' ? $author->name ?? $user->name ?? 'Review Nepal' : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
                                 @endphp
                                 <div class="d-flex gap-3 mb-4 pb-2">
                                     <div class="trending-number">{{ $loop->iteration }}</div>
@@ -520,7 +521,7 @@
 
                         @if (!empty($homepage_below_trending_news_first_ad_url))
                             <div class="ad-wrapper py-3">
-                                <span class="ad-label">- Advertisementt -</span>
+                                <span class="ad-label">- Advertisement -</span>
 
                                 @if (!empty($homepage_below_trending_news_first_ad_link))
                                     <a href="{{ $homepage_below_trending_news_first_ad_link }}" target="_blank">
@@ -634,7 +635,7 @@
                                 // CATEGORY
                                 $cate = $fourth_post->categories()->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                 // POST META
                                 $itemMeta = $fourth_post->GetAllMetaData();
@@ -652,8 +653,8 @@
 
                                 $author_name =
                                     $language == 'en'
-                                    ? $author->name ?? $user->name
-                                    : $author_meta['name_ne'] ?? $user->name;
+                                    ? $author->name ?? $user->name ?? 'Review Nepal'
+                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                             @endphp
                             <div class="col-md-6">
@@ -756,8 +757,8 @@
 
                                     $author_name =
                                         $language == 'en'
-                                        ? $author->name ?? $user->name
-                                        : $author_meta['name_ne'] ?? $user->name;
+                                        ? $author->name ?? $user->name ?? 'Review Nepal'
+                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                                 @endphp
 
@@ -796,10 +797,9 @@
 
                             @foreach ($fifth_middle_cat->posts as $fifth_middle_post)
                                 @php
-                                    // CATEGORY
                                     $cate = $fifth_middle_post->categories()->first();
                                     $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                    $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($catMeta['name_ne'] ?? '');
 
                                     // POST META
                                     $itemMeta = $fifth_middle_post->GetAllMetaData();
@@ -820,8 +820,8 @@
 
                                     $author_name =
                                         $language == 'en'
-                                        ? $author->name ?? $user->name
-                                        : $author_meta['name_ne'] ?? $user->name;
+                                        ? $author->name ?? $user->name ?? 'Review Nepal'
+                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                                     $date = $fifth_middle_post->created_at;
                                 @endphp
@@ -846,7 +846,7 @@
 
                                     </a>
 
-                                    {{--  OTHER POSTS (LIST DESIGN) --}}
+                                    {{-- OTHER POSTS (LIST DESIGN) --}}
                                 @else
                                     <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="news-item">
 
@@ -902,7 +902,7 @@
                                                     // CATEGORY
                                                     $cate = $fifth_right_post->categories()->first();
                                                     $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                                    $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                                     // POST META
                                                     $itemMeta = $fifth_right_post->GetAllMetaData();
@@ -926,13 +926,13 @@
 
                                                     $author_name =
                                                         $language == 'en'
-                                                        ? $author->name ?? $user->name
-                                                        : $author_meta['name_ne'] ?? $user->name;
+                                                        ? $author->name ?? $user->name ?? 'Review Nepal'
+                                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                                                     $date = $fifth_right_post->created_at;
                                                 @endphp
 
-                                                {{--  FIRST POST (BIG ITEM STYLE) --}}
+                                                {{-- FIRST POST (BIG ITEM STYLE) --}}
                                                 @if ($loop->first)
                                                     <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="featured-item">
 
@@ -953,7 +953,7 @@
 
                                                     </a>
                                                 @else
-                                                    {{--  OTHER POSTS --}}
+                                                    {{-- OTHER POSTS --}}
                                                     <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="news-item">
 
                                                         <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
@@ -1057,7 +1057,7 @@
                                         // CATEGORY
                                         $cate = $sixth_post->categories()->first();
                                         $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                        $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                         // POST META
                                         $itemMeta = $sixth_post->GetAllMetaData();
@@ -1078,8 +1078,8 @@
 
                                         $author_name =
                                             $language == 'en'
-                                            ? $author->name ?? $user->name
-                                            : $author_meta['name_ne'] ?? $user->name;
+                                            ? $author->name ?? $user->name ?? 'Review Nepal'
+                                            : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                                         $date = $sixth_post->created_at;
                                     @endphp
@@ -1263,7 +1263,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="ad-wrapper">
-                                <span class="ad-label">- Advertisementt -</span>
+                                <span class="ad-label">- Advertisement -</span>
                                 @if (!empty($link))
                                     <a href="{{ $link }}" target="_blank">
                                         <img src="{{ $above_articles_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
@@ -1299,7 +1299,7 @@
                                 // CATEGORY
                                 $cate = $seventh_post->categories()->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
 
                                 // POST META
                                 $itemMeta = $seventh_post->GetAllMetaData();
@@ -1320,8 +1320,8 @@
 
                                 $author_name =
                                     $language == 'en'
-                                    ? $author->name ?? $user->name
-                                    : $author_meta['name_ne'] ?? $user->name;
+                                    ? $author->name ?? $user->name ?? 'Review Nepal'
+                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
 
                                 $date = $seventh_post->created_at;
                             @endphp

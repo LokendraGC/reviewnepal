@@ -204,9 +204,9 @@
             <p class="br-line type-vertical bg-line h23"></p>
             <button class="tab-trigger" data-tab="mobile-general">Menu</button>
         </div>
-        <form class="form-search d-lg-none">
+        <form class="form-search d-lg-none" action="{{ route('frontend.post.search') }}" method="get" style="margin-right: 50px;">
             <fieldset>
-                <input type="search" placeholder="Search for products" value="" required="">
+                <input type="search" name="search" placeholder="{{ $language == 'ne' ? 'समाचार खोज्नुहोस्...' : 'Search news and articles...' }}" value="{{ request('search') }}" required="">
             </fieldset>
             <button type="submit" class="button-submit" aria-label="Submit">
                 <i class="fa fa-search"></i>

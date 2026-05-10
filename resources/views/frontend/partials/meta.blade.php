@@ -17,9 +17,9 @@
     $seoKeywords = $payloadMeta['seo_keyword'] ?? ($title ?? $websiteName);
 
     // Open Graph image defaults
-    $image = asset('assets/img/capital-sansar.svg');
+    $image = asset('assets/images/review_nepal_logo.webp');
     $alt = $websiteName;
-    $type = 'image/svg+xml';
+    $type = 'image/webp';
 
     if (!empty($payload)) {
         $dateString = $payload->updated_at ?? now();
@@ -29,17 +29,17 @@
         $iso8601String = now()->toIso8601String();
     }
 
-    // OG image from featured image or header logo
+    // OG image from featured image, header logo, or default logo
     if (!empty($payloadMeta['featured_image'])) {
         $media = MediaHelper::getModel()->find($payloadMeta['featured_image']);
-        if ($media) {
+        if ($media && !empty($media->file_name)) {
             $image = asset('storage/' . $media->file_name);
             $alt = $media->alt ?? $seoTitle;
             $type = $media->type ?? 'image/jpeg';
         }
     } elseif ($headerLogo) {
         $media = MediaHelper::getModel()->find($headerLogo);
-        if ($media) {
+        if ($media && !empty($media->file_name)) {
             $image = asset('storage/' . $media->file_name);
             $alt = $media->alt ?? $seoTitle;
             $type = $media->type ?? 'image/jpeg';
@@ -47,10 +47,10 @@
     }
 
     // Favicon with fallback
-    $faviconId = $settings['site_favicon'] ?? null;
+    $faviconId = SettingHelper::get_field('site_favicon');
     $favicon = $faviconId ? MediaHelper::getModel()->find($faviconId) : null;
-    $faviconUrl = $favicon ? asset('storage/' . $favicon->file_name) : asset('favicon-1.png');
-    $faviconType = $favicon->type ?? 'image/x-icon';
+    $faviconUrl = ($favicon && !empty($favicon->file_name)) ? asset('storage/' . $favicon->file_name) : asset('favicon-1.png');
+    $faviconType = ($favicon && $favicon->type) ? $favicon->type : 'image/x-icon';
 @endphp
 
 <!-- Basic Meta -->
@@ -74,6 +74,12 @@
 <meta property="og:image:secure_url" content="{{ $image }}" />
 <meta property="og:image:alt" content="{{ $alt }}" />
 <meta property="og:image:type" content="{{ $type }}" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ SeoHelper::seo_title($seoTitle) }}" />
+<meta name="twitter:description" content="{{ SeoHelper::seo_title($seoDescription) }}" />
+<meta name="twitter:image" content="{{ $image }}" />
 
 <!-- Favicon -->
 <link rel="icon" href="{{ $faviconUrl }}" type="{{ $faviconType }}">

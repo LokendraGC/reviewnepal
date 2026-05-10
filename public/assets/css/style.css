@@ -1140,6 +1140,14 @@ body {
       gap: 32px;
     }
 
+    /* Ad Wrapper Styling */
+    .ad-wrapper {
+      text-align: center;
+      width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
     /* Ad Label Styling */
     .ad-label {
       display: block;
@@ -1153,7 +1161,7 @@ body {
     /* Full Width Ad Styling */
     .ad-full-width {
       width: 100%;
-      /* height: 250px;  */
+      height: 250px; 
       object-fit: cover;
       background-color: #f4f4f4;
       border: 1px solid #eaeaea;
@@ -1167,7 +1175,7 @@ body {
     /* One-Third Ad Styling */
     .ad-one-third {
       width: 100%;
-      /* height: 400px; */
+      height: 400px;
       object-fit: cover;
       background-color: #f4f4f4;
       border: 1px solid #eaeaea;

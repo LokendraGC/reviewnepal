@@ -51,8 +51,8 @@
 
         @php
           $author_meta = $author ? $author->GetAllMetaData() : [];
-          $author_name = $author_meta['name_ne'] ?? $user->name ?? '';
-          $category_name = $categoryMeta['name_ne'] ?? $category->name ?? '';
+          $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+          $category_name = ($categoryMeta['name_ne'] ?? ($category->name ?? ''));
           $date = NepaliDateHelper::toNepaliDate($post->created_at);
         @endphp
         <div class="post-meta d-flex flex-wrap align-items-center">
@@ -74,9 +74,9 @@
       </div>
       <div class="col-lg-9 article-body" id="content-col">
         <!-- <span class="top-tag">WORLD NEWS</span>
-                    <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
-                    <div class="meta-info">World Photo | Author</div>
-                    <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
+                      <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
+                      <div class="meta-info">World Photo | Author</div>
+                      <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
         @php
           $single_below_title = SettingHelper::get_field('single_below_title');
           $link = MediaHelper::getDescriptionById($single_below_title);
@@ -183,8 +183,8 @@
               @foreach ($trendingPosts as $trendingPost)
                 @php
                   $category = $trendingPost->categories()->first();
-                  $catMeta = $category->GetAllMetaData();
-                  $category_name = $catMeta['name_ne'] ?? 'Unknown';
+                  $catMeta = $category ? $category->GetAllMetaData() : [];
+                  $category_name = $catMeta['name_ne'] ?? $category->name ?? 'Unknown';
 
                   $itemMeta = $trendingPost->GetAllMetaData();
                   $featured_image = $itemMeta['featured_image'] ?? null;
@@ -214,11 +214,11 @@
             </div>
             <hr style="border-color: #c7c7c7; margin: 0" />
             <!-- <div class="ad-wrapper py-3">
-                                    <span class="ad-label">- Advertisement -</span>
-                                    <a href="#">
-                                      <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
-                                    </a>
-                                  </div> -->
+                                        <span class="ad-label">- Advertisement -</span>
+                                        <a href="#">
+                                          <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
+                                        </a>
+                                      </div> -->
             @php
               $single_news_below_trending_news_first_ad = SettingHelper::get_field('single_news_below_trending_news_first_ad');
               $link = MediaHelper::getDescriptionById($single_news_below_trending_news_first_ad);

@@ -125,7 +125,7 @@ class PostController extends Controller
             $author = $post->categories()->where('categories.type', 'author')->first();
             $user = Auth::user();
             $category = $post->categories()->first();
-            $categoryMeta = $this->categoryRepository->getMetaDatas($category);
+            $categoryMeta = $category ? $this->categoryRepository->getMetaDatas($category) : [];
 
             $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
             $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);

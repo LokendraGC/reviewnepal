@@ -40,7 +40,10 @@
                                 @if (!empty($featured_image_url))
                                     <img src="{{ $featured_image_url }}" alt="{{ $author_name }}" class="meta-logo me-2">
                                 @endif
-                                <span class="meta-author">{{ $author_name }}</span>
+                                <span class="meta-author">
+                                    <i class="fa-regular fa-user-circle"></i>
+                                    {{ $author_name }}
+                                </span>
                             </div>
                             <span><i class="fa-regular fa-calendar-days"></i>
                                 {{ $language == 'en' ? $recent_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($recent_post->created_at) }}</span>

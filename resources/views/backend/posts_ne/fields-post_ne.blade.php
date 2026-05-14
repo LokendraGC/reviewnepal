@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label" for="youtube_video_id">Youtube Video ID</label>
                                     <input name="youtube_video_id" type="text" class="form-control"
@@ -73,7 +73,7 @@
                                     <small class="text-muted">Enter the video ID (e.g., dsGuSZYDNmk)</small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="mb-2">
                                     <label for="youtube_thumbnail" class="form-label">Youtube Thumbnail (Optional)<span
                                             class="form-text text-muted">
@@ -132,7 +132,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                     </div>

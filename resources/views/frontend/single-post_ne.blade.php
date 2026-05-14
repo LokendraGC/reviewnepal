@@ -116,16 +116,10 @@
           $media = MediaHelper::getImageById($featured_image);
           if (!empty($featured_image) && !empty($media->file_name)) {
             $featured_image_url = asset('storage/' . $media->file_name);
+          } elseif (!empty($postMeta['youtube_video_id'])) {
+              $featured_image_url = 'https://img.youtube.com/vi/' . $postMeta['youtube_video_id'] . '/hqdefault.jpg';
           } else {
-            $yt_thumb_id = $postMeta['youtube_thumbnail'] ?? null;
-            $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
-            if (!empty($yt_thumb_media?->file_name)) {
-                $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
-            } elseif (!empty($postMeta['youtube_video_id'])) {
-                $featured_image_url = 'https://img.youtube.com/vi/' . $postMeta['youtube_video_id'] . '/hqdefault.jpg';
-            } else {
-                $featured_image_url = null;
-            }
+              $featured_image_url = null;
           }
         @endphp
 
@@ -236,16 +230,10 @@
                   $media = MediaHelper::getImageById($featured_image);
                   if (!empty($featured_image) && !empty($media->file_name)) {
                     $featured_image_url = asset('storage/' . $media->file_name);
+                  } elseif (!empty($itemMeta['youtube_video_id'])) {
+                      $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
                   } else {
-                    $yt_thumb_id = $itemMeta['youtube_thumbnail'] ?? null;
-                    $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
-                    if (!empty($yt_thumb_media?->file_name)) {
-                        $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
-                    } elseif (!empty($itemMeta['youtube_video_id'])) {
-                        $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
-                    } else {
-                        $featured_image_url = null;
-                    }
+                      $featured_image_url = null;
                   }
                 @endphp
                 <div class="d-flex mb-3 align-items-center sidebar-item">
@@ -397,16 +385,10 @@
               $media = MediaHelper::getImageById($featured_image);
               if (!empty($featured_image) && !empty($media->file_name)) {
                 $featured_image_url = asset('storage/' . $media->file_name);
+              } elseif (!empty($itemMeta['youtube_video_id'])) {
+                  $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
               } else {
-                $yt_thumb_id = $itemMeta['youtube_thumbnail'] ?? null;
-                $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
-                if (!empty($yt_thumb_media?->file_name)) {
-                    $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
-                } elseif (!empty($itemMeta['youtube_video_id'])) {
-                    $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
-                } else {
-                    $featured_image_url = asset('assets/images/review_nepal_logo.webp');
-                }
+                  $featured_image_url = asset('assets/images/review_nepal_logo.webp');
               }
               $date = NepaliDateHelper::toNepaliDate($relatedPost->created_at);
             @endphp

@@ -117,13 +117,34 @@
           if (!empty($featured_image) && !empty($media->file_name)) {
             $featured_image_url = asset('storage/' . $media->file_name);
           } else {
-            $featured_image_url = null;
+            $yt_thumb_id = $postMeta['youtube_thumbnail'] ?? null;
+            $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
+            if (!empty($yt_thumb_media?->file_name)) {
+                $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
+            } elseif (!empty($postMeta['youtube_video_id'])) {
+                $featured_image_url = 'https://img.youtube.com/vi/' . $postMeta['youtube_video_id'] . '/hqdefault.jpg';
+            } else {
+                $featured_image_url = null;
+            }
           }
         @endphp
 
-        @if ($featured_image_url)
+        @if (!empty($postMeta['youtube_video_id']))
+          <div class="main-featured-video my-4">
+            <div class="ratio ratio-16x9">
+              <iframe src="https://www.youtube.com/embed/{{ $postMeta['youtube_video_id'] }}"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+        @elseif ($featured_image_url)
           <div class="main-featured-img my-4">
             <img src="{{ $featured_image_url }}" alt="{{ $post->post_title }}" />
+          </div>
+        @else
+          <div class="main-featured-img my-4">
+            <img src="{{ asset('assets/images/review_nepal_logo.webp') }}" alt="{{ $post->post_title }}" />
           </div>
         @endif
 
@@ -216,13 +237,25 @@
                   if (!empty($featured_image) && !empty($media->file_name)) {
                     $featured_image_url = asset('storage/' . $media->file_name);
                   } else {
-                    $featured_image_url = null;
+                    $yt_thumb_id = $itemMeta['youtube_thumbnail'] ?? null;
+                    $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
+                    if (!empty($yt_thumb_media?->file_name)) {
+                        $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
+                    } elseif (!empty($itemMeta['youtube_video_id'])) {
+                        $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                    } else {
+                        $featured_image_url = null;
+                    }
                   }
                 @endphp
                 <div class="d-flex mb-3 align-items-center sidebar-item">
                   @if ($featured_image_url)
                     <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">
                       <img src="{{ $featured_image_url }}" alt="{{ $trendingPost->post_title }}" />
+                    </a>
+                  @else
+                    <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">
+                      <img src="{{ asset('assets/images/review_nepal_logo.webp') }}" alt="{{ $trendingPost->post_title }}" />
                     </a>
                   @endif
                   <div class="ms-3">
@@ -365,7 +398,15 @@
               if (!empty($featured_image) && !empty($media->file_name)) {
                 $featured_image_url = asset('storage/' . $media->file_name);
               } else {
-                $featured_image_url = null;
+                $yt_thumb_id = $itemMeta['youtube_thumbnail'] ?? null;
+                $yt_thumb_media = $yt_thumb_id ? MediaHelper::getImageById($yt_thumb_id) : null;
+                if (!empty($yt_thumb_media?->file_name)) {
+                    $featured_image_url = asset('storage/' . $yt_thumb_media->file_name);
+                } elseif (!empty($itemMeta['youtube_video_id'])) {
+                    $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                } else {
+                    $featured_image_url = asset('assets/images/review_nepal_logo.webp');
+                }
               }
               $date = NepaliDateHelper::toNepaliDate($relatedPost->created_at);
             @endphp

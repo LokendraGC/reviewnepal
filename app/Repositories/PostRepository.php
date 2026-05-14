@@ -78,7 +78,6 @@ class PostRepository
             ]);
 
             return $post;
-
         });
     }
 
@@ -91,6 +90,8 @@ class PostRepository
         $metaDatas['page_keywords'] = isset($request->page_keywords) ? $request->page_keywords : NULL;
         $metaDatas['featured_image'] = isset($request->featured_image) ? $request->featured_image : NULL;
         $metaDatas['show_banner'] = isset($request->show_banner) ? $request->show_banner : 0;
+        $metaDatas['youtube_video_id'] = isset($request->youtube_video_id) ? $request->youtube_video_id : NULL;
+        $metaDatas['youtube_thumbnail'] = isset($request->youtube_thumbnail) ? $request->youtube_thumbnail : NULL;
         $metaDatas['is_breaking_news'] = isset($request->is_breaking_news) ? $request->is_breaking_news : 0;
         $metaDatas['ai_summary'] = isset($request->ai_summary) ? $request->ai_summary : NULL;
 
@@ -145,9 +146,7 @@ class PostRepository
             $this->updateMenuItemTitle($post);
 
             return ['status' => $status, 'post' => $post];
-
         });
-
     }
 
     // check payload id in postmetas table whose meta key is menu_item_object_id and menu_item_custom_title is null

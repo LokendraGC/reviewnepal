@@ -10,7 +10,8 @@
                 <section class="container my-5">
                     <div class="news-header-section">
                         <h2 class="main-headline">
-                            <a href="{{ route('frontend.post.index', $recent_post->slug) }}">{{ $recent_post->post_title }}</a>
+                            <a
+                                href="{{ route('frontend.post.index', $recent_post->slug) }}">{{ $recent_post->post_title }}</a>
                         </h2>
 
                         @php
@@ -19,9 +20,9 @@
                             $author_meta = $author ? $author->GetAllMetaData() : [];
 
                             if ($language == 'en') {
-                                $author_name = $author->name ?? $user->name ?? 'Review Nepal';
+                                $author_name = $author->name ?? ($user->name ?? 'Review Nepal');
                             } else {
-                                $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                $author_name = $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
                             }
 
                             $featured_image = isset($author_meta['featured_image'])
@@ -57,28 +58,47 @@
                             $featured_image = $itemMeta['featured_image'] ?? null;
                             $show_banner = $itemMeta['show_banner'] ?? '0';
 
-
                             $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
 
                             if (!empty($featured_image) && !empty($media?->file_name)) {
                                 $featured_image_url = asset('storage/' . $media->file_name);
                             } else {
-                                $featured_image_url = null;
+                                $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                                $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                                if (!empty($yt_media?->file_name)) {
+                                    $featured_image_url = asset('storage/' . $yt_media->file_name);
+                                } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                    $featured_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                                } else {
+                                    $featured_image_url = null;
+                                }
                             }
                         @endphp
 
-                        @if (!empty($featured_image_url) && $show_banner == '1')
-                            <a href="{{ route('frontend.post.index', $recent_post->slug) }}">
+                        @if ($show_banner == '1')
+                            @if (!empty($itemMeta['youtube_video_id']))
+                                <div class="main-featured-video mb-4">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe src="https://www.youtube.com/embed/{{ $itemMeta['youtube_video_id'] }}"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            @else
+                                <a href="{{ route('frontend.post.index', $recent_post->slug) }}">
 
-                                @if($featured_image_url)
-                                    <img src="{{ $featured_image_url }}" alt="{{ $recent_post->post_title }}" class="featured-image">
-                                @endif
-                            </a>
+                                    @if ($featured_image_url)
+                                        <img src="{{ $featured_image_url }}" alt="{{ $recent_post->post_title }}"
+                                            class="featured-image">
+                                    @else
+                                        <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                            alt="{{ $recent_post->post_title }}" class="featured-image">
+                                    @endif
+                                </a>
+                            @endif
                         @endif
 
-                        <p class="image-caption">
-                            {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($recent_post->post_content)), 20) }}
-                        </p>
 
                     </div>
                 </section>
@@ -125,7 +145,9 @@
         {{-- TOP ADVERTISEMENT END --}}
 
         {{-- LEFT AND RIGHT SECOND CATEGORY START --}}
-        @if (!empty($left_second_posts->posts) && $left_second_posts->posts->count() > 0 || !empty($right_second_posts->posts) && $right_second_posts->posts->count() > 0)
+        @if (
+            (!empty($left_second_posts->posts) && $left_second_posts->posts->count() > 0) ||
+                (!empty($right_second_posts->posts) && $right_second_posts->posts->count() > 0))
             <section class="morning-hero-section">
                 <div class="morning-container">
 
@@ -138,16 +160,27 @@
                                     $cate = $left_second_post->categories()->first();
                                     $cateMeta = $cate ? $cate->GetAllMetaData() : [];
 
-                                    $cat_name = $language == 'en' ? ($left_second_posts->name ?? '') : ($cateMeta['name_ne'] ?? '');
+                                    $cat_name =
+                                        $language == 'en' ? $left_second_posts->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                     $itemMeta = $left_second_post->GetAllMetaData();
 
                                     // POST IMAGE
                                     $post_image_id = $itemMeta['featured_image'] ?? null;
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-                                    $post_image_url = !empty($post_media?->file_name)
-                                        ? asset('storage/' . $post_media->file_name)
-                                        : null;
+                                    if (!empty($post_media?->file_name)) {
+                                        $post_image_url = asset('storage/' . $post_media->file_name);
+                                    } else {
+                                        $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                                        $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                                        if (!empty($yt_media?->file_name)) {
+                                            $post_image_url = asset('storage/' . $yt_media->file_name);
+                                        } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                            $post_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                                        } else {
+                                            $post_image_url = null;
+                                        }
+                                    }
 
                                     // AUTHOR
                                     $author = $left_second_post
@@ -157,9 +190,9 @@
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
 
                                     if ($language == 'en') {
-                                        $author_name = $author->name ?? $user->name ?? 'Review Nepal';
+                                        $author_name = $author->name ?? ($user->name ?? 'Review Nepal');
                                     } else {
-                                        $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                        $author_name = $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
                                     }
                                 @endphp
 
@@ -191,7 +224,8 @@
                                         <div class="primary-image-wrapper">
                                             @if ($post_image_url)
                                                 <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
-                                                    <img src="{{ $post_image_url }}" alt="{{ $left_second_post->post_title }}">
+                                                    <img src="{{ $post_image_url }}"
+                                                        alt="{{ $left_second_post->post_title }}">
                                                 </a>
                                             @else
                                                 <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
@@ -209,13 +243,14 @@
 
                                     {{-- START secondary grid container AFTER first item --}}
                                     <div class="hero-secondary-grid">
-                                @else
+                                    @else
                                         {{-- OTHER POSTS (SECONDARY DESIGN) --}}
                                         <article class="bottom-card">
 
                                             @if ($post_image_url)
                                                 <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
-                                                    <img src="{{ $post_image_url }}" alt="{{ $left_second_post->post_title }}">
+                                                    <img src="{{ $post_image_url }}"
+                                                        alt="{{ $left_second_post->post_title }}">
                                                 </a>
                                             @else
                                                 <a href="{{ route('frontend.post.index', $left_second_post->slug) }}">
@@ -237,123 +272,136 @@
                                             </div>
 
                                         </article>
-                                    @endif
+                                @endif
 
-                                    {{-- CLOSE secondary grid at last --}}
-                                    @if ($loop->last && !$loop->first)
-                                        </div>
-                                    @endif
-                            @endforeach
-
+                                {{-- CLOSE secondary grid at last --}}
+                                @if ($loop->last && !$loop->first)
                         </div>
                     @endif
-                    {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
+        @endforeach
 
-                    {{-- RIGHT SIDEBAR CATEGORY START --}}
-                    @if (!empty($right_second_posts) && $right_second_posts->posts->count() > 0 && !empty($right_second_posts->posts))
-                        <div class="hero-right-col">
+        </div>
+        @endif
+        {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
 
-                            @foreach ($right_second_posts->posts as $right_second_post)
-                                @php
-                                    // CATEGORY
-                                    $cate = $right_second_post->categories()->first();
-                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
+        {{-- RIGHT SIDEBAR CATEGORY START --}}
+        @if (!empty($right_second_posts) && $right_second_posts->posts->count() > 0 && !empty($right_second_posts->posts))
+            <div class="hero-right-col">
 
-                                    // POST META
-                                    $itemMeta = $right_second_post->GetAllMetaData();
+                @foreach ($right_second_posts->posts as $right_second_post)
+                    @php
+                        // CATEGORY
+                        $cate = $right_second_post->categories()->first();
+                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
-                                    // IMAGE
-                                    $post_image_id = $itemMeta['featured_image'] ?? null;
-                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-                                    $post_image_url = !empty($post_media?->file_name)
-                                        ? asset('storage/' . $post_media->file_name)
-                                        : null;
+                        // POST META
+                        $itemMeta = $right_second_post->GetAllMetaData();
 
-                                    $author = $right_second_post->categories()->where('categories.type', 'author')->first();
+                        // IMAGE
+                        $post_image_id = $itemMeta['featured_image'] ?? null;
+                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
-                                    $author_meta = $author ? $author->GetAllMetaData() : [];
+                        if (!empty($post_media?->file_name)) {
+                            $post_image_url = asset('storage/' . $post_media->file_name);
+                        } else {
+                            $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                            $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                            if (!empty($yt_media?->file_name)) {
+                                $post_image_url = asset('storage/' . $yt_media->file_name);
+                            } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                $post_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                            } else {
+                                $post_image_url = null;
+                            }
+                        }
 
-                                    $author_name =
-                                        $language == 'en' ? $author->name ?? $user->name ?? 'Review Nepal' : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
-                                @endphp
+                        $author = $right_second_post->categories()->where('categories.type', 'author')->first();
 
-                                {{-- FIRST POST (FEATURED) --}}
-                                @if ($loop->first)
-                                    <article class="sidebar-featured">
+                        $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                                        @if ($post_image_url)
-                                            <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                <img src="{{ $post_image_url }}" alt="{{ $right_second_post->post_title }}">
-                                            </a>
-                                        @else
-                                            <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
-                                                    alt="{{ $right_second_post->post_title }}">
-                                            </a>
-                                        @endif
+                        $author_name =
+                            $language == 'en'
+                                ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+                    @endphp
 
-                                        <span class="story-tag">{{ $cat_name }}</span>
+                    {{-- FIRST POST (FEATURED) --}}
+                    @if ($loop->first)
+                        <article class="sidebar-featured">
 
-                                        <h3 class="sidebar-featured-title">
-                                            <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                {{ $right_second_post->post_title }}
-                                            </a>
-                                        </h3>
+                            @if ($post_image_url)
+                                <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                    <img src="{{ $post_image_url }}" alt="{{ $right_second_post->post_title }}">
+                                </a>
+                            @else
+                                <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                    <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                        alt="{{ $right_second_post->post_title }}">
+                                </a>
+                            @endif
 
-                                        <div class="story-meta">
-                                            <span class="author">{{ $author_name }}</span>
-                                            <span class="date">
-                                                {{ $language == 'en'
+                            <span class="story-tag">{{ $cat_name }}</span>
+
+                            <h3 class="sidebar-featured-title">
+                                <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                    {{ $right_second_post->post_title }}
+                                </a>
+                            </h3>
+
+                            <div class="story-meta">
+                                <span class="author">{{ $author_name }}</span>
+                                <span class="date">
+                                    {{ $language == 'en'
                                         ? $right_second_post->created_at->format('M d, Y')
                                         : NepaliDateHelper::toNepaliDate($right_second_post->created_at) }}
-                                            </span>
-                                        </div>
+                                </span>
+                            </div>
 
-                                    </article>
+                        </article>
 
-                                    {{-- START LIST --}}
-                                    <div class="sidebar-list">
+                        {{-- START LIST --}}
+                        <div class="sidebar-list">
+                        @else
+                            {{-- LIST ITEMS --}}
+                            <article class="list-item">
+
+                                @if ($post_image_url)
+                                    <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                        <img src="{{ $post_image_url }}" alt="{{ $right_second_post->post_title }}">
+                                    </a>
                                 @else
-                                        {{-- LIST ITEMS --}}
-                                        <article class="list-item">
+                                    <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                        <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                            alt="{{ $right_second_post->post_title }}">
+                                    </a>
+                                @endif
 
-                                            @if ($post_image_url)
-                                                <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                    <img src="{{ $post_image_url }}" alt="{{ $right_second_post->post_title }}">
-                                                </a>
-                                            @else
-                                                <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                    <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
-                                                        alt="{{ $right_second_post->post_title }}">
-                                                </a>
-                                            @endif
+                                <div class="list-content">
+                                    <span class="story-tag">{{ $cat_name }}</span>
 
-                                            <div class="list-content">
-                                                <span class="story-tag">{{ $cat_name }}</span>
+                                    <h4 class="list-title" style="text-wrap: wrap; line-height: 1rem;">
+                                        <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
+                                            {{ $right_second_post->post_title }}
+                                        </a>
+                                    </h4>
+                                </div>
 
-                                                <h4 class="list-title" style="text-wrap: wrap; line-height: 1rem;">
-                                                    <a href="{{ route('frontend.post.index', $right_second_post->slug) }}">
-                                                        {{ $right_second_post->post_title }}
-                                                    </a>
-                                                </h4>
-                                            </div>
-
-                                        </article>
-                                    @endif
-
-                                    {{-- CLOSE LIST --}}
-                                    @if ($loop->last && !$loop->first)
-                                        </div>
-                                    @endif
-                            @endforeach
-
-                        </div>
+                            </article>
                     @endif
-                    {{-- RIGHT SIDEBAR CATEGORY END --}}
 
-                </div>
-            </section>
+                    {{-- CLOSE LIST --}}
+                    @if ($loop->last && !$loop->first)
+            </div>
+        @endif
+        @endforeach
+
+        </div>
+        @endif
+        {{-- RIGHT SIDEBAR CATEGORY END --}}
+
+        </div>
+        </section>
         @endif
         {{-- LEFT AND RIGHT SECOND CATEGORY END --}}
 
@@ -382,10 +430,12 @@
                             <span class="ad-label">- Advertisement -</span>
                             @if (!empty($link))
                                 <a href="{{ $link }}" target="_blank">
-                                    <img src="{{ $below_recent_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
+                                    <img src="{{ $below_recent_image_url }}" alt="{{ $websiteName }}"
+                                        class="ad-full-width">
                                 </a>
                             @else
-                                <img src="{{ $below_recent_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
+                                <img src="{{ $below_recent_image_url }}" alt="{{ $websiteName }}"
+                                    class="ad-full-width">
                             @endif
                         </div>
                     </div>
@@ -422,7 +472,7 @@
                                 // CATEGORY
                                 $cate = $third_post->categories()->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
+                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                 // POST META
                                 $itemMeta = $third_post->GetAllMetaData();
@@ -430,9 +480,20 @@
                                 // IMAGE
                                 $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-                                $post_image_url = !empty($post_media?->file_name)
-                                    ? asset('storage/' . $post_media->file_name)
-                                    : null;
+
+                                if (!empty($post_media?->file_name)) {
+                                    $post_image_url = asset('storage/' . $post_media->file_name);
+                                } else {
+                                    $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                                    $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                                    if (!empty($yt_media?->file_name)) {
+                                        $post_image_url = asset('storage/' . $yt_media->file_name);
+                                    } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                        $post_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                                    } else {
+                                        $post_image_url = null;
+                                    }
+                                }
 
                                 $author = $third_post->categories()->where('categories.type', 'author')->first();
 
@@ -440,8 +501,8 @@
 
                                 $author_name =
                                     $language == 'en'
-                                    ? $author->name ?? $user->name ?? 'Review Nepal'
-                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                        ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                        : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
 
                             @endphp
 
@@ -452,10 +513,16 @@
                                         <img src="{{ $post_image_url }}" alt="{{ $third_post->post_title }}"
                                             class="news-img flex-shrink-0">
                                     </a>
+                                @else
+                                    <a href="{{ route('frontend.post.index', $third_post->slug) }}">
+                                        <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                            alt="{{ $third_post->post_title }}" class="news-img flex-shrink-0">
+                                    </a>
                                 @endif
 
                                 <div>
-                                    <a href="{{ route('frontend.post.index', $third_post->slug) }}" class="article-title d-block">
+                                    <a href="{{ route('frontend.post.index', $third_post->slug) }}"
+                                        class="article-title d-block">
                                         {{ $third_post->post_title }}
                                     </a>
 
@@ -487,7 +554,10 @@
                                 @php
                                     $author = $trendingPost->categories()->where('categories.type', 'author')->first();
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
-                                    $author_name = $language == 'en' ? $author->name ?? $user->name ?? 'Review Nepal' : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                    $author_name =
+                                        $language == 'en'
+                                            ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                            : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
                                 @endphp
                                 <div class="d-flex gap-3 mb-4 pb-2">
                                     <div class="trending-number">{{ $loop->iteration }}</div>
@@ -508,8 +578,12 @@
                         @php
                             $websiteName = SettingHelper::get_field('site_title');
 
-                            $homepage_below_trending_news_first_ad = SettingHelper::get_field('homepage_below_trending_news_first_ad');
-                            $homepage_below_trending_news_first_ad_link = MediaHelper::getDescriptionById($homepage_below_trending_news_first_ad);
+                            $homepage_below_trending_news_first_ad = SettingHelper::get_field(
+                                'homepage_below_trending_news_first_ad',
+                            );
+                            $homepage_below_trending_news_first_ad_link = MediaHelper::getDescriptionById(
+                                $homepage_below_trending_news_first_ad,
+                            );
 
                             $homepage_below_trending_news_first_ad_url = null;
 
@@ -524,16 +598,16 @@
 
                         @if (!empty($homepage_below_trending_news_first_ad_url))
                             <div class="ad-wrapper py-3">
-                                <span class="ad-label">- Advertisement -</span>
+                                <span class="ad-label">- Advertisementt -</span>
 
                                 @if (!empty($homepage_below_trending_news_first_ad_link))
                                     <a href="{{ $homepage_below_trending_news_first_ad_link }}" target="_blank">
-                                        <img src="{{ $homepage_below_trending_news_first_ad_url }}" alt="{{ $websiteName }}"
-                                            class="ad-one-third">
+                                        <img src="{{ $homepage_below_trending_news_first_ad_url }}"
+                                            alt="{{ $websiteName }}" class="ad-one-third">
                                     </a>
                                 @else
-                                    <img src="{{ $homepage_below_trending_news_first_ad_url }}" alt="{{ $websiteName }}"
-                                        class="ad-one-third">
+                                    <img src="{{ $homepage_below_trending_news_first_ad_url }}"
+                                        alt="{{ $websiteName }}" class="ad-one-third">
                                 @endif
                             </div>
                         @endif
@@ -541,8 +615,12 @@
 
                         <!-- below trending news second ad -->
                         @php
-                            $homepage_below_trending_news_second_ad = SettingHelper::get_field('homepage_below_trending_news_second_ad');
-                            $homepage_below_trending_news_second_ad_link = MediaHelper::getDescriptionById($homepage_below_trending_news_second_ad);
+                            $homepage_below_trending_news_second_ad = SettingHelper::get_field(
+                                'homepage_below_trending_news_second_ad',
+                            );
+                            $homepage_below_trending_news_second_ad_link = MediaHelper::getDescriptionById(
+                                $homepage_below_trending_news_second_ad,
+                            );
 
                             $homepage_below_trending_news_second_ad_url = null;
 
@@ -561,279 +639,339 @@
 
                                 @if (!empty($homepage_below_trending_news_second_ad_link))
                                     <a href="{{ $homepage_below_trending_news_second_ad_link }}" target="_blank">
-                                        <img src="{{ $homepage_below_trending_news_second_ad_url }}" alt="{{ $websiteName }}"
-                                            class="ad-one-third">
+                                        <img src="{{ $homepage_below_trending_news_second_ad_url }}"
+                                            alt="{{ $websiteName }}" class="ad-one-third">
                                     </a>
                                 @else
-                                    <img src="{{ $homepage_below_trending_news_second_ad_url }}" alt="{{ $websiteName }}"
-                                        class="ad-one-third">
+                                    <img src="{{ $homepage_below_trending_news_second_ad_url }}"
+                                        alt="{{ $websiteName }}" class="ad-one-third">
                                 @endif
                             </div>
                         @endif
                 @endif
-                    {{-- TRENDING COLUMN END --}}
+                {{-- TRENDING COLUMN END --}}
 
-                </div>
             </div>
-            {{-- THIRD SECTION END --}}
+        </div>
+        {{-- THIRD SECTION END --}}
 
-            {{-- THIRD ADVERTISEMENT START --}}
-            @php
-                $above_nepal_insights_ad = SettingHelper::get_field('above_nepal_insights_ad');
-                $link = MediaHelper::getDescriptionById($above_nepal_insights_ad);
-                $websiteName = SettingHelper::get_field('site_title');
+        {{-- THIRD ADVERTISEMENT START --}}
+        @php
+            $above_nepal_insights_ad = SettingHelper::get_field('above_nepal_insights_ad');
+            $link = MediaHelper::getDescriptionById($above_nepal_insights_ad);
+            $websiteName = SettingHelper::get_field('site_title');
 
-                if ($above_nepal_insights_ad) {
-                    $media = MediaHelper::getImageById($above_nepal_insights_ad);
-                    if (!empty($media->file_name)) {
-                        $above_insight_image_url = asset('storage/' . $media->file_name);
-                    } else {
-                        $above_insight_image_url = null;
-                    }
+            if ($above_nepal_insights_ad) {
+                $media = MediaHelper::getImageById($above_nepal_insights_ad);
+                if (!empty($media->file_name)) {
+                    $above_insight_image_url = asset('storage/' . $media->file_name);
+                } else {
+                    $above_insight_image_url = null;
                 }
+            }
 
-            @endphp
+        @endphp
 
-            @if (!empty($above_insight_image_url))
-                <div class="container py-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="ad-wrapper">
-                                <span class="ad-label">- Advertisement -</span>
-                                @if (!empty($link))
-                                    <a href="{{ $link }}" target="_blank">
-                                        <img src="{{ $above_insight_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                    </a>
-                                @else
-                                    <img src="{{ $above_insight_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                @endif
-                            </div>
+        @if (!empty($above_insight_image_url))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($link))
+                                <a href="{{ $link }}" target="_blank">
+                                    <img src="{{ $above_insight_image_url }}" alt="{{ $websiteName }}"
+                                        class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $above_insight_image_url }}" alt="{{ $websiteName }}"
+                                    class="ad-full-width">
+                            @endif
                         </div>
                     </div>
                 </div>
-            @endif
-            {{-- THIRD ADVERTISEMENT END --}}
+            </div>
+        @endif
+        {{-- THIRD ADVERTISEMENT END --}}
 
-            {{-- NEPAL INSIGHTS START --}}
-            @if (!empty($fourth_cat) && $fourth_cat->posts->count() > 0 && !empty($fourth_cat->posts))
-                <div class="container py-5">
+        {{-- NEPAL INSIGHTS START --}}
+        @if (!empty($fourth_cat) && $fourth_cat->posts->count() > 0 && !empty($fourth_cat->posts))
+            <div class="container py-5">
 
-                    @php
-                        $postMeta = $post->GetAllMetaData();
-                        $main_title =
-                            $language == 'en' ? $postMeta['main_title_fourth'] : $postMeta['main_title_nepali_fourth'];
-                        $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
-                    @endphp
+                @php
+                    $postMeta = $post->GetAllMetaData();
+                    $main_title =
+                        $language == 'en' ? $postMeta['main_title_fourth'] : $postMeta['main_title_nepali_fourth'];
+                    $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
+                @endphp
 
-                    <div class="section-header-featured d-flex justify-content-between">
-                        <h2>{{ $main_title }}</h2>
-                        <a href="{{ route('frontend.category.index', $fourth_cat->slug) }}"
-                            class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>{{ $main_title }}</h2>
+                    <a href="{{ route('frontend.category.index', $fourth_cat->slug) }}"
+                        class="cat-link mt-auto">{{ $view_all_text }}<span>&rarr;</span></a>
+                </div>
+
+                <div class="row gy-5">
+
+                    @foreach ($fourth_cat->posts as $fourth_post)
+                        @php
+                            // CATEGORY
+                            $cate = $fourth_post->categories()->first();
+                            $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                            $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                            // POST META
+                            $itemMeta = $fourth_post->GetAllMetaData();
+
+                            // IMAGE
+                            $post_image_id = $itemMeta['featured_image'] ?? null;
+                            $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                            if (!empty($post_media?->file_name)) {
+                                $post_image_url = asset('storage/' . $post_media->file_name);
+                            } else {
+                                $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                                $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                                if (!empty($yt_media?->file_name)) {
+                                    $post_image_url = asset('storage/' . $yt_media->file_name);
+                                } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                    $post_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                                } else {
+                                    $post_image_url = null;
+                                }
+                            }
+
+                            $author = $fourth_post->categories()->where('categories.type', 'author')->first();
+
+                            $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                            $author_name =
+                                $language == 'en'
+                                    ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                    : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+
+                        @endphp
+                        <div class="col-md-6">
+                            <a href="{{ route('frontend.post.index', $fourth_post->slug) }}" class="featured-article">
+                                <div class="featured-content">
+                                    <h3 class="featured-title">
+                                        {{ $fourth_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $fourth_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fourth_post->created_at) }}</span>
+                                    </div>
+                                </div>
+                                @if ($post_image_url)
+                                    <img src="{{ $post_image_url }}" alt="{{ $fourth_post->post_title }}"
+                                        class="featured-img">
+                                @else
+                                    <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                        alt="{{ $fourth_post->post_title }}" class="featured-img">
+                                @endif
+                            </a>
+                        </div>
+                    @endforeach
+
+                </div>
+            </div>
+        @endif
+        {{-- NEPAL INSIGHTS END --}}
+
+        {{-- NEPAL INSIGHTS ADVERTISEMENT START --}}
+        @php
+            $below_nepal_insights_ad = SettingHelper::get_field('below_nepal_insights_ad');
+            $link = MediaHelper::getDescriptionById($below_nepal_insights_ad);
+
+            if ($below_nepal_insights_ad) {
+                $media = MediaHelper::getImageById($below_nepal_insights_ad);
+                if (!empty($media->file_name)) {
+                    $below_nepal_insights_image_url = asset('storage/' . $media->file_name);
+                } else {
+                    $below_nepal_insights_image_url = null;
+                }
+            }
+        @endphp
+
+        @if (!empty($below_nepal_insights_image_url))
+            <hr style="border-color: #c7c7c7; margin: 0;">
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($link))
+                                <a href="{{ $link }}" target="_blank">
+                                    <img src="{{ $below_nepal_insights_image_url }}" alt="{{ $websiteName }}"
+                                        class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $below_nepal_insights_image_url }}" alt="{{ $websiteName }}"
+                                    class="ad-full-width">
+                            @endif
+                        </div>
                     </div>
+                </div>
+            </div>
+        @endif
+        {{-- NEPAL INSIGHTS ADVERTISEMENT END --}}
 
-                    <div class="row gy-5">
+        <hr style="border-color: #c7c7c7; margin: 0;">
 
-                        @foreach ($fourth_cat->posts as $fourth_post)
+        <div class="container py-5">
+            <div class="row gy-5">
+
+                {{-- FIFTH LEFT CATEGORY START --}}
+                @if (!empty($fifth_left_cat) && $fifth_left_cat->posts->count() > 0 && !empty($fifth_left_cat->posts))
+                    <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
+                        <h2 class="section-title">
+                            {{ $language == 'en' ? $fifth_left_cat->name : $fifth_left_cat->GetAllMetaData()['name_ne'] ?? $fifth_left_cat->name }}
+                        </h2>
+
+                        @foreach ($fifth_left_cat->posts as $fifth_left_post)
                             @php
                                 // CATEGORY
-                                $cate = $fourth_post->categories()->first();
-                                $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
+                                $fifth_left_cate = $fifth_left_post->categories()->first();
+                                $fifth_left_cateMeta = $fifth_left_cate ? $fifth_left_cate->GetAllMetaData() : [];
+                                $cat_name =
+                                    $language == 'en'
+                                        ? $fifth_left_cate->name ?? ''
+                                        : $fifth_left_cateMeta['name_ne'] ?? '';
 
                                 // POST META
-                                $itemMeta = $fourth_post->GetAllMetaData();
+                                $itemMeta = $fifth_left_post->GetAllMetaData();
 
                                 // IMAGE
                                 $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-                                $post_image_url = !empty($post_media?->file_name)
-                                    ? asset('storage/' . $post_media->file_name)
-                                    : null;
+                                if (!empty($post_media?->file_name)) {
+                                    $post_image_url = asset('storage/' . $post_media->file_name);
+                                } else {
+                                    $youtube_thumbnail_id = $itemMeta['youtube_thumbnail'] ?? null;
+                                    $yt_media = $youtube_thumbnail_id ? MediaHelper::getImageById($youtube_thumbnail_id) : null;
+                                    if (!empty($yt_media?->file_name)) {
+                                        $post_image_url = asset('storage/' . $yt_media->file_name);
+                                    } elseif (!empty($itemMeta['youtube_video_id'])) {
+                                        $post_image_url = 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
+                                    } else {
+                                        $post_image_url = null;
+                                    }
+                                }
 
-                                $author = $fourth_post->categories()->where('categories.type', 'author')->first();
+                                $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
 
                                 $author_meta = $author ? $author->GetAllMetaData() : [];
 
                                 $author_name =
                                     $language == 'en'
-                                    ? $author->name ?? $user->name ?? 'Review Nepal'
-                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                        ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                        : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
 
                             @endphp
-                            <div class="col-md-6">
-                                <a href="{{ route('frontend.post.index', $fourth_post->slug) }}" class="featured-article">
-                                    <div class="featured-content">
-                                        <h3 class="featured-title">
-                                            {{ $fourth_post->post_title }}
-                                        </h3>
-                                        <div class="featured-meta">
-                                            <span class="meta-category">{{ $cat_name }}</span>
-                                            <span class="meta-divider">|</span>
-                                            <span>{{ $language == 'en' ? $fourth_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fourth_post->created_at) }}</span>
-                                        </div>
-                                    </div>
-                                    @if ($post_image_url)
-                                        <img src="{{ $post_image_url }}" alt="{{ $fourth_post->post_title }}" class="featured-img">
 
-                                    @endif
-                                </a>
-                            </div>
+                            <a href="{{ route('frontend.post.index', $fifth_left_post->slug) }}" class="news-item">
+                                @if ($post_image_url)
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_left_post->post_title }}"
+                                        class="small-thumb">
+                                @else
+                                    <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                        alt="{{ $fifth_left_post->post_title }}" class="small-thumb">
+                                @endif
+                                <div class="news-content">
+                                    <h3 class="news-title">
+                                        {{ $fifth_left_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $fifth_left_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fifth_left_post->created_at) }}</span>
+                                    </div>
+                                </div>
+                            </a>
                         @endforeach
 
+                        <a href="{{ route('frontend.category.index', $fifth_left_cat->slug) }}"
+                            class="cat-link mt-auto">{{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                            <span>&rarr;</span></a>
                     </div>
-                </div>
-            @endif
-            {{-- NEPAL INSIGHTS END --}}
+                @endif
+                {{-- FIFTH LEFT CATEGORY END --}}
 
-            {{-- NEPAL INSIGHTS ADVERTISEMENT START --}}
-            @php
-                $below_nepal_insights_ad = SettingHelper::get_field('below_nepal_insights_ad');
-                $link = MediaHelper::getDescriptionById($below_nepal_insights_ad);
+                {{-- FIFTH MIDDLE CATEGORY START --}}
+                @if (!empty($fifth_middle_cat) && $fifth_middle_cat->posts->count() > 0 && !empty($fifth_middle_cat->posts))
+                    <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
 
-                if ($below_nepal_insights_ad) {
-                    $media = MediaHelper::getImageById($below_nepal_insights_ad);
-                    if (!empty($media->file_name)) {
-                        $below_nepal_insights_image_url = asset('storage/' . $media->file_name);
-                    } else {
-                        $below_nepal_insights_image_url = null;
-                    }
-                }
-            @endphp
+                        {{-- CATEGORY TITLE --}}
+                        <h2 class="section-title">
+                            {{ $language == 'en' ? $fifth_middle_cat->name : $fifth_middle_cat->GetAllMetaData()['name_ne'] ?? $fifth_middle_cat->name }}
+                        </h2>
 
-            @if (!empty($below_nepal_insights_image_url))
-                <hr style="border-color: #c7c7c7; margin: 0;">
-                <div class="container py-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="ad-wrapper">
-                                <span class="ad-label">- Advertisement -</span>
-                                @if (!empty($link))
-                                    <a href="{{ $link }}" target="_blank">
-                                        <img src="{{ $below_nepal_insights_image_url }}" alt="{{ $websiteName }}"
-                                            class="ad-full-width">
-                                    </a>
-                                @else
-                                    <img src="{{ $below_nepal_insights_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            {{-- NEPAL INSIGHTS ADVERTISEMENT END --}}
+                        @foreach ($fifth_middle_cat->posts as $fifth_middle_post)
+                            @php
+                                $cate = $fifth_middle_post->categories()->first();
+                                $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                $cat_name = $language == 'en' ? $cate->name ?? '' : $catMeta['name_ne'] ?? '';
 
-            <hr style="border-color: #c7c7c7; margin: 0;">
+                                // POST META
+                                $itemMeta = $fifth_middle_post->GetAllMetaData();
 
-            <div class="container py-5">
-                <div class="row gy-5">
+                                // IMAGE
+                                $post_image_id = $itemMeta['featured_image'] ?? null;
+                                $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
-                    {{-- FIFTH LEFT CATEGORY START --}}
-                    @if (!empty($fifth_left_cat) && $fifth_left_cat->posts->count() > 0 && !empty($fifth_left_cat->posts))
-                        <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
-                            <h2 class="section-title">
-                                {{ $language == 'en' ? $fifth_left_cat->name : $fifth_left_cat->GetAllMetaData()['name_ne'] ?? $fifth_left_cat->name }}
-                            </h2>
+                                $post_image_url = !empty($post_media?->file_name)
+                                    ? asset('storage/' . $post_media->file_name)
+                                    : (!empty($itemMeta['youtube_thumbnail']) && ($yt_media = MediaHelper::getImageById($itemMeta['youtube_thumbnail'])) && !empty($yt_media->file_name)
+                                        ? asset('storage/' . $yt_media->file_name)
+                                        : (!empty($itemMeta['youtube_video_id'])
+                                            ? 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg'
+                                            : asset('assets/images/review_nepal_logo.webp')));
 
-                            @foreach ($fifth_left_cat->posts as $fifth_left_post)
-                                @php
-                                    // CATEGORY
-                                    $fifth_left_cate = $fifth_left_post->categories()->first();
-                                    $fifth_left_cateMeta = $fifth_left_cate ? $fifth_left_cate->GetAllMetaData() : [];
-                                    $cat_name =
-                                        $language == 'en'
-                                        ? $fifth_left_cate->name ?? ''
-                                        : $fifth_left_cateMeta['name_ne'] ?? '';
+                                // AUTHOR (FIXED VARIABLE)
+                                $author = $fifth_middle_post->categories()->where('categories.type', 'author')->first();
 
-                                    // POST META
-                                    $itemMeta = $fifth_left_post->GetAllMetaData();
+                                $author_meta = $author ? $author->GetAllMetaData() : [];
 
-                                    // IMAGE
-                                    $post_image_id = $itemMeta['featured_image'] ?? null;
-                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-                                    $post_image_url = !empty($post_media?->file_name)
-                                        ? asset('storage/' . $post_media->file_name)
-                                        : null;
+                                $author_name =
+                                    $language == 'en'
+                                        ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                        : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
 
-                                    $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
+                                $date = $fifth_middle_post->created_at;
+                            @endphp
 
-                                    $author_meta = $author ? $author->GetAllMetaData() : [];
+                            {{-- FIRST POST (FEATURED DESIGN) --}}
+                            @if ($loop->first)
+                                <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}"
+                                    class="featured-item">
 
-                                    $author_name =
-                                        $language == 'en'
-                                        ? $author->name ?? $user->name ?? 'Review Nepal'
-                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}"
+                                        class="large-thumb">
 
-                                @endphp
+                                    <h3 class="news-title">
+                                        {{ $fifth_middle_post->post_title }}
+                                    </h3>
 
-                                <a href="{{ route('frontend.post.index', $fifth_left_post->slug) }}" class="news-item">
-                                    @if ($post_image_url)
-                                        <img src="{{ $post_image_url }}" alt="{{ $fifth_left_post->post_title }}" class="small-thumb">
-                                    @endif
-                                    <div class="news-content">
-                                        <h3 class="news-title">
-                                            {{ $fifth_left_post->post_title }}
-                                        </h3>
-                                        <div class="featured-meta">
-                                            <span class="meta-category">{{ $cat_name }}</span>
-                                            <span class="meta-divider">|</span>
-                                            <span>{{ $language == 'en' ? $fifth_left_post->created_at->format('M d, Y') : NepaliDateHelper::toNepaliDate($fifth_left_post->created_at) }}</span>
-                                        </div>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>
+                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                        </span>
                                     </div>
+
                                 </a>
-                            @endforeach
 
-                            <a href="{{ route('frontend.category.index', $fifth_left_cat->slug) }}"
-                                class="cat-link mt-auto">{{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
-                                <span>&rarr;</span></a>
-                        </div>
-                    @endif
-                    {{-- FIFTH LEFT CATEGORY END --}}
+                                {{-- OTHER POSTS (LIST DESIGN) --}}
+                            @else
+                                <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}"
+                                    class="news-item">
 
-                    {{-- FIFTH MIDDLE CATEGORY START --}}
-                    @if (!empty($fifth_middle_cat) && $fifth_middle_cat->posts->count() > 0 && !empty($fifth_middle_cat->posts))
-                        <div class="col-lg-4 col-md-6 col-spacing d-flex flex-column">
+                                    <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}"
+                                        class="small-thumb">
 
-                            {{-- CATEGORY TITLE --}}
-                            <h2 class="section-title">
-                                {{ $language == 'en' ? $fifth_middle_cat->name : $fifth_middle_cat->GetAllMetaData()['name_ne'] ?? $fifth_middle_cat->name }}
-                            </h2>
-
-                            @foreach ($fifth_middle_cat->posts as $fifth_middle_post)
-                                @php
-                                    $cate = $fifth_middle_post->categories()->first();
-                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($catMeta['name_ne'] ?? '');
-
-                                    // POST META
-                                    $itemMeta = $fifth_middle_post->GetAllMetaData();
-
-                                    // IMAGE
-                                    $post_image_id = $itemMeta['featured_image'] ?? null;
-                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-
-                                    $post_image_url =
-                                        !empty($post_media) && !empty($post_media->file_name)
-                                        ? asset('storage/' . $post_media->file_name)
-                                        : asset('assets/images/default.jpg');
-
-                                    // AUTHOR (FIXED VARIABLE)
-                                    $author = $fifth_middle_post->categories()->where('categories.type', 'author')->first();
-
-                                    $author_meta = $author ? $author->GetAllMetaData() : [];
-
-                                    $author_name =
-                                        $language == 'en'
-                                        ? $author->name ?? $user->name ?? 'Review Nepal'
-                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
-
-                                    $date = $fifth_middle_post->created_at;
-                                @endphp
-
-                                {{-- FIRST POST (FEATURED DESIGN) --}}
-                                @if ($loop->first)
-                                    <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="featured-item">
-
-                                        <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}" class="large-thumb">
+                                    <div class="news-content">
 
                                         <h3 class="news-title">
                                             {{ $fifth_middle_post->post_title }}
@@ -847,18 +985,86 @@
                                             </span>
                                         </div>
 
-                                    </a>
+                                    </div>
 
-                                    {{-- OTHER POSTS (LIST DESIGN) --}}
-                                @else
-                                    <a href="{{ route('frontend.post.index', $fifth_middle_post->slug) }}" class="news-item">
+                                </a>
+                            @endif
+                        @endforeach
 
-                                        <img src="{{ $post_image_url }}" alt="{{ $fifth_middle_post->post_title }}" class="small-thumb">
+                        {{-- CATEGORY LINK --}}
+                        <a href="{{ route('frontend.category.index', $fifth_middle_cat->slug) }}"
+                            class="cat-link mt-auto">
+                            {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                            <span>&rarr;</span>
+                        </a>
 
-                                        <div class="news-content">
+                    </div>
+                @endif
+                {{-- FIFTH MIDDLE CATEGORY END --}}
+
+                {{-- FIFTH RIGHT CATEGORY START --}}
+                @if (!empty($fifth_right_cat) && $fifth_right_cat->posts->count() > 0 && !empty($fifth_right_cat->posts))
+                    <div class="col-lg-4 col-md-12 d-flex flex-column mt-5">
+
+                        {{-- CATEGORY TITLE --}}
+                        <h2 class="section-title">
+                            {{ $language == 'en'
+                                ? $fifth_right_cat->name
+                                : $fifth_right_cat->GetAllMetaData()['name_ne'] ?? $fifth_right_cat->name }}
+                        </h2>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-lg-12">
+
+                                @foreach ($fifth_right_cat->posts as $fifth_right_post)
+                                    @php
+                                        // CATEGORY
+                                        $cate = $fifth_right_post->categories()->first();
+                                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                        $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                                        // POST META
+                                        $itemMeta = $fifth_right_post->GetAllMetaData();
+
+                                        // IMAGE
+                                        $post_image_id = $itemMeta['featured_image'] ?? null;
+                                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                                        $post_image_url = !empty($post_media?->file_name)
+                                            ? asset('storage/' . $post_media->file_name)
+                                            : (!empty($itemMeta['youtube_thumbnail']) && ($yt_media = MediaHelper::getImageById($itemMeta['youtube_thumbnail'])) && !empty($yt_media->file_name)
+                                                ? asset('storage/' . $yt_media->file_name)
+                                                : (!empty($itemMeta['youtube_video_id'])
+                                                    ? 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg'
+                                                    : asset('assets/images/review_nepal_logo.webp')));
+
+                                        // AUTHOR
+                                        $author = $fifth_right_post
+                                            ->categories()
+                                            ->where('categories.type', 'author')
+                                            ->first();
+
+                                        $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                                        $author_name =
+                                            $language == 'en'
+                                                ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                                : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+
+                                        $date = $fifth_right_post->created_at;
+                                    @endphp
+
+                                    {{-- FIRST POST (BIG ITEM STYLE) --}}
+                                    @if ($loop->first)
+                                        <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}"
+                                            class="featured-item">
+
+                                            <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
+                                                class="large-thumb">
 
                                             <h3 class="news-title">
-                                                {{ $fifth_middle_post->post_title }}
+                                                {{ $fifth_right_post->post_title }}
                                             </h3>
 
                                             <div class="featured-meta">
@@ -869,491 +1075,426 @@
                                                 </span>
                                             </div>
 
-                                        </div>
-
-                                    </a>
-                                @endif
-                            @endforeach
-
-                            {{-- CATEGORY LINK --}}
-                            <a href="{{ route('frontend.category.index', $fifth_middle_cat->slug) }}" class="cat-link mt-auto">
-                                {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
-                                <span>&rarr;</span>
-                            </a>
-
-                        </div>
-                    @endif
-                    {{-- FIFTH MIDDLE CATEGORY END --}}
-
-                    {{-- FIFTH RIGHT CATEGORY START --}}
-                    @if (!empty($fifth_right_cat) && $fifth_right_cat->posts->count() > 0 && !empty($fifth_right_cat->posts))
-                                <div class="col-lg-4 col-md-12 d-flex flex-column mt-5">
-
-                                    {{-- CATEGORY TITLE --}}
-                                    <h2 class="section-title">
-                                        {{ $language == 'en'
-                        ? $fifth_right_cat->name
-                        : $fifth_right_cat->GetAllMetaData()['name_ne'] ?? $fifth_right_cat->name }}
-                                    </h2>
-
-                                    <div class="row">
-
-                                        <div class="col-md-6 col-lg-12">
-
-                                            @foreach ($fifth_right_cat->posts as $fifth_right_post)
-                                                @php
-                                                    // CATEGORY
-                                                    $cate = $fifth_right_post->categories()->first();
-                                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                                    $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
-
-                                                    // POST META
-                                                    $itemMeta = $fifth_right_post->GetAllMetaData();
-
-                                                    // IMAGE
-                                                    $post_image_id = $itemMeta['featured_image'] ?? null;
-                                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-
-                                                    $post_image_url =
-                                                        !empty($post_media) && !empty($post_media->file_name)
-                                                        ? asset('storage/' . $post_media->file_name)
-                                                        : asset('assets/images/default.jpg');
-
-                                                    // AUTHOR
-                                                    $author = $fifth_right_post
-                                                        ->categories()
-                                                        ->where('categories.type', 'author')
-                                                        ->first();
-
-                                                    $author_meta = $author ? $author->GetAllMetaData() : [];
-
-                                                    $author_name =
-                                                        $language == 'en'
-                                                        ? $author->name ?? $user->name ?? 'Review Nepal'
-                                                        : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
-
-                                                    $date = $fifth_right_post->created_at;
-                                                @endphp
-
-                                                {{-- FIRST POST (BIG ITEM STYLE) --}}
-                                                @if ($loop->first)
-                                                    <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="featured-item">
-
-                                                        <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
-                                                            class="large-thumb">
-
-                                                        <h3 class="news-title">
-                                                            {{ $fifth_right_post->post_title }}
-                                                        </h3>
-
-                                                        <div class="featured-meta">
-                                                            <span class="meta-category">{{ $cat_name }}</span>
-                                                            <span class="meta-divider">|</span>
-                                                            <span>
-                                                                {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
-                                                            </span>
-                                                        </div>
-
-                                                    </a>
-                                                @else
-                                                    {{-- OTHER POSTS --}}
-                                                    <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}" class="news-item">
-
-                                                        <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
-                                                            class="small-thumb">
-
-                                                        <div class="news-content">
-
-                                                            <h3 class="news-title">
-                                                                {{ $fifth_right_post->post_title }}
-                                                            </h3>
-
-                                                            <div class="featured-meta">
-                                                                <span class="meta-category">{{ $cat_name }}</span>
-                                                                <span class="meta-divider">|</span>
-                                                                <span>
-                                                                    {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
-                                                                </span>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </a>
-                                                @endif
-                                            @endforeach
-
-                                        </div>
-
-                                    </div>
-
-                                    {{-- CATEGORY LINK --}}
-                                    <a href="{{ route('frontend.category.index', $fifth_right_cat->slug) }}" class="cat-link mt-auto">
-                                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
-                                        <span>&rarr;</span>
-                                    </a>
-
-                                </div>
-                    @endif
-                    {{-- FIFTH RIGHT CATEGORY END --}}
-
-                </div>
-            </div>
-            <hr style="border-color: #c7c7c7; margin: 0;">
-            @php
-                $above_brands_ad = SettingHelper::get_field('above_brands_ad');
-                $link = MediaHelper::getDescriptionById($above_brands_ad);
-
-                if ($above_brands_ad) {
-                    $media = MediaHelper::getImageById($above_brands_ad);
-                    if (!empty($media->file_name)) {
-                        $above_brands_ad_img_url = asset('storage/' . $media->file_name);
-                    } else {
-                        $above_brands_ad_img_url = null;
-                    }
-                }
-            @endphp
-
-            @if (!empty($above_brands_ad_img_url))
-                <div class="container py-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="ad-wrapper">
-                                <span class="ad-label">- Advertisement -</span>
-                                @if (!empty($link))
-                                    <a href="{{ $link }}" target="_blank">
-                                        <img src="{{ $above_brands_ad_img_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                    </a>
-                                @else
-                                    <img src="{{ $above_brands_ad_img_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-
-            {{-- BRANDS START --}}
-            @if (!empty($sixth_cat) && $sixth_cat->posts->count() > 0 && !empty($sixth_cat->posts))
-                <div class="container py-5">
-
-                    {{-- HEADER --}}
-                    <div class="section-header-featured d-flex justify-content-between">
-                        <h2>
-                            {{ $language == 'en' ? $sixth_cat->name : $sixth_cat->GetAllMetaData()['name_ne'] ?? $sixth_cat->name }}
-                        </h2>
-
-                        <a href="{{ route('frontend.category.index', $sixth_cat->slug) }}" class="cat-link mt-auto">
-                            {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
-                            <span>&rarr;</span>
-                        </a>
-                    </div>
-
-                    <div class="row g-4">
-
-                        {{-- LEFT CONTENT --}}
-                        <div class="col-lg-8 full-height-col">
-                            <div class="row g-4 h-100">
-
-                                @foreach ($sixth_cat->posts as $sixth_post)
-                                    @php
-                                        // CATEGORY
-                                        $cate = $sixth_post->categories()->first();
-                                        $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                        $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
-
-                                        // POST META
-                                        $itemMeta = $sixth_post->GetAllMetaData();
-
-                                        // IMAGE
-                                        $post_image_id = $itemMeta['featured_image'] ?? null;
-                                        $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-
-                                        $post_image_url =
-                                            !empty($post_media) && !empty($post_media->file_name)
-                                            ? asset('storage/' . $post_media->file_name)
-                                            : null;
-
-                                        // AUTHOR
-                                        $author = $sixth_post->categories()->where('categories.type', 'author')->first();
-
-                                        $author_meta = $author ? $author->GetAllMetaData() : [];
-
-                                        $author_name =
-                                            $language == 'en'
-                                            ? $author->name ?? $user->name ?? 'Review Nepal'
-                                            : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
-
-                                        $date = $sixth_post->created_at;
-                                    @endphp
-
-                                    {{-- FIRST POST (BIG FEATURED CARD) --}}
-                                    @if ($loop->first)
-                                        <div class="col-12">
-                                            <div class="card overflow-hidden">
-
-                                                <div class="row g-0 h-100">
-
-                                                    @if($post_image_url)
-                                                        <div class="col-md-5">
-                                                            <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
-                                                                <img src="{{ $post_image_url }}" class="img-fluid h-100 object-fit-cover"
-                                                                    alt="{{ $sixth_post->post_title }}">
-                                                            </a>
-                                                        </div>
-                                                    @else
-                                                        <div class="col-md-5">
-                                                            <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
-                                                                <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
-                                                                    class="img-fluid h-100 object-fit-cover"
-                                                                    alt="{{ $sixth_post->post_title }}">
-                                                            </a>
-                                                        </div>
-                                                    @endif
-
-                                                    <div class="col-md-7">
-                                                        <div class="card-body d-flex flex-column h-100 p-4">
-
-                                                            <p class="small-text mb-2">
-                                                                {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
-                                                            </p>
-
-                                                            <h2 class="h4 mb-3 brands-title">
-                                                                <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
-
-
-                                                                    {{ $sixth_post->post_title }}
-                                                                </a>
-                                                            </h2>
-
-                                                            <p class="small-text">
-                                                                {{ \Illuminate\Support\Str::words(strip_tags($sixth_post->post_content), 25) }}
-                                                            </p>
-
-                                                            <p class="author-text mb-0">
-                                                                by. <span class="text-dark">{{ $author_name }}</span>
-                                                            </p>
-
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                        </a>
                                     @else
-                                        {{-- SMALL CARDS --}}
-                                        <div class="col-md-6">
-                                            <div class="card overflow-hidden">
+                                        {{-- OTHER POSTS --}}
+                                        <a href="{{ route('frontend.post.index', $fifth_right_post->slug) }}"
+                                            class="news-item">
 
-                                                <div class="row g-0 h-100">
+                                            <img src="{{ $post_image_url }}" alt="{{ $fifth_right_post->post_title }}"
+                                                class="small-thumb">
 
-                                                    <div class="col-4">
-                                                        <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
-                                                            <img src="{{ $post_image_url }}" class="img-fluid h-100 object-fit-cover"
-                                                                alt="{{ $sixth_post->post_title }}">
-                                                        </a>
-                                                    </div>
+                                            <div class="news-content">
 
-                                                    <div class="col-8">
-                                                        <div class="card-body p-3">
+                                                <h3 class="news-title">
+                                                    {{ $fifth_right_post->post_title }}
+                                                </h3>
 
-                                                            <p class="small-text mb-1">
-                                                                {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
-                                                            </p>
-
-                                                            <h3 class="mb-2 brands-title" style="font-size: 0.9rem;">
-                                                                <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
-                                                                    {{ $sixth_post->post_title }}
-                                                                </a>
-                                                            </h3>
-
-                                                            <p class="author-text mb-0">{{ $author_name }}</p>
-
-                                                        </div>
-                                                    </div>
-
+                                                <div class="featured-meta">
+                                                    <span class="meta-category">{{ $cat_name }}</span>
+                                                    <span class="meta-divider">|</span>
+                                                    <span>
+                                                        {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                    </span>
                                                 </div>
 
                                             </div>
-                                        </div>
+
+                                        </a>
                                     @endif
                                 @endforeach
 
                             </div>
+
                         </div>
 
-                        {{-- ADVERTISEMENT --}}
-                        <div class="col-lg-4">
-                            @php
-                                $above_article_second = SettingHelper::get_field('above_article_second');
-                                $link1 = MediaHelper::getDescriptionById($above_article_second);
-
-                                if ($above_article_second) {
-                                    $media1 = MediaHelper::getImageById($above_article_second);
-                                    if (!empty($media1->file_name)) {
-                                        $above_article_second_img_url = asset('storage/' . $media1->file_name);
-                                    } else {
-                                        $above_article_second_img_url = null;
-                                    }
-                                }
-
-                                $above_articles_second_col_sec_row = SettingHelper::get_field('above_articles_second_col_sec_row');
-                                $link2 = MediaHelper::getDescriptionById($above_articles_second_col_sec_row);
-
-                                if ($above_articles_second_col_sec_row) {
-                                    $media2 = MediaHelper::getImageById($above_articles_second_col_sec_row);
-                                    if (!empty($media2->file_name)) {
-                                        $above_articles_second_col_sec_row_img_url = asset('storage/' . $media2->file_name);
-                                    } else {
-                                        $above_articles_second_col_sec_row_img_url = null;
-                                    }
-                                }
-                            @endphp
-
-                            @if (!empty($above_article_second_img_url))
-                                <div class="ad-wrapper py-3">
-                                    <span class="ad-label">- Advertisement -</span>
-                                    @if (!empty($link1))
-                                        <a href="{{ $link1 }}" target="_blank">
-                                            <img src="{{ $above_article_second_img_url }}" alt="{{ $websiteName }}"
-                                                class="ad-one-third">
-                                        </a>
-                                    @else
-                                        <img src="{{ $above_article_second_img_url }}" alt="{{ $websiteName }}" class="ad-one-third">
-                                    @endif
-                                </div>
-                            @endif
-
-                            @if (!empty($above_articles_second_col_sec_row_img_url))
-                                <div class="ad-wrapper py-3">
-                                    <span class="ad-label">- Advertisement -</span>
-                                    @if (!empty($link2))
-                                        <a href="{{ $link2 }}" target="_blank">
-                                            <img src="{{ $above_articles_second_col_sec_row_img_url }}" alt="{{ $websiteName }}"
-                                                class="ad-one-third">
-                                        </a>
-                                    @else
-                                        <img src="{{ $above_articles_second_col_sec_row_img_url }}" alt="{{ $websiteName }}"
-                                            class="ad-one-third">
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
-
-                    </div>
-                </div>
-            @endif
-            {{-- BRANDS END --}}
-
-            {{-- ADVERTISEMENT START --}}
-            @php
-                $above_articles_ad = SettingHelper::get_field('above_articles_ad');
-                $link = MediaHelper::getDescriptionById($above_articles_ad);
-
-                if ($above_articles_ad) {
-                    $media = MediaHelper::getImageById($above_articles_ad);
-                    if (!empty($media->file_name)) {
-                        $above_articles_image_url = asset('storage/' . $media->file_name);
-                    } else {
-                        $above_articles_image_url = null;
-                    }
-                }
-            @endphp
-
-            @if (!empty($above_articles_image_url))
-                <div class="container py-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="ad-wrapper">
-                                <span class="ad-label">- Advertisement -</span>
-                                @if (!empty($link))
-                                    <a href="{{ $link }}" target="_blank">
-                                        <img src="{{ $above_articles_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                    </a>
-                                @else
-                                    <img src="{{ $above_articles_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            {{-- ADVERTISEMENT END --}}
-
-            {{-- NOTICE START --}}
-            @if (!empty($seventh_cat) && $seventh_cat->posts->count() > 0 && !empty($seventh_cat->posts))
-                <hr style="border-color: #c7c7c7; margin: 0;">
-                <div class="container py-5">
-
-                    <div class="section-header-featured d-flex justify-content-between">
-                        <h2>{{ $language == 'en' ? $seventh_cat->name : $seventh_cat->GetAllMetaData()['name_ne'] ?? $seventh_cat->name }}
-                        </h2>
-                        <a href="{{ route('frontend.category.index', $seventh_cat->slug) }}" class="cat-link mt-auto">
+                        {{-- CATEGORY LINK --}}
+                        <a href="{{ route('frontend.category.index', $fifth_right_cat->slug) }}"
+                            class="cat-link mt-auto">
                             {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
                             <span>&rarr;</span>
                         </a>
+
                     </div>
-                    <div class="row gy-5 mt-4">
+                @endif
+                {{-- FIFTH RIGHT CATEGORY END --}}
 
+            </div>
+        </div>
+        <hr style="border-color: #c7c7c7; margin: 0;">
+        @php
+            $above_brands_ad = SettingHelper::get_field('above_brands_ad');
+            $link = MediaHelper::getDescriptionById($above_brands_ad);
 
-                        @foreach ($seventh_cat->posts as $seventh_post)
-                            @php
-                                // CATEGORY
-                                $cate = $seventh_post->categories()->first();
-                                $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? ($cate->name ?? '') : ($cateMeta['name_ne'] ?? '');
+            if ($above_brands_ad) {
+                $media = MediaHelper::getImageById($above_brands_ad);
+                if (!empty($media->file_name)) {
+                    $above_brands_ad_img_url = asset('storage/' . $media->file_name);
+                } else {
+                    $above_brands_ad_img_url = null;
+                }
+            }
+        @endphp
 
-                                // POST META
-                                $itemMeta = $seventh_post->GetAllMetaData();
-
-                                // IMAGE
-                                $post_image_id = $itemMeta['featured_image'] ?? null;
-                                $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
-
-                                $post_image_url =
-                                    !empty($post_media) && !empty($post_media->file_name)
-                                    ? asset('storage/' . $post_media->file_name)
-                                    : asset('assets/images/default.jpg');
-
-                                // AUTHOR
-                                $author = $seventh_post->categories()->where('categories.type', 'author')->first();
-
-                                $author_meta = $author ? $author->GetAllMetaData() : [];
-
-                                $author_name =
-                                    $language == 'en'
-                                    ? $author->name ?? $user->name ?? 'Review Nepal'
-                                    : $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
-
-                                $date = $seventh_post->created_at;
-                            @endphp
-                            <div class="col-lg-4 col-md-6 mt-0">
-                                <a href="{{ route('frontend.post.index', $seventh_post->slug) }}" class="news-item">
-
-                                    @if ($post_image_url)
-                                        <img src="{{ $post_image_url }}" alt="{{ $seventh_post->post_title }}" class="small-thumb">
-                                    @endif
-
-                                    <div class="news-content">
-                                        <h3 class="news-title">
-                                            {{ $seventh_post->post_title }}
-                                        </h3>
-                                        <div class="featured-meta">
-                                            <span class="meta-category">{{ $cat_name }}</span>
-                                            <span class="meta-divider">|</span>
-                                            <span>{{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}</span>
-                                        </div>
-                                    </div>
+        @if (!empty($above_brands_ad_img_url))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($link))
+                                <a href="{{ $link }}" target="_blank">
+                                    <img src="{{ $above_brands_ad_img_url }}" alt="{{ $websiteName }}"
+                                        class="ad-full-width">
                                 </a>
-                            </div>
-                        @endforeach
-
-
+                            @else
+                                <img src="{{ $above_brands_ad_img_url }}" alt="{{ $websiteName }}"
+                                    class="ad-full-width">
+                            @endif
+                        </div>
                     </div>
                 </div>
-            @endif
-            {{-- NOTICE END --}}
+            </div>
+        @endif
+
+
+        {{-- BRANDS START --}}
+        @if (!empty($sixth_cat) && $sixth_cat->posts->count() > 0 && !empty($sixth_cat->posts))
+            <div class="container py-5">
+
+                {{-- HEADER --}}
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>
+                        {{ $language == 'en' ? $sixth_cat->name : $sixth_cat->GetAllMetaData()['name_ne'] ?? $sixth_cat->name }}
+                    </h2>
+
+                    <a href="{{ route('frontend.category.index', $sixth_cat->slug) }}" class="cat-link mt-auto">
+                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+
+                <div class="row g-4">
+
+                    {{-- LEFT CONTENT --}}
+                    <div class="col-lg-8 full-height-col">
+                        <div class="row g-4 h-100">
+
+                            @foreach ($sixth_cat->posts as $sixth_post)
+                                @php
+                                    // CATEGORY
+                                    $cate = $sixth_post->categories()->first();
+                                    $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                                    $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                                    // POST META
+                                    $itemMeta = $sixth_post->GetAllMetaData();
+
+                                    // IMAGE
+                                    $post_image_id = $itemMeta['featured_image'] ?? null;
+                                    $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                                    $post_image_url = !empty($post_media?->file_name)
+                                        ? asset('storage/' . $post_media->file_name)
+                                        : (!empty($itemMeta['youtube_thumbnail']) && ($yt_media = MediaHelper::getImageById($itemMeta['youtube_thumbnail'])) && !empty($yt_media->file_name)
+                                            ? asset('storage/' . $yt_media->file_name)
+                                            : (!empty($itemMeta['youtube_video_id'])
+                                                ? 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg'
+                                                : asset('assets/images/review_nepal_logo.webp')));
+
+                                    // AUTHOR
+                                    $author = $sixth_post->categories()->where('categories.type', 'author')->first();
+
+                                    $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                                    $author_name =
+                                        $language == 'en'
+                                            ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                            : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+
+                                    $date = $sixth_post->created_at;
+                                @endphp
+
+                                {{-- FIRST POST (BIG FEATURED CARD) --}}
+                                @if ($loop->first)
+                                    <div class="col-12">
+                                        <div class="card overflow-hidden">
+
+                                            <div class="row g-0 h-100">
+
+                                                @if ($post_image_url)
+                                                    <div class="col-md-5">
+                                                        <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                            <img src="{{ $post_image_url }}"
+                                                                class="img-fluid h-100 object-fit-cover"
+                                                                alt="{{ $sixth_post->post_title }}">
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <div class="col-md-5">
+                                                        <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                            <img src="{{ asset('assets/images/review_nepal_logo.webp') }}"
+                                                                class="img-fluid h-100 object-fit-cover"
+                                                                alt="{{ $sixth_post->post_title }}">
+                                                        </a>
+                                                    </div>
+                                                @endif
+
+                                                <div class="col-md-7">
+                                                    <div class="card-body d-flex flex-column h-100 p-4">
+
+                                                        <p class="small-text mb-2">
+                                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                        </p>
+
+                                                        <h2 class="h4 mb-3 brands-title">
+                                                            <a
+                                                                href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+
+
+                                                                {{ $sixth_post->post_title }}
+                                                            </a>
+                                                        </h2>
+
+                                                        <p class="small-text">
+                                                            {{ \Illuminate\Support\Str::words(strip_tags($sixth_post->post_content), 25) }}
+                                                        </p>
+
+                                                        <p class="author-text mb-0">
+                                                            by. <span class="text-dark">{{ $author_name }}</span>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @else
+                                    {{-- SMALL CARDS --}}
+                                    <div class="col-md-6">
+                                        <div class="card overflow-hidden">
+
+                                            <div class="row g-0 h-100">
+
+                                                <div class="col-4">
+                                                    <a href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                        <img src="{{ $post_image_url }}"
+                                                            class="img-fluid h-100 object-fit-cover"
+                                                            alt="{{ $sixth_post->post_title }}">
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-8">
+                                                    <div class="card-body p-3">
+
+                                                        <p class="small-text mb-1">
+                                                            {{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}
+                                                        </p>
+
+                                                        <h3 class="mb-2 brands-title" style="font-size: 0.9rem;">
+                                                            <a
+                                                                href="{{ route('frontend.post.index', $sixth_post->slug) }}">
+                                                                {{ $sixth_post->post_title }}
+                                                            </a>
+                                                        </h3>
+
+                                                        <p class="author-text mb-0">{{ $author_name }}</p>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
+                        </div>
+                    </div>
+
+                    {{-- ADVERTISEMENT --}}
+                    <div class="col-lg-4">
+                        @php
+                            $above_article_second = SettingHelper::get_field('above_article_second');
+                            $link1 = MediaHelper::getDescriptionById($above_article_second);
+
+                            if ($above_article_second) {
+                                $media1 = MediaHelper::getImageById($above_article_second);
+                                if (!empty($media1->file_name)) {
+                                    $above_article_second_img_url = asset('storage/' . $media1->file_name);
+                                } else {
+                                    $above_article_second_img_url = null;
+                                }
+                            }
+
+                            $above_articles_second_col_sec_row = SettingHelper::get_field(
+                                'above_articles_second_col_sec_row',
+                            );
+                            $link2 = MediaHelper::getDescriptionById($above_articles_second_col_sec_row);
+
+                            if ($above_articles_second_col_sec_row) {
+                                $media2 = MediaHelper::getImageById($above_articles_second_col_sec_row);
+                                if (!empty($media2->file_name)) {
+                                    $above_articles_second_col_sec_row_img_url = asset('storage/' . $media2->file_name);
+                                } else {
+                                    $above_articles_second_col_sec_row_img_url = null;
+                                }
+                            }
+                        @endphp
+
+                        @if (!empty($above_article_second_img_url))
+                            <div class="ad-wrapper py-3">
+                                <span class="ad-label">- Advertisement -</span>
+                                @if (!empty($link1))
+                                    <a href="{{ $link1 }}" target="_blank">
+                                        <img src="{{ $above_article_second_img_url }}" alt="{{ $websiteName }}"
+                                            class="ad-one-third">
+                                    </a>
+                                @else
+                                    <img src="{{ $above_article_second_img_url }}" alt="{{ $websiteName }}"
+                                        class="ad-one-third">
+                                @endif
+                            </div>
+                        @endif
+
+                        @if (!empty($above_articles_second_col_sec_row_img_url))
+                            <div class="ad-wrapper py-3">
+                                <span class="ad-label">- Advertisement -</span>
+                                @if (!empty($link2))
+                                    <a href="{{ $link2 }}" target="_blank">
+                                        <img src="{{ $above_articles_second_col_sec_row_img_url }}"
+                                            alt="{{ $websiteName }}" class="ad-one-third">
+                                    </a>
+                                @else
+                                    <img src="{{ $above_articles_second_col_sec_row_img_url }}"
+                                        alt="{{ $websiteName }}" class="ad-one-third">
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+
+                </div>
+            </div>
+        @endif
+        {{-- BRANDS END --}}
+
+        {{-- ADVERTISEMENT START --}}
+        @php
+            $above_articles_ad = SettingHelper::get_field('above_articles_ad');
+            $link = MediaHelper::getDescriptionById($above_articles_ad);
+
+            if ($above_articles_ad) {
+                $media = MediaHelper::getImageById($above_articles_ad);
+                if (!empty($media->file_name)) {
+                    $above_articles_image_url = asset('storage/' . $media->file_name);
+                } else {
+                    $above_articles_image_url = null;
+                }
+            }
+        @endphp
+
+        @if (!empty($above_articles_image_url))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisementt -</span>
+                            @if (!empty($link))
+                                <a href="{{ $link }}" target="_blank">
+                                    <img src="{{ $above_articles_image_url }}" alt="{{ $websiteName }}"
+                                        class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $above_articles_image_url }}" alt="{{ $websiteName }}"
+                                    class="ad-full-width">
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        {{-- ADVERTISEMENT END --}}
+
+        {{-- NOTICE START --}}
+        @if (!empty($seventh_cat) && $seventh_cat->posts->count() > 0 && !empty($seventh_cat->posts))
+            <hr style="border-color: #c7c7c7; margin: 0;">
+            <div class="container py-5">
+
+                <div class="section-header-featured d-flex justify-content-between">
+                    <h2>{{ $language == 'en' ? $seventh_cat->name : $seventh_cat->GetAllMetaData()['name_ne'] ?? $seventh_cat->name }}
+                    </h2>
+                    <a href="{{ route('frontend.category.index', $seventh_cat->slug) }}" class="cat-link mt-auto">
+                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+                <div class="row gy-5 mt-4">
+
+
+                    @foreach ($seventh_cat->posts as $seventh_post)
+                        @php
+                            // CATEGORY
+                            $cate = $seventh_post->categories()->first();
+                            $cateMeta = $cate ? $cate->GetAllMetaData() : [];
+                            $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
+
+                            // POST META
+                            $itemMeta = $seventh_post->GetAllMetaData();
+
+                            // IMAGE
+                            $post_image_id = $itemMeta['featured_image'] ?? null;
+                            $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
+
+                            $post_image_url = !empty($post_media?->file_name)
+                                ? asset('storage/' . $post_media->file_name)
+                                : (!empty($itemMeta['youtube_thumbnail']) && ($yt_media = MediaHelper::getImageById($itemMeta['youtube_thumbnail'])) && !empty($yt_media->file_name)
+                                    ? asset('storage/' . $yt_media->file_name)
+                                    : (!empty($itemMeta['youtube_video_id'])
+                                        ? 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg'
+                                        : asset('assets/images/review_nepal_logo.webp')));
+
+                            // AUTHOR
+                            $author = $seventh_post->categories()->where('categories.type', 'author')->first();
+
+                            $author_meta = $author ? $author->GetAllMetaData() : [];
+
+                            $author_name =
+                                $language == 'en'
+                                    ? $author->name ?? ($user->name ?? 'Review Nepal')
+                                    : $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+
+                            $date = $seventh_post->created_at;
+                        @endphp
+                        <div class="col-lg-4 col-md-6 mt-0">
+                            <a href="{{ route('frontend.post.index', $seventh_post->slug) }}" class="news-item">
+
+                                @if ($post_image_url)
+                                    <img src="{{ $post_image_url }}" alt="{{ $seventh_post->post_title }}"
+                                        class="small-thumb">
+                                @endif
+
+                                <div class="news-content">
+                                    <h3 class="news-title">
+                                        {{ $seventh_post->post_title }}
+                                    </h3>
+                                    <div class="featured-meta">
+                                        <span class="meta-category">{{ $cat_name }}</span>
+                                        <span class="meta-divider">|</span>
+                                        <span>{{ $language == 'en' ? $date->format('M d, Y') : NepaliDateHelper::toNepaliDate($date) }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+
+
+                </div>
+            </div>
+        @endif
+        {{-- NOTICE END --}}
 
 
     </main>

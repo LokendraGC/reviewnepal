@@ -16,10 +16,10 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index( $slug )
+    public function index($slug)
     {
-        $cat = Category::where([ 'slug' => $slug, 'type' => 'category' ])->firstOrFail();
-       
+        $cat = Category::where(['slug' => $slug, 'type' => 'category'])->firstOrFail();
+
         $language = LanguageHelper::getUserLanguage();
 
         $post_type = $language == 'en' ? 'post' : 'post_ne';

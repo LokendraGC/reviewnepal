@@ -62,9 +62,9 @@ class MigrateController extends Controller
         $migrated = 0;
         $skipped = 0;
 
-   DB::connection('mysql_old')
+        DB::connection('mysql_old')
             ->table('tblstories')
-            ->select('id', 'title','author','date','description','news_category','short_description', 'imagename', 'page_title', 'page_description', 'page_keywords')
+            ->select('id', 'title', 'author', 'date', 'description', 'news_category', 'short_description', 'imagename', 'page_title', 'page_description', 'page_keywords')
             ->orderBy('id')
             // ->limit(2) // test with 1 post
             // ->get();

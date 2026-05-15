@@ -1,7 +1,6 @@
-<footer class="amko-footer">
+<footer class="ok-dark-bar">
     <div class="container">
-
-        <div class="row align-items-start ">
+        <div class="row align-items-center g-0">
 
             @php
                 $footer_logo = SettingHelper::get_field('footer_logo');
@@ -20,108 +19,111 @@
                     $image_url = asset('assets/images/reviewnepal-logo-footer.svg');
                 }
 
-            @endphp
+                $director_name = SettingHelper::get_field('director_name');
+                $editor_name = SettingHelper::get_field('editor_name');
+                $registration_number = SettingHelper::get_field('registration_number');
+                $director_name_nepali = SettingHelper::get_field('director_name_nepali');
+                $editor_name_nepali = SettingHelper::get_field('editor_name_nepali');
+                $registration_number_nepali = SettingHelper::get_field('registration_number_nepali');
 
-            <div class="col-lg-4 col-md-12 mb-5 mb-lg-0">
-                <a href="{{ '/' }}"><img src="{{ $image_url }}" alt="{{ $websiteName }}"></a>
-                <p class="footer-tagline">{{ $footer_text }}</p>
-            </div>
+                $language = LanguageHelper::getUserLanguage();
 
-            @php
                 $medias = SettingHelper::get_field('social_media');
                 $social_medias = unserialize($medias);
+
             @endphp
 
-            @if (!empty($social_medias))
-                <div class="col-lg-4 col-md-6 mb-5 mb-md-0">
-                    <div class="row social-links">
-                        @foreach ($social_medias as $social_media)
-                            @php
-                                $media = $social_media['media'];
-                                $media_text = '';
-                                foreach (\App\Enums\SocialMediaType::getKeyValuePairs() as $label => $value) {
-                                    if ($value == $media) {
-                                        $media_text = $label;
-                                        break;
-                                    }
-                                }
-                            @endphp
-                            <div class="col-3">
-                                <a href="{{ $social_media['link'] ? $social_media['link'] : 'javascript:void(0)' }}"
-                                    target="{{ $social_media['link'] ? '_blank' : '_self' }}">
-                                    {{ $media_text }}
-                                </a>
-                            </div>
-                        @endforeach
+            <div class="col-xl-2 col-lg-12 ok-col text-center">
+                <div class="ok-brand-wrap">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ $image_url }}" alt="{{ $websiteName }}" class="ok-logo" style="width: 180px;">
+                    </a>
+                </div>
+            </div>
+
+            @if (!empty($director_name) && !empty($director_name_nepali))
+                <div class="col-xl-2 col-md-4 ok-col ok-v-border">
+                    <div class="ok-info">
+                        <span class="ok-lbl">{{ $language == 'en' ? 'Managing Director' : 'प्रबन्ध निर्देशक' }}</span>
+                        <span class="ok-val">{{ $language == 'en' ? $director_name : $director_name_nepali }}</span>
                     </div>
                 </div>
             @endif
 
-            <div class="col-lg-4 col-md-6">
 
-                @if ($subscribe_text)
-                    <h2 class="subscribe-title">{{ $subscribe_text }}</h2>
-                @endif
-
-                <form class="subscribe-form" action="{{ route('frontend.subscribe.form') }}" method="post">
-                    @csrf
-                    @method('PUT')
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                </path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </span>
-                        <input type="email" class="form-control" placeholder="Enter your e-mail..." name="email">
-                        <button class="btn btn-subscribe" type="submit">SUBSCRIBE NOW</button>
+            @if (!empty($editor_name) && !empty($editor_name_nepali))
+                <div class="col-xl-2 col-md-4 ok-col ok-v-border">
+                    <div class="ok-info">
+                        <span class="ok-lbl">{{ $language == 'en' ? 'Editor' : 'सम्पादक' }}</span>
+                        <span class="ok-val">{{ $language == 'en' ? $editor_name : $editor_name_nepali }}</span>
                     </div>
-                    @error('email')
-                    <span class="text-danger mt-1">{{ $message }}</span>
-                    @enderror
-                </form>
+                </div>
+            @endif
+
+            @if (!empty($registration_number) && !empty($registration_number_nepali))
+                <div class="col-xl-2 col-md-4 ok-col ok-v-border">
+                    <div class="ok-info">
+                        <span class="ok-lbl">{{ $language == 'en' ? 'Reg No.' : 'दर्ता नं.' }}</span>
+                        <span
+                            class="ok-val">{{ $language == 'en' ? $registration_number : $registration_number_nepali }}</span>
+                    </div>
+                </div>
+            @endif
+
+
+            @if (!empty($first_phone) || !empty($second_phone) || !empty($first_email) || !empty($second_email))
+                <div class="col-xl-3 col-md-6 ok-col ok-v-border">
+                    <div class="ok-info">
+                        @if (!empty($first_phone) || !empty($second_phone))
+                            <span class="ok-val">
+                                @if (!empty($first_phone))
+                                    <a href="tel:{{ $first_phone }}">{{ $first_phone }}</a>
+                                @endif
+                                @if (!empty($second_phone))
+                                    ,
+                                    <a href="tel:{{ $second_phone }}">{{ $second_phone }}
+                                    </a>
+                                @endif
+                            </span>
+                        @endif
+                        @if (!empty($first_email) || !empty($second_email))
+                            @if (!empty($first_email))
+                                <a href="mailto:{{ $first_email }}" class="ok-link">{{ $first_email }}
+                                </a>
+                            @endif
+                            @if (!empty($second_email))
+                                ,
+                                <a href="mailto:{{ $second_email }}" class="ok-link">{{ $second_email }}
+                                </a>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+
+            @if (!empty($social_medias))
+                <div class="col-xl-1 col-md-6 ok-col ok-v-border">
+                    <div class="ok-social-box">
+                        <span class="ok-lbl">Follow Us:</span>
+                        <div class="ok-icons">
+                            @foreach ($social_medias as $social_media)
+                                <a href="{{ $social_media['link'] ? $social_media['link'] : 'javascript:void(0)' }}"
+                                    target="{{ $social_media['link'] ? '_blank' : '_self' }}" class="social-btn">
+                                    <i class="fa-brands {{ $social_media['media'] }}"></i>
+                                </a>
+                            @endforeach
+                        </div>
+
+                    </div>
+                </div>
+            @endif
+
+
+            <div class="col-xl-12 col-md-6 border-top-new mt-4">
+                <p class="ok-copy">© 2006-2026 reviewnepal.com All Rights Reserved Developed By <a>Webtech Nepal</a>
+                </p>
             </div>
         </div>
-
-        @php
-            $footerMenuFirst = CategoryHelper::getModel()
-                ->where(['id' => 146, 'type' => 'nav_menu'])
-                ->first();
-        @endphp
-
-
-        @if (!empty($footerMenuFirst))
-            <div class="footer-divider"></div>
-            <div class="footer-nav">
-
-                @include('frontend.layouts.footer-menu', [
-                    'footerMenu' => $footerMenuFirst,
-                ])
-
-            </div>
-        @endif
-
-
-        <div
-            class="footer-bottom-divider d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-            <p class="footer-meta-text">Copyright © {{ date('Y') }} {{ $websiteName }}. All rights reserved.</p>
-
-            <div class="footer-contact-info footer-meta-text">
-                <span><a href="mailto:{{ $first_email }}">{{ $first_email }}</a>
-                    @if ($second_email)
-                        ,
-                        <a href="mailto:{{ $second_email }}">{{ $second_email }}</a>
-                    @endif
-                </span>
-                <span><a href="tel:{{ $first_phone }}">{{ $first_phone }}</a>
-                    @if ($second_phone)
-                        , <a href="tel:{{ $second_phone }}">{{ $second_phone }}</a>
-                    @endif
-                </span>
-            </div>
-        </div>
-
     </div>
 </footer>

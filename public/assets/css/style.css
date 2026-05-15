@@ -401,7 +401,8 @@ body {
   
 
       .notification-dropdown.active {
-        transform: translateX(-152px) translateY(0);
+        transform: translateX(-54px) translateY(0);
+        width: 331px;
     }
   .sticky-inner .notification-dropdown.active {
     transform: translateX(-76%) translateY(0);
@@ -1140,14 +1141,6 @@ body {
       gap: 32px;
     }
 
-    /* Ad Wrapper Styling */
-    .ad-wrapper {
-      text-align: center;
-      width: 100%;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-
     /* Ad Label Styling */
     .ad-label {
       display: block;
@@ -1161,7 +1154,7 @@ body {
     /* Full Width Ad Styling */
     .ad-full-width {
       width: 100%;
-      height: 250px; 
+      /* height: 250px;  */
       object-fit: cover;
       background-color: #f4f4f4;
       border: 1px solid #eaeaea;
@@ -1175,7 +1168,7 @@ body {
     /* One-Third Ad Styling */
     .ad-one-third {
       width: 100%;
-      height: 400px;
+      /* height: 400px; */
       object-fit: cover;
       background-color: #f4f4f4;
       border: 1px solid #eaeaea;
@@ -2268,7 +2261,7 @@ p { font-size: 0.92rem; color: #555; margin-bottom: 1.2rem; } */
     width: 100%;
     border: none;
     outline: none;
-    font-size: 2.5rem;
+    font-size: 1.5rem !important;
     font-weight: 300;
     color: #222;
     background: transparent;
@@ -2485,84 +2478,153 @@ form input[type=search]{
   }
 }
 
+.footer-meta-text a{
+    color: #888888 !important;
+    text-decoration: none;
+}
 
-/* ai summary */
-.ai-summary-card {
-              position: relative;
-              background: linear-gradient(135deg, #fff8f7 0%, #fff0ef 100%);
-              border: 1px solid #fddcda;
-              border-left: 4px solid rgb(210, 30, 1);
-              border-radius: 12px;
-              margin: 20px 0;
-              overflow: hidden;
-              box-shadow: 0 2px 12px rgba(210, 30, 1, 0.08);
-            }
+.footer-meta-text a:hover{
+    color: #c01818 !important;
+}
 
-            .ai-summary-header {
-              padding: 14px 20px 0;
-            }
+/*for menu*/
+@media (max-width: 1399px) {
 
-            .ai-summary-icon {
-              display: inline-flex;
-              align-items: center;
-              gap: 8px;
-              background: linear-gradient(135deg, rgb(210, 30, 1), rgb(180, 20, 0));
-              color: #fff;
-              padding: 6px 14px;
-              border-radius: 20px;
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.3px;
-            }
+.sticky-nav-links .nav-list{
+    gap: 16px !important;
+}
 
-            .ai-summary-icon svg {
-              width: 16px;
-              height: 16px;
-            }
+/*  .sticky-nav-links .nav-list {*/
+/*    display: flex;*/
+/*    gap: 15px;*/
+/*  }*/
+/*  .sticky-logo img {*/
+/*    height: 30px;*/
+/*}*/
+/*.nav-list a {*/
+/*    font-size: 12px;*/
+/*}*/
 
-            .ai-summary-body {
-              padding: 16px 20px 20px;
-              font-size: 15px;
-              line-height: 1.7;
-              color: #374151;
-            }
+}
 
-            .ai-summary-body ul {
-              list-style: none;
-              padding: 0;
-              margin: 0;
-            }
+/* new footer */
+.ok-dark-bar {
+    background-color: #000000; /* Pure Black Background */
+    color: #ffffff; /* White Text */
+    padding: 15px 0;
+    border-top: 1px solid #333333;
+}
 
-            .ai-summary-body ul li {
-              position: relative;
-              padding: 8px 0 8px 24px;
-              border-bottom: 1px solid rgba(210, 30, 1, 0.08);
-            }
+.ok-col {
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+}
 
-            .ai-summary-body ul li:last-child {
-              border-bottom: none;
-              padding-bottom: 0;
-            }
+/* Vertical Dividers exactly like reference */
+.ok-v-border {
+    border-left: 1px solid #444444;
+}
 
-            .ai-summary-body ul li:first-child {
-              padding-top: 0;
-            }
+/* Typography Elements */
+.ok-logo-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
 
-            .ai-summary-body ul li::before {
-              content: '';
-              position: absolute;
-              left: 0;
-              top: 16px;
-              width: 8px;
-              height: 8px;
-              background: linear-gradient(135deg, rgb(210, 30, 1), rgb(180, 20, 0));
-              border-radius: 50%;
-            }
+.ok-info {
+    text-align: center;
+}
 
-            .ai-summary-body ul li:first-child::before {
-              top: 8px;
-            }
+.ok-lbl {
+    display: block;
+    font-size: 10px;
+    color: #eee; /* Dimmed label for hierarchy */
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
 
-            .ai-summary-body p {
-              margin: 0;
-            }
+.ok-val {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.ok-link {
+    font-size: 13px;
+    color: #eee;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.ok-link:hover {
+    color: #ffffff;
+}
+
+/* Social & Copyright Right-align area */
+.ok-social-box {
+    text-align: center;
+}
+
+.ok-icons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.ok-icons a {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.ok-copy {
+    font-size: 12px;
+    color: #eee;
+    margin: 0;
+}
+.border-top-new{
+  border-top: 1px solid #444444;
+}
+/* Responsive - Adjust dividers for mobile */
+@media (max-width: 1199px) {
+    .ok-v-border {
+        border-left: none;
+        border-bottom: 1px solid #222222;
+    }
+    .ok-col {
+        padding: 15px 0;
+    }
+    .border-top-new{
+  border-top: none;
+}
+.ok-copy {
+    font-size: 12px;
+    color: #eee;
+    margin: 0;
+    text-align: center;
+}
+}
+
+.ok-val a{
+  color: #888888 !important;
+  text-decoration: none !important;
+}
+
+.ok-val a:hover{
+  color: #c01818 !important;
+}
+
+.ok-link{
+  color: #888888 !important;
+  text-decoration: none !important;
+}
+
+.ok-link:hover{
+  color: #c01818 !important;
+}

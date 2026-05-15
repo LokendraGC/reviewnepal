@@ -1,7 +1,7 @@
 <div class="tab-pane fade {{ request()->query('tab') == 'info-section' ? 'active show' : '' }}" id="info-section"
     role="tabpanel" aria-labelledby="info-section-tab">
 
-     <div class="row">
+    <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="first_email" class="form-label">First Email</label>
@@ -30,7 +30,7 @@
     </div>
     <hr />
 
-      <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="mb-3">
                 <label for="map_link" class="form-label">Map Link</label>
@@ -39,72 +39,74 @@
             </div>
         </div>
 
-     <div class="mb-3">
-        <label for="map_iframe_url" class="form-label">Map Iframe URL</label>
-        <textarea class="form-control" name="map_iframe_url" id="map_iframe_url" cols="30" rows="10">{{ isset($settings['map_iframe_url']) ? $settings['map_iframe_url'] : '' }}</textarea>
-    </div>
+        <div class="mb-3">
+            <label for="map_iframe_url" class="form-label">Map Iframe URL</label>
+            <textarea class="form-control" name="map_iframe_url" id="map_iframe_url" cols="30" rows="10">{{ isset($settings['map_iframe_url']) ? $settings['map_iframe_url'] : '' }}</textarea>
+        </div>
     </div>
     <hr />
 
- <div class="row">
-    <div class="col-md-12">
-        <div class="mb-3">
-            <label for="social-media" class="form-label">Social Media</label>
-            <div class="table-responsive">
-                <table class="table table-bordered mb-0">
-                    <thead>
-                        <tr>
-                            <th class="custom-table-sno" style="width: 40px;"><i class="bi bi-grip-vertical"></i></th>
-                            <th class="custom-table-sno">S.No</th>
-                            <th>Media</th>
-                            <th>Link</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="addMoreItem_s">
-                        @isset($settings['social_media'])
-                            @php
-                                $socialMedia = unserialize($settings['social_media']);
-                            @endphp
-                            @foreach ($socialMedia as $index => $data)
-                                <tr style="cursor: move;">
-                                    <td class="drag-handle" style="cursor: move;">
-                                        <i class="bi bi-grip-vertical text-muted"></i>
-                                    </td>
-                                    <td class="custom-table-no no">{{ $loop->iteration }}
-                                    </td>
-                                    <td>
-                                        <select name="social_media[{{ $index }}][media]" class="form-control select2"
-                                            data-toggle="select2">
-                                            @foreach (\App\Enums\SocialMediaType::getKeyValuePairs() as $label => $value)
-                                                <option value="{{ $value }}"
-                                                    @if (isset($data['media']) && $value == $data['media']) selected @endif>
-                                                    {{ $label }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="url" class="form-control"
-                                            name="social_media[{{ $index }}][link]"
-                                            value="{{ isset($data['link']) ? $data['link'] : '' }}" />
-                                    </td>
-                                    <td class="text-center"><a href="javascript: void(0);"
-                                            class="text-reset fs-16 px-1 add_more">
-                                            <i class="bi bi-plus-circle"></i></a> <a href="javascript: void(0);"
-                                            class="text-reset fs-16 px-1 remove"> <i class="bi bi-x-circle"></i></a></td>
-                                </tr>
-                            @endforeach
-                        @endisset
-                    </tbody>
-                </table>
-                <div class="text-end mt-2">
-                    <button type="button" class="btn btn-primary btn-sm add_new_row">Add
-                        New</button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label for="social-media" class="form-label">Social Media</label>
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th class="custom-table-sno" style="width: 40px;"><i class="bi bi-grip-vertical"></i>
+                                </th>
+                                <th class="custom-table-sno">S.No</th>
+                                <th>Media</th>
+                                <th>Link</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="addMoreItem_s">
+                            @isset($settings['social_media'])
+                                @php
+                                    $socialMedia = unserialize($settings['social_media']);
+                                @endphp
+                                @foreach ($socialMedia as $index => $data)
+                                    <tr style="cursor: move;">
+                                        <td class="drag-handle" style="cursor: move;">
+                                            <i class="bi bi-grip-vertical text-muted"></i>
+                                        </td>
+                                        <td class="custom-table-no no">{{ $loop->iteration }}
+                                        </td>
+                                        <td>
+                                            <select name="social_media[{{ $index }}][media]"
+                                                class="form-control select2" data-toggle="select2">
+                                                @foreach (\App\Enums\SocialMediaType::getKeyValuePairs() as $label => $value)
+                                                    <option value="{{ $value }}"
+                                                        @if (isset($data['media']) && $value == $data['media']) selected @endif>
+                                                        {{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="url" class="form-control"
+                                                name="social_media[{{ $index }}][link]"
+                                                value="{{ isset($data['link']) ? $data['link'] : '' }}" />
+                                        </td>
+                                        <td class="text-center"><a href="javascript: void(0);"
+                                                class="text-reset fs-16 px-1 add_more">
+                                                <i class="bi bi-plus-circle"></i></a> <a href="javascript: void(0);"
+                                                class="text-reset fs-16 px-1 remove"> <i class="bi bi-x-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endisset
+                        </tbody>
+                    </table>
+                    <div class="text-end mt-2">
+                        <button type="button" class="btn btn-primary btn-sm add_new_row">Add
+                            New</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 

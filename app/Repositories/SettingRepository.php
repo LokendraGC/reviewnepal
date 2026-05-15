@@ -47,6 +47,14 @@ class SettingRepository
         $metaDatas['banner_background_image'] = $request->banner_background_image ?? null;
         $metaDatas['map_iframe_url'] = $request->map_iframe_url ?? null;
 
+        // general info
+        $metaDatas['director_name'] = $request->director_name ?? null;
+        $metaDatas['editor_name'] = $request->editor_name ?? null;
+        $metaDatas['registration_number'] = $request->registration_number ?? null;
+        $metaDatas['director_name_nepali'] = $request->director_name_nepali ?? null;
+        $metaDatas['editor_name_nepali'] = $request->editor_name_nepali ?? null;
+        $metaDatas['registration_number_nepali'] = $request->registration_number_nepali ?? null;
+
 
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {

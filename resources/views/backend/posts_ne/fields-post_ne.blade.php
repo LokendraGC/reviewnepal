@@ -73,66 +73,6 @@
                                     <small class="text-muted">Enter the video ID (e.g., dsGuSZYDNmk)</small>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
-                                <div class="mb-2">
-                                    <label for="youtube_thumbnail" class="form-label">Youtube Thumbnail (Optional)<span
-                                            class="form-text text-muted">
-                                            <small><i>(Recommended Size: 1280x720)</i></small>
-                                        </span>
-                                    </label>
-                                    <div class="image-wrapper">
-                                        <div class="input-group open-media-manager" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal" style="cursor: pointer;"
-                                            data-field="youtube_thumbnail" data-select="single">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                    Browse</div>
-                                            </div>
-                                            <div class="form-control file-amount">Choose File</div>
-                                        </div>
-                                        <div class="preview-closer">
-                                            @if (isset($metaDatas['youtube_thumbnail']) &&
-                                                    ($media = MediaHelper::getModel()->where('id', $metaDatas['youtube_thumbnail'])->first()))
-                                                <input type="hidden" id="youtube_thumbnail" name="youtube_thumbnail"
-                                                    class="selected-files"
-                                                    value="{{ $metaDatas['youtube_thumbnail'] }}">
-                                                <div id="youtube_thumbnail_select">
-                                                    <div class="file-preview box sm">
-                                                        <div
-                                                            class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
-                                                            <div
-                                                                class="align-items-center align-self-stretch d-flex justify-content-center thumb">
-                                                                <img class="img-fit"
-                                                                    src="{{ asset('storage/' . $media->file_name) }}"
-                                                                    alt="image" />
-                                                            </div>
-                                                            <div class="col body">
-                                                                <h6 class="d-flex">
-                                                                    <span
-                                                                        class="text-truncate title">{{ $media->file_original_name }}</span>
-                                                                    <span
-                                                                        class="flex-shrink-0 ext">.{{ $media->extension }}</span>
-                                                                </h6>
-                                                                <p>{{ MediaHelper::getKBorMB($media->file_size) }}
-                                                            </div>
-                                                            <div class="remove"><button data-id="{{ $media->id }}"
-                                                                    data-slug="youtube_thumbnail"
-                                                                    class="btn btn-sm btn-link remove-attachment"
-                                                                    type="button"><i
-                                                                        class="bi bi-x-circle"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <input type="hidden" id="youtube_thumbnail" name="youtube_thumbnail"
-                                                    class="selected-files" value="" />
-                                                <div id="youtube_thumbnail_select"></div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
 
                     </div>

@@ -6,6 +6,8 @@ use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 use Stringable;
 
+
+
 class Summarizer implements Agent
 {
     use Promptable;

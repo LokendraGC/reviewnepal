@@ -2710,3 +2710,15 @@
   .ai-summary-body p {
     margin: 0;
   }
+
+  .ok-copy a{
+    color: #888888 !important;
+    text-decoration: none !important;
+  }
+
+  .ok-copy a:hover{
+    color: #c01818 !important;
+  }
+
+  
+  

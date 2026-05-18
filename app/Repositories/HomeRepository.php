@@ -19,6 +19,10 @@ class HomeRepository
         $data['category_id_sixth'] = isset($request->category_id_sixth) ? $request->category_id_sixth : NULL;
         $data['category_id_seventh'] = isset($request->category_id_seventh) ? $request->category_id_seventh : NULL;
 
+        // latest news repeater
+        $data['latest_news_details'] = isset($request->latest_news_details) ? serialize($request->latest_news_details) : NULL;
+        $data['latest_news_details_ne'] = isset($request->latest_news_details_ne) ? serialize($request->latest_news_details_ne) : NULL;
+
         $data['main_title_third'] = isset($request->main_title_third) ? $request->main_title_third : NULL;
         $data['main_title_nepali_third'] = isset($request->main_title_nepali_third) ? $request->main_title_nepali_third : NULL;
 

@@ -33,7 +33,6 @@ class FrontController extends Controller
         $category_id_sixth = $postMeta['category_id_sixth'];
         $category_id_seventh = $postMeta['category_id_seventh'];
 
-
         // RECENT POSTS
         $recent_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
             ->latest()->take($number_of_news_to_show_in_banner)->get();

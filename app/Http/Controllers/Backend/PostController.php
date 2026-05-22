@@ -13,6 +13,7 @@ use App\Repositories\PostRepository;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Repositories\CategoryPostRepository;
 use App\Http\Requests\Post\PostUpdateRequest;
+use Illuminate\Support\Facades\Cache;
 
 
 class PostController extends Controller
@@ -99,6 +100,10 @@ class PostController extends Controller
 
             session()->flash('success', 'Post Created.');
 
+            // Clear homepage cache so the new post displays immediately
+            Cache::forget('front_page_data_en');
+            Cache::forget('front_page_data_ne');
+
             return to_route('backend.post.edit', $post->id);
         } catch (\Exception $e) {
 
@@ -164,6 +169,11 @@ class PostController extends Controller
                 // ]);
 
                 session()->flash('success', 'Post Updated.');
+
+                // Clear homepage cache so the updated post displays immediately
+                Cache::forget('front_page_data_en');
+                Cache::forget('front_page_data_ne');
+
                 return redirect()->back();
             } else {
                 session()->flash('error', 'Error While Updating: Unable to update the post.');
@@ -189,6 +199,10 @@ class PostController extends Controller
         }
 
         $this->postRepository->makeTrash($id);
+
+        // Clear homepage cache so deleted post is removed immediately
+        Cache::forget('front_page_data_en');
+        Cache::forget('front_page_data_ne');
 
         session()->flash('success', 'Post Deleted.');
 

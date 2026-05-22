@@ -1,12 +1,17 @@
 <!-- repeater -->
 <script>
-    // Build options HTML using the $all_posts_ne variable defined in home.blade.php
+    // Build options HTML by querying Nepali posts directly (self-contained template)
     @php
+        $postsNepali = \App\Helpers\PostHelper::getModel()
+            ->where('post_status', 'publish')
+            ->where('post_type', 'post_ne')
+            ->latest()
+            ->limit(20)
+            ->get();
+
         $options_html = '<option value="">Choose News</option>';
-        if (isset($all_posts_ne)) {
-            foreach ($all_posts_ne as $post) {
-                $options_html .= '<option value="' . $post->id . '">' . e($post->post_title) . '</option>';
-            }
+        foreach ($postsNepali as $post) {
+            $options_html .= '<option value="' . $post->id . '">' . e($post->post_title) . '</option>';
         }
     @endphp
     const postOptionsHtmlNepali = @json($options_html);

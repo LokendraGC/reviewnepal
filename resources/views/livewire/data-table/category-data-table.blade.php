@@ -26,7 +26,7 @@
                     <th>Count</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="category-sortable">
                 @foreach ($categories as $category)
                     {!! $status === 'trash'
                         ? view('backend.categories.trash-category', compact('category'))

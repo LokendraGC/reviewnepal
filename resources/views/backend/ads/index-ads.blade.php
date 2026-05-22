@@ -48,6 +48,13 @@
                                             tabindex="-1">
                                             Single News Page    
                                         </a>
+                                        <a class="nav-link {{ request()->query('tab') == 'popup-ads' ? 'active' : '' }}"
+                                            id="popup-ads-tab" data-bs-toggle="pill" href="#popup-ads" role="tab"
+                                            aria-controls="popup-ads"
+                                            aria-selected="{{ request()->query('tab') == 'popup-ads' ? 'true' : 'false' }}"
+                                            tabindex="-1">
+                                            Popup Ads 
+                                        </a>
                                     </div>
                                 </div>
                                 <p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>
@@ -60,6 +67,8 @@
                                         @include('backend.ads.homepage-ads')
 
                                         @include('backend.ads.news-single-ads')
+
+                                        @include('backend.ads.popup-ads')
 
                                     </div>
                                 </div>

@@ -1,2 +1,36 @@
+# ReviewNepal - robots.txt
+
 User-agent: *
+
+# Admin & Auth pages
 Disallow: /admin/
+Disallow: /npreview-backend/
+Disallow: /npreview-login
+
+# Auth & utility routes
+Disallow: /login
+Disallow: /logout
+Disallow: /forgot-password
+Disallow: /reset-password/
+Disallow: /register
+
+# Internal utility endpoints
+Disallow: /clear
+Disallow: /storage
+Disallow: /keep-session-alive
+Disallow: /livewire/
+Disallow: /get_file_by_ids
+Disallow: /upload
+Disallow: /temp-images
+
+# Laravel assets & internals
+Disallow: /_debugbar/
+Disallow: /telescope/
+Disallow: /horizon/
+Disallow: /sanctum/
+
+# Search result pages (optional - prevents low-value index bloat)
+Disallow: /*?q=*
+
+# Sitemap
+Sitemap: https://reviewnepal.com/sitemap_index.xml

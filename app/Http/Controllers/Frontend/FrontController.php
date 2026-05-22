@@ -9,100 +9,123 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Helpers\TrendingHelper;
 use App\Helpers\SettingHelper;
-
+use Illuminate\Support\Facades\Cache;
 
 
 class FrontController extends Controller
 {
     public function index()
     {
-        $pageId = SettingHelper::get_home_id() ?? 1;
-        $post = Post::findOrFail($pageId);
-        $postMeta = $post->GetAllMetaData();
         $language = LanguageHelper::getUserLanguage();
         $post_type = $language == 'en' ? 'post' : 'post_ne';
 
+        // NO CACHING - Direct execution
+        $pageId = SettingHelper::get_home_id() ?? 1;
+        $post = Post::findOrFail($pageId);
+        $postMeta = $post->GetAllMetaData();
+
         $number_of_news_to_show_in_banner = $postMeta['number_of_news_to_show_in_banner'] ?? 2;
-        $category_id_left_second = $postMeta['category_id_left_second'];
-        $category_id_right_second = $postMeta['category_id_right_second'];
-        $category_id_third = $postMeta['category_id_third'];
-        $category_id_fourth = $postMeta['category_id_fourth'];
-        $category_id_left_fifth = $postMeta['category_id_left_fifth'];
-        $category_id_middle_fifth = $postMeta['category_id_middle_fifth'];
-        $category_id_right_fifth = $postMeta['category_id_right_fifth'];
-        $category_id_sixth = $postMeta['category_id_sixth'];
-        $category_id_seventh = $postMeta['category_id_seventh'];
+        $news_n_features_cat_id = $postMeta['category_id_left_second'] ?? null;
+        $sports_cat_id = $postMeta['category_id_fourth'] ?? null;
+        $views_n_opinion_cat = $postMeta['views_n_opinion_cat'] ?? null;
+        $lifestyle_ent_cat = $postMeta['lifestyle_ent_cat'] ?? null;
+        $art_cult_lit_cat = $postMeta['art_cult_lit_cat'] ?? null;
+        $sci_tech_cat = $postMeta['sci_tech_cat'] ?? null;
+        $business_brands_cat = $postMeta['business_brands_cat'] ?? null;
 
         // RECENT POSTS
         $recent_posts = Post::where('post_type', $post_type)->where('post_status', 'publish')
             ->latest()->take($number_of_news_to_show_in_banner)->get();
 
-        // LEFT SECOND CATEGORY
-        $left_second_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
+        // Helper function to reduce code duplication with customizable post count
+        $getCategoryWithPosts = function ($categoryIds, $take = 10) use ($post_type) {
+            // Convert single ID to array for consistency
+            if (!is_array($categoryIds)) {
+                $categoryIds = [$categoryIds];
             }
-        ])->where('id', $category_id_left_second)->first();
 
-        // RIGHT SECOND CATEGORY
-        $right_second_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(4);
-            }
-        ])->where('id', $category_id_right_second)->first();
+            // Remove any null or empty values
+            $categoryIds = array_filter($categoryIds);
 
-        // THIRD CATEGORY
-        $third_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            if (empty($categoryIds)) {
+                return null;
             }
-        ])->where('id', $category_id_third)->first();
 
-        // FOURTH CATEGORY
-        $fourth_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
-            }
-        ])->where('id', $category_id_fourth)->first();
+            // Get all categories
+            $categories = Category::with(['children' => function ($query) {
+                $query->orderBy('menu_order', 'ASC');
+            }])->whereIn('id', $categoryIds)->get();
 
-        // FIFTH LEFT CATEGORY
-        $fifth_left_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
+            if ($categories->isEmpty()) {
+                return null;
             }
-        ])->where('id', $category_id_left_fifth)->first();
 
-        // FIFTH MIDDLE CATEGORY
-        $fifth_middle_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(3);
+            // Collect all category IDs including children
+            $allCategoryIds = [];
+            foreach ($categories as $category) {
+                $allCategoryIds[] = $category->id;
+                $childIds = $category->children->pluck('id')->toArray();
+                $allCategoryIds = array_merge($allCategoryIds, $childIds);
             }
-        ])->where('id', $category_id_middle_fifth)->first();
+            $allCategoryIds = array_unique($allCategoryIds);
 
-        // FIFTH RIGHT CATEGORY
-        $fifth_right_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-            }
-        ])->where('id', $category_id_right_fifth)->first();
+            // Fetch posts from all categories and their children
+            $posts = Post::whereHas('categories', function ($query) use ($allCategoryIds) {
+                $query->whereIn('categories.id', $allCategoryIds);
+            })
+                ->where('post_type', $post_type)
+                ->where('post_status', 'publish')
+                ->orderBy('created_at', 'desc')
+                ->take($take)
+                ->get();
 
-        // SIXTH CATEGORY
-        $sixth_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(5);
-            }
-        ])->where('id', $category_id_sixth)->first();
+            // Use the first category as the main category object
+            $mainCategory = $categories->first();
+            $mainCategory->setRelation('posts', $posts);
 
-        // SEVENTH CATEGORY
-        $seventh_cat = Category::with([
-            'posts' => function ($query) use ($post_type) {
-                $query->orderBy('created_at', 'desc')->where('post_type', $post_type)->where('post_status', 'publish')->take(10);
-            }
-        ])->where('id', $category_id_seventh)->first();
+            return (object) [
+                'category' => $mainCategory,
+                'posts' => $posts
+            ];
+        };
+
+        // NEWS & FEATURES CATEGORY (LEFT SECOND) - 8 posts
+        $news_n_features_data = $getCategoryWithPosts($news_n_features_cat_id, 8);
+        $news_n_features_cat = $news_n_features_data ? $news_n_features_data->category : null;
+        $news_n_features_posts = $news_n_features_data ? $news_n_features_data->posts : collect();
+
+        // SPORTS CATEGORY - 10 posts (default)
+        $sports_data = $getCategoryWithPosts([13, $sports_cat_id], 10);
+        $sports_cat = $sports_data ? $sports_data->category : null;
+        $sports_cat_posts = $sports_data ? $sports_data->posts : collect();
+
+        // VIEWS AND OPINION CATEGORY 
+        $views_n_opinion_data = $getCategoryWithPosts($views_n_opinion_cat, 5);
+        $views_n_opinion_cat_obj = $views_n_opinion_data ? $views_n_opinion_data->category : null;
+        $views_n_opinion_posts = $views_n_opinion_data ? $views_n_opinion_data->posts : collect();
+
+        // LIFESTYLE & ENTERTAINMENT CATEGORY 
+        $lifestyle_ent_data = $getCategoryWithPosts($lifestyle_ent_cat, 6);
+        $lifestyle_ent_cat_obj = $lifestyle_ent_data ? $lifestyle_ent_data->category : null;
+        $lifestyle_ent_posts = $lifestyle_ent_data ? $lifestyle_ent_data->posts : collect();
+
+        // ART, CULTURE & LITERATURE CATEGORY
+        $art_cult_lit_data = $getCategoryWithPosts($art_cult_lit_cat, 4);
+        $art_cult_lit_cat_obj = $art_cult_lit_data ? $art_cult_lit_data->category : null;
+        $art_cult_lit_posts = $art_cult_lit_data ? $art_cult_lit_data->posts : collect();
+
+        // SCIENCE & TECHNOLOGY CATEGORY - 5 posts 
+        $sci_tech_data = $getCategoryWithPosts($sci_tech_cat, 4);
+        $sci_tech_cat_obj = $sci_tech_data ? $sci_tech_data->category : null;
+        $sci_tech_posts = $sci_tech_data ? $sci_tech_data->posts : collect();
+
+        // BUSINESS & BRANDS CATEGORY
+        $business_brands_data = $getCategoryWithPosts($business_brands_cat, 10);
+        $business_brands_cat_obj = $business_brands_data ? $business_brands_data->category : null;
+        $business_brands_posts = $business_brands_data ? $business_brands_data->posts : collect();
 
         // TRENDING POSTS
         $trendingPosts = TrendingHelper::getTrendingPosts($post_type);
-
 
         $user = Auth::user();
 
@@ -110,18 +133,23 @@ class FrontController extends Controller
             'post' => $post,
             'postMeta' => $postMeta,
             'recent_posts' => $recent_posts,
-            'left_second_posts' => $left_second_cat,
-            'right_second_posts' => $right_second_cat,
-            'third_cat' => $third_cat,
-            'fourth_cat' => $fourth_cat,
-            'fifth_left_cat' => $fifth_left_cat,
-            'fifth_middle_cat' => $fifth_middle_cat,
-            'fifth_right_cat' => $fifth_right_cat,
-            'sixth_cat' => $sixth_cat,
-            'seventh_cat' => $seventh_cat,
+            'news_n_features_cat' => $news_n_features_cat,
+            'news_n_features_posts' => $news_n_features_posts,
+            'sports_cat' => $sports_cat,
+            'sports_cat_posts' => $sports_cat_posts,
+            'views_n_opinion_cat' => $views_n_opinion_cat_obj,
+            'views_n_opinion_posts' => $views_n_opinion_posts,
+            'lifestyle_ent_cat' => $lifestyle_ent_cat_obj,
+            'lifestyle_ent_posts' => $lifestyle_ent_posts,
+            'art_cult_lit_cat' => $art_cult_lit_cat_obj,
+            'art_cult_lit_posts' => $art_cult_lit_posts,
+            'sci_tech_cat' => $sci_tech_cat_obj,
+            'sci_tech_posts' => $sci_tech_posts,
+            'business_brands_cat' => $business_brands_cat_obj,
+            'business_brands_posts' => $business_brands_posts,
+            'trendingPosts' => $trendingPosts,
             'user' => $user,
             'language' => $language,
-            'trendingPosts' => $trendingPosts,
         ]);
     }
 }

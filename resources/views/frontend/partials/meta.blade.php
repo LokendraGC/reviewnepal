@@ -17,7 +17,7 @@
     $seoKeywords = $payloadMeta['seo_keyword'] ?? ($title ?? $websiteName);
 
     // Open Graph image defaults
-    $image = asset('assets/images/review_nepal_logo.webp');
+    $image = asset('assets/images/review_nepal_logo_r.webp');
     $alt = $websiteName;
     $type = 'image/webp';
 
@@ -37,14 +37,7 @@
             $alt = $media->alt ?? $seoTitle;
             $type = $media->type ?? 'image/jpeg';
         }
-    } elseif ($headerLogo) {
-        $media = MediaHelper::getModel()->find($headerLogo);
-        if ($media && !empty($media->file_name)) {
-            $image = asset('storage/' . $media->file_name);
-            $alt = $media->alt ?? $seoTitle;
-            $type = $media->type ?? 'image/jpeg';
-        }
-    }
+    } 
 
     // Favicon with fallback
     $faviconId = SettingHelper::get_field('site_favicon');

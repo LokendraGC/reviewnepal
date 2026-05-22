@@ -11,8 +11,7 @@
             <h5 class="card-title mb-0">
                 <i class="ri-sparkling-line"></i> AI Summary
             </h5>
-            <button type="button" id="btn-generate-summary" class="btn btn-sm btn-primary"
-                onclick="generateAiSummary()">
+            <button type="button" id="btn-generate-summary" class="btn btn-sm btn-primary" onclick="generateAiSummary()">
                 <i class="ri-sparkling-line me-1"></i>
                 <span id="summary-btn-text">Generate Summary</span>
             </button>
@@ -76,17 +75,17 @@
             errorEl.classList.add('d-none');
 
             fetch("{{ route('backend.ai.summarize') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
-                        '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    content: plainText
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
+                            '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: plainText
+                    })
                 })
-            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {

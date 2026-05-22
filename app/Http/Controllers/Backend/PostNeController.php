@@ -12,6 +12,7 @@ use App\Repositories\PostRepository;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Repositories\CategoryPostRepository;
 use App\Http\Requests\Post\PostUpdateRequest;
+use Illuminate\Support\Facades\Cache;
 
 class PostNeController extends Controller
 {
@@ -96,10 +97,14 @@ class PostNeController extends Controller
 
             // update slug
             $post->update([
-                'slug' => date('Y/m/').$post->id,
+                'slug' => date('Y/m/') . $post->id,
             ]);
 
             session()->flash('success', 'Post Created.');
+
+            // Clear homepage cache so the new post displays immediately
+            Cache::forget('front_page_data_en');
+            Cache::forget('front_page_data_ne');
 
             return to_route('backend.post_ne.edit', $post->id);
         } catch (\Exception $e) {
@@ -113,7 +118,7 @@ class PostNeController extends Controller
     public function edit($id)
     {
         $post = Post::with(['categories', 'lastUpdatedBy'])->where('post_type', $this->postType)->findOrFail($id);
-        
+
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
@@ -161,10 +166,15 @@ class PostNeController extends Controller
 
                 // update slug
                 $post->update([
-                    'slug' => $post->created_at->format('Y/m/').$post->id,
+                    'slug' => $post->created_at->format('Y/m/') . $post->id,
                 ]);
-                
+
                 session()->flash('success', 'Post Updated.');
+
+                // Clear homepage cache so the updated post displays immediately
+                Cache::forget('front_page_data_en');
+                Cache::forget('front_page_data_ne');
+
                 return redirect()->back();
             } else {
                 session()->flash('error', 'Error While Updating: Unable to update the post.');
@@ -190,6 +200,10 @@ class PostNeController extends Controller
         }
 
         $this->postRepository->makeTrash($id);
+
+        // Clear homepage cache so deleted post is removed immediately
+        Cache::forget('front_page_data_en');
+        Cache::forget('front_page_data_ne');
 
         session()->flash('success', 'Nepali Post Deleted.');
 

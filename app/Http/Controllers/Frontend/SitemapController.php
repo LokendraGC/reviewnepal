@@ -10,9 +10,9 @@ class SitemapController extends Controller
 {
     public function index()
     {
-        $posts = Post::where('post_type', 'post')->where('post_status', 'publish')->get();
-        $pages = Post::where('slug', '!=', 'home')->where('post_type', 'page')->where('post_status', 'publish')->get();
-        $categories = Category::whereType('category')->get();
+        $posts = Post::where('post_type', 'post')->where('post_status', 'publish')->latest('updated_at')->get();
+        $pages = Post::where('slug', '!=', 'home')->where('post_type', 'page')->where('post_status', 'publish')->latest('updated_at')->get();
+        $categories = Category::whereType('category')->latest('updated_at')->get();
 
         // return $categories;
 

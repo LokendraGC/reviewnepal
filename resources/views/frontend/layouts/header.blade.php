@@ -204,14 +204,13 @@
             <p class="br-line type-vertical bg-line h23"></p>
             <button class="tab-trigger" data-tab="mobile-general">Menu</button>
         </div>
-        <form class="form-search d-lg-none" action="{{ route('frontend.post.search') }}" method="get" style="margin-right: 50px;">
-            <fieldset>
-                <input type="search" name="search" placeholder="{{ $language == 'ne' ? 'समाचार खोज्नुहोस्...' : 'Search news and articles...' }}" value="{{ request('search') }}" required="">
-            </fieldset>
-            <button type="submit" class="button-submit" aria-label="Submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </form>
+       
+       <form action="{{ route('frontend.post.search') }}" method="get" class="d-lg-none">
+                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles..." autofocus>
+                <button type="submit" class="search-submit-arrow" aria-label="Submit search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
 
         <div class="overlay-nav-wrapper">
 
@@ -257,7 +256,7 @@
     </div>
 
     <div class="overlay-footer">
-        <div class="copyright">© {{ date('Y') }} {{ $websiteName }}. All rights reserved.</div>
+        <div class="copyright">© 2014 - {{ date('Y') }} {{ $websiteName }}. All rights reserved.</div>
     </div>
 </div>
 

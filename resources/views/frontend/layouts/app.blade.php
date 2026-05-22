@@ -30,6 +30,8 @@
             {{ $additionalCSS }}
         </style>
     @endif
+    
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=6a0d7ccef0d2d6948a295b5d&product=sop' async='async'></script>
 </head>
 
 <body>

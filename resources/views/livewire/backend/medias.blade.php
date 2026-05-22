@@ -63,7 +63,7 @@
                                         {{-- <div class="row overflow-auto" style="max-height: 500px;"> --}}
                                         <div class="row">
                                             @foreach ($medias as $media)
-                                                <div class="{{ $innerCol }}">
+                                                <div class="{{ $innerCol }}" wire:key="media-{{ $media->id }}">
                                                     <div class="media-manager-box"
                                                         data-selected="{{ in_array($media->id, $selectedMedia) ? 'true' : 'false' }}"
                                                         wire:click="toggleSelect({{ $media->id }})"
@@ -216,21 +216,42 @@
 @script
     <script>
         $(document).ready(function() {
-            $('.open-media-manager').click(function() {
+            // Use delegated event listener to support dynamically added elements as well
+            $(document).on('click', '.open-media-manager', function() {
+                var select = $(this).attr('data-select') || $(this).data('select');
+                var fieldValue = $(this).attr('data-field') || $(this).data('field');
+                var mediaIds = $('#' + fieldValue).val() || '';
+
+                // Sync body attributes for other potential scripts
+                $('body').attr('data-field', fieldValue).attr('data-select', select).attr('data-ids', mediaIds);
+
+                // Split selected IDs into an array
+                var filesArray = mediaIds ? mediaIds.split(',') : [];
+
+                // Call Livewire component method to set state and reset pagination
+                $wire.openMediaManager(select, filesArray);
+
+                // Programmatically activate the first tab ("Choose File")
                 setTimeout(function() {
-                    var select = $('body').attr('data-select');
-                    var files = $('body').attr('data-ids');
-                    @this.set('select', select);
-                    @this.set('selectedMedia', files.split(','));
-                    @this.set('openModal', 'true');
-                }, 200);
+                    var tabEl = document.getElementById('tab1-tab');
+                    if (tabEl) {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
+                            var tab = bootstrap.Tab.getOrCreateInstance(tabEl);
+                            tab.show();
+                        } else if ($(tabEl).tab) {
+                            $(tabEl).tab('show');
+                        } else {
+                            tabEl.click();
+                        }
+                    }
+                }, 100);
             });
 
             $('.choose__file').click(function() {
                 // Disable the button
                 $(this).prop('disabled', true).addClass('disabled');
 
-                // Re-enable the button after 1 second
+                // Re-enable the button after 5 seconds
                 setTimeout(() => {
                     $(this).prop('disabled', false).removeClass('disabled');
                 }, 5000);

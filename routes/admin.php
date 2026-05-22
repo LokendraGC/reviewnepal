@@ -63,6 +63,10 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
     Route::get('setting', [SettingController::class, 'index'])->name('backend.setting');
     Route::post('setting', [SettingController::class, 'store'])->name('backend.setting.store');
 
+     // banner news
+    Route::get('banner', [SettingController::class, 'bannerNews'])->name('backend.banner');
+
+
     Route::get('comment', [CommentController::class, 'index'])->name('backend.comment');
     Route::get('comment/{id}/edit', [CommentController::class, 'edit'])->name('backend.comment.edit');
     Route::post('comment/{id}/edit', [CommentController::class, 'update'])->name('backend.comment.update');
@@ -162,10 +166,12 @@ Route::prefix('npreview-backend')->middleware(['auth', 'check.user.role'])->grou
 
     Route::post('remove-image', [SettingController::class, 'removeImage'])->name('backend.setting.removeImage');
 
+
     // AI Summary
     Route::post('ai/summarize', [\App\Http\Controllers\Backend\AiSummaryController::class, 'generate'])->name('backend.ai.summarize');
 
-// ads settings
+
+    // ads settings
     Route::get('ads', [AdsController::class, 'index'])->name('backend.ads.setting');
     Route::post('ads', [AdsController::class, 'store'])->name('backend.ads.store');
 

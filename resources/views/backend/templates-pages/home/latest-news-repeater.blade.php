@@ -1,12 +1,17 @@
 <!-- repeater -->
 <script>
-    // Build options HTML using the $all_posts variable defined in home.blade.php
+    // Build options HTML by querying posts directly so this template is self-contained
     @php
+        $posts = \App\Helpers\PostHelper::getModel()
+            ->where('post_status', 'publish')
+            ->where('post_type', 'post')
+            ->latest()
+            ->limit(20)
+            ->get();
+
         $options_html = '<option value="">Choose News</option>';
-        if (isset($all_posts_en)) {
-            foreach ($all_posts_en as $post) {
-                $options_html .= '<option value="' . $post->id . '">' . e($post->post_title) . '</option>';
-            }
+        foreach ($posts as $post) {
+            $options_html .= '<option value="' . $post->id . '">' . e($post->post_title) . '</option>';
         }
     @endphp
     const postOptionsHtml = @json($options_html);

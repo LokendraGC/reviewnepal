@@ -16,7 +16,7 @@ class FrontMenuRepository
             ->first();
             $menuTitle = $menu->post_title;
             $routeName = $meta['menu_item_route'] ?? 'frontend.category.index';
-            $menuLink = route($routeName, $menuItem->slug);
+            $menuLink = ($menuItem && !empty($menuItem->slug)) ? route($routeName, $menuItem->slug) : '#';
             $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
             $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';
 
@@ -35,7 +35,7 @@ class FrontMenuRepository
             ->first();
             $menuTitle = $menu->post_title;
             $routeName = $meta['menu_item_route'] ?? 'frontend.post.index';
-            $menuLink = route($routeName, $menuItem->slug);
+            $menuLink = ($menuItem && !empty($menuItem->slug)) ? route($routeName, $menuItem->slug) : '#';
             $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
             $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';
 
@@ -51,7 +51,7 @@ class FrontMenuRepository
             $menuItem = PostHelper::getModel()
             ->where(['id' => $meta['menu_item_object_id'], 'post_type' => 'nav_menu_item'])
             ->first();
-            $menuTitle = $menuItem->post_title;
+            $menuTitle = $menuItem ? $menuItem->post_title : ($menu->post_title ?? '');
             $menuLink = isset($meta['menu_item_url']) ? $meta['menu_item_url'] : '#';
             $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
             $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';

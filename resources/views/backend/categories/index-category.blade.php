@@ -143,4 +143,65 @@
 
 @section('script')
     @vite(['resources/js/pages/demo.datatable-init.js', 'resources/js/media.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('livewire:navigated', function () {
+            initCategorySortable();
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            initCategorySortable();
+        });
+
+        // Hook to re-init SortableJS when Livewire updates the DOM (e.g. after sorting, pagination, search)
+        if (typeof Livewire !== 'undefined') {
+            Livewire.hook('morph.updated', ({ el, component }) => {
+                initCategorySortable();
+            });
+        }
+
+        function initCategorySortable() {
+            var el = document.getElementById('category-sortable');
+            if (!el) return;
+
+            // Destroy previous instance if already bound to avoid duplicates
+            if (el.sortableInstance) {
+                el.sortableInstance.destroy();
+            }
+
+            el.sortableInstance = Sortable.create(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'table-active',
+                onEnd: function (evt) {
+                    let orders = [];
+                    let rows = el.querySelectorAll('tr.category-row');
+                    rows.forEach((row, index) => {
+                        orders.push({
+                            id: row.getAttribute('data-id'),
+                            position: index + 1
+                        });
+                    });
+
+                    // Call the Livewire updateOrder component method
+                    if (window.Livewire) {
+                        let parentEl = el;
+                        let wireId = null;
+                        while (parentEl) {
+                            if (parentEl.hasAttribute && parentEl.hasAttribute('wire:id')) {
+                                wireId = parentEl.getAttribute('wire:id');
+                                break;
+                            }
+                            parentEl = parentEl.parentElement;
+                        }
+                        if (wireId) {
+                            let lComponent = Livewire.find(wireId);
+                            if (lComponent) {
+                                lComponent.call('updateOrder', orders);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 @endsection

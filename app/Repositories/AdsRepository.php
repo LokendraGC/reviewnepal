@@ -32,6 +32,11 @@ class AdsRepository
         $metaDatas['single_below_content'] = $request->single_below_content ?? null;
         $metaDatas['below_featured_image_ad'] = $request->below_featured_image_ad ?? null;
 
+        // Popup Ads
+        $metaDatas['popup_ads'] = $request->popup_ads ? serialize($request->popup_ads) : null;
+        $metaDatas['show_popup'] = $request->show_popup ?? 0;
+        $metaDatas['show_popup_on_homepage'] = $request->show_popup_on_homepage ?? 0;
+
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($payload, $key, $value);

@@ -101,6 +101,15 @@
             </li>
 
             <li class="side-nav-title text-success">Content Management</li>
+            
+               <li class="side-nav-item">
+                    <a href="{{ route('backend.banner') }}" class="side-nav-link">
+                            <i class="ri-newspaper-line"></i>
+                        <span> Banner News </span>
+                    </a>
+                </li>
+                
+                
             @canany(['create_post', 'read_post'])
                 <li
                     class="side-nav-item {{ request()->segment(2) === 'post' && !in_array(request()->segment(3), ['category', 'author', 'tag']) ? 'menuitem-active' : '' }}">

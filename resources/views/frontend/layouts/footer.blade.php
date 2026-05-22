@@ -28,10 +28,94 @@
 
             $language = LanguageHelper::getUserLanguage();
 
+            $popup_ads_data = SettingHelper::get_field('popup_ads');
+
+            $popup_ads = !empty($popup_ads_data) ? unserialize($popup_ads_data) : null;
+
+            $show_popup_on_homepage_only = SettingHelper::get_field('show_popup_on_homepage');
+            $show_popup = SettingHelper::get_field('show_popup');
+
+            // Check if current page is homepage
+            $isHomepage = request()->is('/');
+
+            // Decide whether popup should display
+            $shouldShowPopup = !$show_popup_on_homepage_only || $isHomepage;
+
 
         @endphp
 
-            
+
+         @if ($show_popup)
+                @if ($shouldShowPopup)
+
+                    <div class="popup-ads">
+                        @php
+                            $popups = [];
+                            if (is_array($popup_ads)) {
+                                foreach ($popup_ads as $item) {
+                                    if (!empty($item['image'])) {
+                                        $media = \App\Models\Media::find($item['image']);
+
+                                        if ($media && !empty($media->file_name)) {
+                                            $popups[] = [
+                                                'image_url' => asset('storage/' . $media->file_name),
+                                                'ad_link' => $item['ad_link'] ?? '',
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        @endphp
+
+                        @if (!empty($popups))
+                            <div id="popup-ad-overlay" class="popup-ad-overlay">
+                                @foreach ($popups as $index => $popup)
+                                    <div class="popup-ad-container" id="popup-ad-{{ $index }}"
+                                        style="display: {{ $index === 0 ? 'block' : 'none' }};">
+
+                                        <div class="popup-ad-card">
+
+                                            <div class="popup-ad-header">
+                                                <span class="popup-ad-tag">Advertisement</span>
+
+                                                <button class="popup-ad-close"
+                                                    onclick="closePopupAd({{ $index }})" aria-label="Close Ad">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                        height="18" fill="currentColor" viewBox="0 0 16 16">
+
+                                                        <path
+                                                            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                                                    </svg>
+
+                                                </button>
+                                            </div>
+
+                                            <div class="popup-ad-body">
+                                                @if (!empty($popup['ad_link']))
+                                                    <a href="{{ $popup['ad_link'] }}" target="_blank"
+                                                        class="popup-ad-link">
+
+                                                        <img src="{{ $popup['image_url'] }}" alt="Advertisement">
+
+                                                    </a>
+                                                @else
+                                                    <div class="popup-ad-link">
+                                                        <img src="{{ $popup['image_url'] }}" alt="Advertisement">
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                @endif
+            @endif
+
             <div class="col-xl-2 col-lg-12 ok-col text-center">
                 <div class="ok-brand-wrap">
                     <a href="{{ url('/') }}">
@@ -122,8 +206,8 @@
             </div>
             @endif
 
-            <div class="col-xl-12 col-md-6 border-top-new mt-4">
-                <p class="ok-copy">© 2006-{{ date('Y') }} {{ $websiteName }}. All Rights Reserved Developed By <a href="https://webtechnepal.com/" target="_blank">Webtech Nepal</a>
+            <div class="col-xl-12 col-md-6 border-top-new mt-4 pt-3 text-center">
+                <p class="ok-copy">© 2014 - {{ date('Y') }} {{ $websiteName }}. All Rights Reserved Developed By <a href="https://webtechnepal.com/" target="_blank">Webtech Nepal</a>
                 </p>
             </div>
 
@@ -131,3 +215,29 @@
         </div>
     </div>
 </footer>
+
+
+@push('frontend-js')
+    <script>
+        (function() {
+            const totalPopups = {{ is_array($popups ?? null) ? count($popups) : 0 }};
+            window.closePopupAd = function(index) {
+                const currentPopup = document.getElementById('popup-ad-' + index);
+                if (currentPopup) {
+                    currentPopup.style.display = 'none';
+                }
+
+                const nextIndex = index + 1;
+                const nextPopup = document.getElementById('popup-ad-' + nextIndex);
+                if (nextIndex < totalPopups && nextPopup) {
+                    nextPopup.style.display = 'block';
+                } else {
+                    const overlay = document.getElementById('popup-ad-overlay');
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                }
+            };
+        })();
+    </script>
+@endpush

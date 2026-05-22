@@ -20,9 +20,10 @@
 
                                 {{-- excerpt --}}
                                 <x-backend.post.excerpt :content="$post->post_excerpt" />
-
-                                {{-- ai summarizer --}}
+                                
+                                 {{-- ai summarizer --}}
                                 <x-backend.summarizer :content="$post->post_content" :post="$post" />
+
 
                                 @include('backend.posts_ne.fields-post_ne')
 

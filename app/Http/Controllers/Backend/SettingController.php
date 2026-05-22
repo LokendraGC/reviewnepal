@@ -40,6 +40,26 @@ class SettingController extends Controller
             'settings' => $settings,
         ]);
     }
+    
+    
+      public function bannerNews()
+    {
+        $settings = [];
+
+        try {
+
+            $settings = $this->settingRepository->index($this->setting);
+
+        } catch (\Exception $e) {
+
+            session()->flash('error', 'Error While Showing: ' . $e->getMessage());
+            Log::error($e);
+        }
+
+        return view('backend.settings.banner-setting', [
+            'settings' => $settings
+        ]);
+    }
 
     public function store(Request $request)
     {

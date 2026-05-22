@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\PostRepository;
 use App\Helpers\TrendingHelper;
 use App\Helpers\LanguageHelper;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -58,94 +59,79 @@ class PostController extends Controller
         return null;
     }
 
-    private function handlePost($slug)
-    {
-        $post = $this->getPayload($slug);
+private function handlePost($slug)
+{
+    $post = $this->getPayload($slug);
 
+    if (!$post) {
+        return response()->view('frontend.not-found', [], 404);
+    }
 
-        if (!$post) {
-            return response()->view('frontend.not-found', [], 404);
-        }
-
+    // 1. Pages (About Us, Contact, etc.)
+    if ($post->post_type === 'page') {
         $metaDatas = $this->getMetaData($post);
-
         $homePage = Post::where('slug', 'home')->where('post_status', 'publish')->first();
         $homeMeta = $homePage ? $this->getMetaData($homePage) : [];
+        $viewName = $this->getViewName($post, $metaDatas);
 
+        $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
+            ->latest()->get();
 
-        if ($post->post_type === 'page') {
-
-
-            $viewName = $this->getViewName($post, $metaDatas);
-
-            $posts = Post::where('post_type', 'post')->where('post_status', 'publish')
-                ->whereHas('categories', fn($q) => $q->where('categories.id', 9))
-                ->latest()->get();
-
-            if ($viewName) {
-                return view($viewName, [
-                    'post' => $post,
-                    'metaData' => $metaDatas,
-                    'homeMeta' => $homeMeta,
-                    'posts' => $posts,
-
-                ]);
-            }
-        }
-
-
-
-        if ($post->post_type === 'post') {
-
-            $author = $post->categories()->where('categories.type', 'author')->first();
-            $user = Auth::user();
-
-            $category = $post->categories()->first();
-
-            $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
-
-            $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
-
-            $postMeta = $this->getMetaData($post);
-
-
-            return view('frontend.single-post', [
+        if ($viewName) {
+            return view($viewName, [
                 'post' => $post,
-                'postMeta' => $postMeta,
-                'author' => $author,
-                'user' => $user,
-                'category' => $category,
-                'relatedPosts' => $relatedPosts,
-                'trendingPosts' => $trendingPosts,
+                'metaData' => $metaDatas,
+                'homeMeta' => $homeMeta,
+                'posts' => $posts,
             ]);
         }
-
-
-        if ($post->post_type === 'post_ne') {
-            $author = $post->categories()->where('categories.type', 'author')->first();
-            $user = Auth::user();
-            $category = $post->categories()->first();
-            $categoryMeta = $category ? $this->categoryRepository->getMetaDatas($category) : [];
-
-            $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
-            $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
-
-            $postMeta = $this->getMetaData($post);
-
-            return view('frontend.single-post_ne', [
-                'post' => $post,
-                'postMeta' => $postMeta,
-                'author' => $author,
-                'user' => $user,
-                'category' => $category,
-                'categoryMeta' => $categoryMeta,
-                'relatedPosts' => $relatedPosts,
-                'trendingPosts' => $trendingPosts,
-            ]);
-        }
-
         abort(403, 'Not Found');
     }
+
+    // 2. Posts - NO CACHING (direct queries)
+    $user = Auth::user();
+
+    if ($post->post_type === 'post') {
+        $author = $post->categories()->where('categories.type', 'author')->first();
+        $category = $post->categories()->first();
+        $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
+        $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
+        $postMeta = $this->getMetaData($post);
+
+        return view('frontend.single-post', [
+            'post' => $post,
+            'postMeta' => $postMeta,
+            'author' => $author,
+            'user' => $user,
+            'category' => $category,
+            'relatedPosts' => $relatedPosts,
+            'trendingPosts' => $trendingPosts,
+        ]);
+    }
+
+    if ($post->post_type === 'post_ne') {
+        $author = $post->categories()->where('categories.type', 'author')->first();
+        $category = $post->categories()->first();
+        $categoryMeta = $category ? $this->categoryRepository->getMetaDatas($category) : [];
+        $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
+        $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
+        $postMeta = $this->getMetaData($post);
+
+        return view('frontend.single-post_ne', [
+            'post' => $post,
+            'postMeta' => $postMeta,
+            'author' => $author,
+            'user' => $user,
+            'category' => $category,
+            'categoryMeta' => $categoryMeta,
+            'relatedPosts' => $relatedPosts,
+            'trendingPosts' => $trendingPosts,
+        ]);
+    }
+
+    abort(403, 'Not Found');
+}
 
     public function search(Request $request)
     {

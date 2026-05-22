@@ -18,45 +18,49 @@ class SettingRepository
     public function storeOrUpdate($payload, $request)
     {
         $setting = $payload;
-
+        $context = $request->input('_setting_context', 'general');
         $metaDatas = [];
 
-        // header
-        $metaDatas['header_logo'] = $request->header_logo ?? null;
-        $metaDatas['header_logo_nepali'] = $request->header_logo_nepali ?? null;
-        $metaDatas['map_url'] = $request->map_url ?? null;
-        $metaDatas['office_timing'] = $request->office_timing ?? null;
-        // Info Section
-        $metaDatas['first_email'] = $request->first_email ?? null;
-        $metaDatas['second_email'] = $request->second_email ?? null;
-        $metaDatas['address'] = $request->address ?? null;
-        $metaDatas['first_phone'] = $request->first_phone ?? null;
-        $metaDatas['second_phone'] = $request->second_phone ?? null;
+        if ($context === 'banner_news') {
+            $metaDatas['latest_news_details'] = $request->latest_news_details ? serialize($request->latest_news_details) : null;
+            $metaDatas['latest_news_details_ne'] = $request->latest_news_details_ne ? serialize($request->latest_news_details_ne) : null;
+        } else {
+            // header
+            $metaDatas['header_logo'] = $request->header_logo ?? null;
+            $metaDatas['header_logo_nepali'] = $request->header_logo_nepali ?? null;
+            $metaDatas['map_url'] = $request->map_url ?? null;
+            $metaDatas['office_timing'] = $request->office_timing ?? null;
+            // Info Section
+            $metaDatas['first_email'] = $request->first_email ?? null;
+            $metaDatas['second_email'] = $request->second_email ?? null;
+            $metaDatas['address'] = $request->address ?? null;
+            $metaDatas['first_phone'] = $request->first_phone ?? null;
+            $metaDatas['second_phone'] = $request->second_phone ?? null;
+            // Footer
+            $metaDatas['footer_logo'] = $request->footer_logo ?? null;
+            $metaDatas['footer_logo_nepali'] = $request->footer_logo_nepali ?? null;
+            $metaDatas['footer_text'] = $request->footer_text ?? null;
+            $metaDatas['subscribe_text'] = $request->subscribe_text ?? null;
+            $metaDatas['map_link'] = $request->map_link ?? null;
+            $metaDatas['trending_news_time'] = $request->trending_news_time ?? 7;
+            // Social Medias
+            $metaDatas['social_media'] = $request->social_media ? serialize($request->social_media) : null;
+            // Banner Section
+            $metaDatas['banner_background_image'] = $request->banner_background_image ?? null;
+            $metaDatas['map_iframe_url'] = $request->map_iframe_url ?? null;
+            // Popup
+            $metaDatas['popup_ads'] = $request->popup_ads ? serialize($request->popup_ads) : null;
+            $metaDatas['show_popup_on_homepage'] = $request->show_popup_on_homepage ?? 0;
+            $metaDatas['show_popup'] = $request->show_popup ?? 0;
+            // General info
+            $metaDatas['director_name'] = $request->director_name ?? null;
+            $metaDatas['editor_name'] = $request->editor_name ?? null;
+            $metaDatas['registration_number'] = $request->registration_number ?? null;
+            $metaDatas['director_name_nepali'] = $request->director_name_nepali ?? null;
+            $metaDatas['editor_name_nepali'] = $request->editor_name_nepali ?? null;
+            $metaDatas['registration_number_nepali'] = $request->registration_number_nepali ?? null;
+        }
 
-        // Footer
-        $metaDatas['footer_logo'] = $request->footer_logo ?? null;
-        $metaDatas['footer_logo_nepali'] = $request->footer_logo_nepali ?? null;
-        $metaDatas['footer_text'] = $request->footer_text ?? null;
-        $metaDatas['subscribe_text'] = $request->subscribe_text ?? null;
-        $metaDatas['map_link'] = $request->map_link ?? null;
-        $metaDatas['trending_news_time'] = $request->trending_news_time ?? 7;
-        // Social Medias
-        $metaDatas['social_media'] = $request->social_media ? serialize($request->social_media) : null;
-
-        // Banner Section
-        $metaDatas['banner_background_image'] = $request->banner_background_image ?? null;
-        $metaDatas['map_iframe_url'] = $request->map_iframe_url ?? null;
-
-        // general info
-        $metaDatas['director_name'] = $request->director_name ?? null;
-        $metaDatas['editor_name'] = $request->editor_name ?? null;
-        $metaDatas['registration_number'] = $request->registration_number ?? null;
-        $metaDatas['director_name_nepali'] = $request->director_name_nepali ?? null;
-        $metaDatas['editor_name_nepali'] = $request->editor_name_nepali ?? null;
-        $metaDatas['registration_number_nepali'] = $request->registration_number_nepali ?? null;
-
-
-        // insert or update meta data
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($setting, $key, $value);
         }

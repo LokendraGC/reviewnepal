@@ -16,6 +16,7 @@ class Medias extends Component
     public $totalMedia;
     public $perPage = 12;
     public $selectedMedia = []; // Array to store selected media items
+    public $initialSelectedMedia = []; // Array to store initially selected media items
     public $select;
     public $openModal;
     public $search;
@@ -29,6 +30,17 @@ class Medias extends Component
     {
         // $this->openModal = $openModal;
         $this->loadMedia();
+    }
+
+    public function openMediaManager($select, $selectedMedia)
+    {
+        $this->select = $select;
+        $this->selectedMedia = array_filter($selectedMedia, function($value) {
+            return $value !== '';
+        });
+        $this->initialSelectedMedia = $this->selectedMedia;
+        $this->openModal = 'true';
+        $this->resetPage();
     }
 
     public function loadMore()
@@ -139,6 +151,7 @@ class Medias extends Component
     {
         $this->editedMedia = NULL;
         $this->reset(['alt', 'description', 'caption']);
+        $this->resetPage();
         $this->dispatch('media-updated');
     }
 
@@ -148,7 +161,7 @@ class Medias extends Component
         $query = Media::where('file_original_name', 'like', '%'.$this->search.'%');
 
         // If there are selected media IDs, order them first so they appear at the top
-        $selectedIds = array_filter(array_map('intval', $this->selectedMedia));
+        $selectedIds = array_filter(array_map('intval', $this->initialSelectedMedia));
         if (!empty($selectedIds)) {
             $ids = implode(',', $selectedIds);
             $query->orderByRaw("CASE WHEN id IN ({$ids}) THEN 0 ELSE 1 END");

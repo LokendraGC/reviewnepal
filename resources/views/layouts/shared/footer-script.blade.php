@@ -205,8 +205,8 @@
     $(document).ready(function() {
         $(document).on('click', '.open-media-manager', function() {
             // $('.open-media-manager').click(function() {
-            var fieldValue = $(this).data('field');
-            var dataSelect = $(this).data('select');
+            var fieldValue = $(this).attr('data-field') || $(this).data('field');
+            var dataSelect = $(this).attr('data-select') || $(this).data('select');
             var mediaIds = jQuery('#' + fieldValue).val() ? jQuery('#' + fieldValue).val() : '';
             $('body').attr('data-field', fieldValue).attr('data-select', dataSelect).attr('data-ids',
                 mediaIds);

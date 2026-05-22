@@ -47,10 +47,10 @@
                                 <div
                                     class="d-flex align-items-center justify-content-between border rounded-3 px-3 py-3 bg-light-subtle">
                                     <div>
-                                        <label for="show_banner" class="form-label fw-semibold mb-1">Show Banner on
-                                            Homepage</label>
-                                        <p class="text-muted mb-0 small">Enable this to display the banner on the
-                                            homepage.</p>
+                                        <label for="show_banner" class="form-label fw-semibold mb-1">Show Image on
+                                            Banner News</label>
+                                        <p class="text-muted mb-0 small">Enable this to display the image on the
+                                            banner of Recent News.</p>
                                     </div>
                                     <div class="form-check form-switch mb-0">
                                         <input type="checkbox" class="form-check-input" id="show_banner"

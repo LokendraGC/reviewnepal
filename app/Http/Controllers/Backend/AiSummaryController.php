@@ -57,7 +57,7 @@ class AiSummaryController extends Controller
 
         // Generate audio from the actual post content (limited to 4000 chars to avoid timeouts)
         $textToRead = mb_substr(strip_tags($post->post_content), 0, 4000);
-        
+
         $audioResponse = Ai::audio(
             text: $textToRead,
             voice: 'Kore',

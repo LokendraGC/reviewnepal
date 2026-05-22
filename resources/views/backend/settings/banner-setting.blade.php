@@ -19,6 +19,7 @@
         <!-- end page title -->
 
         <form action="{{ route('backend.setting.store') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_setting_context" value="banner_news">
             <div class="row">
                 <div class="col-lg-9">
                     <div class="card">
@@ -26,35 +27,14 @@
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <div class="nav  nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'header' ? 'active' : '' }}"
-                                            id="header-tab" data-bs-toggle="pill" href="#header" role="tab"
-                                            aria-controls="header"
-                                            aria-selected="{{ request()->query('tab') == 'header' ? 'true' : 'false' }}"
+                                        <a class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'banner' ? 'active' : '' }}"
+                                            id="banner-tab" data-bs-toggle="pill" href="#banner" role="tab"
+                                            aria-controls="banner"
+                                            aria-selected="{{ request()->query('tab') == 'banner' ? 'true' : 'false' }}"
                                             tabindex="-1">
-                                            Header
+                                            Banner News Details
                                         </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'footer' ? 'active' : '' }}"
-                                            id="footer-tab" data-bs-toggle="pill" href="#footer" role="tab"
-                                            aria-controls="footer"
-                                            aria-selected="{{ request()->query('tab') == 'footer' ? 'true' : 'false' }}"
-                                            tabindex="-1">
-                                            Footer
-                                        </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'info-section' ? 'active' : '' }}"
-                                            id="info-section-tab" data-bs-toggle="pill" href="#info-section" role="tab"
-                                            aria-controls="info-section"
-                                            aria-selected="{{ request()->query('tab') == 'info-section' ? 'true' : 'false' }}"
-                                            tabindex="-1">
-                                            Info Section
-                                        </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'trending' ? 'active' : '' }}"
-                                            id="trending-tab" data-bs-toggle="pill" href="#trending" role="tab"
-                                            aria-controls="trending"
-                                            aria-selected="{{ request()->query('tab') == 'trending' ? 'true' : 'false' }}"
-                                            tabindex="-1">
-                                            Trending
-                                        </a>
-                                       
+
                                     </div>
                                 </div>
                                 <!-- end col-->
@@ -62,11 +42,7 @@
                                 <hr />
                                 <div class="col-12">
                                     <div class="tab-content" id="v-pills-tabContent">
-                                        @include('backend.settings.tabs.header-setting')
-                                        @include('backend.settings.tabs.footer-setting')
-                                        @include('backend.settings.tabs.info-setting')
-                                        @include('backend.settings.tabs.trending-setting')
-                                        @include('backend.settings.tabs.popup-ad-setting')
+                                        @include('backend.settings.tabs.banner-setting-repeater')
                                     </div> <!-- end tab-content-->
                                 </div> <!-- end col-->
                             </div>
@@ -91,7 +67,11 @@
 
     </div>
     <!-- container -->
+    @include('backend.templates-pages.home.latest-news-repeater')
+    @include('backend.templates-pages.home.latest-news-nepali-repeater')
 @endsection
+
+
 
 @section('script')
     @vite(['resources/js/media.js'])

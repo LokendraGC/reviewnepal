@@ -31,8 +31,51 @@
 
 
         @if (!empty($recent_posts) && count($recent_posts) > 0)
+      
+        {{-- BEFORE RECENT NEWS AD START --}}
+        @php
+            $above_recent_news_ad = SettingHelper::get_field('above_recent_news_ad');
+            $link = MediaHelper::getDescriptionById($above_recent_news_ad);
+            $websiteName = SettingHelper::get_field('site_title');
+
+            if ($above_recent_news_ad) {
+                $media = MediaHelper::getImageById($above_recent_news_ad);
+                if (!empty($media->file_name)) {
+                    $before_image_url = asset('storage/' . $media->file_name);
+                } else {
+                    $before_image_url = null;
+                }
+            }
+        @endphp
+
+        @if (!empty($before_image_url))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+
+                            @if (!empty($link))
+                                <a href="{{ $link }}" target="_blank">
+                                    <img src="{{ $before_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $before_image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
+                            @endif
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        {{-- BEFORE RECENT NEWS AD END --}}
+
+
             @foreach ($recent_posts as $recent_post)
                 <section class="container my-5">
+
+
+
                     <div class="news-header-section">
                         <h2 class="main-headline">
                             <a
@@ -114,9 +157,10 @@
                                     @endif
                                 </a>
                             @endif
-                        @endif
-
-
+                        @endif                        
+                        <p class="banner-description">
+                            {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($recent_post->post_content)), 40) }}
+                         </p>                   
                     </div>
                 </section>
             @endforeach
@@ -596,20 +640,46 @@
         @if ($views_n_opinion_posts->count() > 0 && !empty($views_n_opinion_posts) && !empty($views_n_opinion_cat))
             <div class="container py-5">
 
-                @php
-                    $itemMeta = $post->GetAllMetaData();
-                    $main_title =
-                        $language == 'en' ? $itemMeta['main_title_third'] : $itemMeta['main_title_nepali_third'];
-                    $view_all_text = $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्';
-                @endphp
-
-                <div class="section-header d-flex justify-content-between">
-                    <h2 class="m-0">
-                        {{ $language == 'en' ? $views_n_opinion_cat->name : $views_n_opinion_cat->GetAllMetaData()['name_ne'] ?? $views_n_opinion_cat->name }}
-                    </h2>
-                    {{-- <a href="{{ route('frontend.category.index', $third_cat->slug) }}"
-                    class="cat-link mt-auto">{{ $view_all_text }} <span>&rarr;</span></a> --}}
-                </div>
+                  @if (!empty($views_n_opinion_cat))
+                    <div class="mb-4">
+                        <div class="category-title-flex section-header">
+                            <h2 class="m-0">
+                                <a href="{{ route('frontend.category.index', $views_n_opinion_cat->slug) }}"
+                                    style="color: inherit; text-decoration: none;">
+                                    {{ $language == 'en' ? $views_n_opinion_cat->name : $views_n_opinion_cat->GetAllMetaData()['name_ne'] ?? $views_n_opinion_cat->name }}
+                                </a>
+                            </h2>
+                            
+                            <div class="child-categories-wrapper">
+                            <div class="child-categories-list">
+                                @foreach ($views_n_opinion_cat->children as $child)
+                                    @php
+                                        $childMeta = $child->GetAllMetaData();
+                                        $childName =
+                                            $language == 'en' ? $child->name : $childMeta['name_ne'] ?? $child->name;
+                                    @endphp
+                                    <a href="{{ route('frontend.category.index', $child->slug) }}"
+                                        class="child-category-link">
+                                        {{ $childName }}
+                                    </a>
+                                    @if (!$loop->last)
+                                        <span class="child-cat-divider">|</span>
+                                    @endif
+                                @endforeach
+                            </div>
+                            
+                             <a href="{{ route('frontend.category.index', $views_n_opinion_cat->slug) }}"
+                                class="category-circle-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                            
+                            </div>
+                            
+                            
+                           
+                        </div>
+                    </div>
+                @endif
 
                 <div class="row justify-content-between">
 
@@ -1218,15 +1288,47 @@
             <hr style="border-color: #c7c7c7; margin: 0;">
             <div class="container py-5">
 
-                <div class="section-header-featured d-flex justify-content-between">
-                    <h2>{{ $language == 'en' ? $business_brands_cat->name : $business_brands_cat->GetAllMetaData()['name_ne'] ?? $business_brands_cat->name }}
-                    </h2>
-                    <a href="{{ route('frontend.category.index', $business_brands_cat->slug) }}"
-                        class="cat-link mt-auto">
-                        {{ $language == 'en' ? 'View All' : 'सबै हेर्नुहोस्' }}
-                        <span>&rarr;</span>
-                    </a>
-                </div>
+                 @if (!empty($business_brands_cat))
+                    <div class="mb-4">
+                        <div class="category-title-flex section-header">
+                            <h2 class="m-0">
+                                <a href="{{ route('frontend.category.index', $business_brands_cat->slug) }}"
+                                    style="color: inherit; text-decoration: none;">
+                                    {{ $language == 'en' ? $business_brands_cat->name : $business_brands_cat->GetAllMetaData()['name_ne'] ?? $business_brands_cat->name }}
+                                </a>
+                            </h2>
+                            
+                            <div class="child-categories-wrapper">
+                            <div class="child-categories-list">
+                                @foreach ($business_brands_cat->children as $child)
+                                    @php
+                                        $childMeta = $child->GetAllMetaData();
+                                        $childName =
+                                            $language == 'en' ? $child->name : $childMeta['name_ne'] ?? $child->name;
+                                    @endphp
+                                    <a href="{{ route('frontend.category.index', $child->slug) }}"
+                                        class="child-category-link">
+                                        {{ $childName }}
+                                    </a>
+                                    @if (!$loop->last)
+                                        <span class="child-cat-divider">|</span>
+                                    @endif
+                                @endforeach
+                            </div>
+                            
+                             <a href="{{ route('frontend.category.index', $business_brands_cat->slug) }}"
+                                class="category-circle-btn">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                            
+                            </div>
+                            
+                            
+                           
+                        </div>
+                    </div>
+                @endif
+
                 <div class="row gy-5 mt-4">
 
 

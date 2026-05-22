@@ -48,7 +48,7 @@ class PostNeController extends Controller
     public function create()
     {
         $type = $this->postRepository->encodeType($this->postType);
-        $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
+        $categories = $this->postRepository->getPostByCategory('category')->whereDoesntHave('children')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
@@ -119,7 +119,7 @@ class PostNeController extends Controller
     {
         $post = Post::with(['categories', 'lastUpdatedBy'])->where('post_type', $this->postType)->findOrFail($id);
 
-        $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
+        $categories = $this->postRepository->getPostByCategory('category')->whereDoesntHave('children')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 

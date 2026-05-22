@@ -2,6 +2,55 @@
     role="tabpanel" aria-labelledby="homepage-tab">
     <div class="row">
         {{-- Recent News ads --}}
+               <div class="mb-3 col-6">
+            <div>
+                <label for="above_recent_news_ad" class="form-label">Above Recent News Ads</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="above_recent_news_ad" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['above_recent_news_ad']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['above_recent_news_ad'])->first())
+                        )
+                        <input type="hidden" id="above_recent_news_ad" name="above_recent_news_ad" class="selected-files"
+                            value="{{ $settings['above_recent_news_ad'] }}">
+                        <div id="above_recent_news_ad_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}" data-slug="above_recent_news_ad"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="above_recent_news_ad" name="above_recent_news_ad" class="selected-files" value="" />
+                        <div id="above_recent_news_ad_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+ 
+ 
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_banner_ads" class="form-label">Below Recent News Ads</label>
@@ -210,7 +259,7 @@
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_below_trending_news_first_ad" class="form-label">Below Trending News First
-                    Ads</label>
+                    Ads (Short Ad)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="homepage_below_trending_news_first_ad" data-select="single">
                     <div class="input-group-prepend">
@@ -263,7 +312,7 @@
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_below_trending_news_second_ad" class="form-label">Below Trending News Second
-                    Ads</label>
+                    Ads (Short Ad)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="homepage_below_trending_news_second_ad" data-select="single">
                     <div class="input-group-prepend">

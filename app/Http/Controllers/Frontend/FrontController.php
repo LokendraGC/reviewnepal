@@ -90,7 +90,7 @@ class FrontController extends Controller
         };
 
         // NEWS & FEATURES CATEGORY (LEFT SECOND) - 8 posts
-        $news_n_features_data = $getCategoryWithPosts($news_n_features_cat_id, 8);
+        $news_n_features_data = $getCategoryWithPosts($news_n_features_cat_id, 14);
         $news_n_features_cat = $news_n_features_data ? $news_n_features_data->category : null;
         $news_n_features_posts = $news_n_features_data ? $news_n_features_data->posts : collect();
 

@@ -13,6 +13,7 @@ class AdsRepository
         $metaDatas = [];
         $metaDatas['header_ads'] = $request->header_ads ?? null;
         $metaDatas['banner_ads'] = $request->banner_ads ?? null;
+        $metaDatas['above_recent_news_ad'] = $request->above_recent_news_ad ?? null;
         $metaDatas['below_recent_news'] = $request->below_recent_news ?? null;
         $metaDatas['above_nepal_insights_ad'] = $request->above_nepal_insights_ad ?? null;
         $metaDatas['below_nepal_insights_ad'] = $request->below_nepal_insights_ad ?? null;

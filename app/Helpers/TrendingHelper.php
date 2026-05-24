@@ -39,12 +39,12 @@ class TrendingHelper
             $trendingPostQuery->where('posts.created_at', '>=', now()->subDays($time));
         }
         $trendingPosts = $trendingPostQuery->take(5)->get();
-        $trendingPosts->load('user:id,name');
+        $trendingPosts->load(['user:id,name', 'categories.categoryMeta']);
 
         if ($trendingPosts->isEmpty()) {
             // Fallback: use same query, but without time restriction.
             $trendingPosts = $buildTrendingQuery()->take(5)->get();
-            $trendingPosts->load('user:id,name');
+            $trendingPosts->load(['user:id,name', 'categories.categoryMeta']);
         }
 
         return $trendingPosts;

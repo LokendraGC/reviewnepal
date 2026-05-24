@@ -58,7 +58,7 @@ Route::get('reset-password/{token}', [AuthController::class, 'resetPassword']);
 
 Route::group(['prefix' => 'test'], function () {
     Route::get('', [RoutingController::class, 'index'])->name('root');
-    Route::get('/home', fn() => view('index'))->name('home');
+    // Route::get('/home', fn() => view('index'))->name('home');
     Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');

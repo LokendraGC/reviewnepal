@@ -94,7 +94,7 @@ private function handlePost($slug)
 
     if ($post->post_type === 'post') {
         $author = $post->categories()->where('categories.type', 'author')->first();
-        $category = $post->categories()->first();
+        $category = $post->categories()->where('categories.type', 'category')->first();
         $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
         $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);
         $postMeta = $this->getMetaData($post);
@@ -112,7 +112,7 @@ private function handlePost($slug)
 
     if ($post->post_type === 'post_ne') {
         $author = $post->categories()->where('categories.type', 'author')->first();
-        $category = $post->categories()->first();
+        $category = $post->categories()->where('categories.type', 'category')->first();
         $categoryMeta = $category ? $this->categoryRepository->getMetaDatas($category) : [];
         $relatedPosts = $this->postRepository->getRelatedPosts($post->id, $post->post_type);
         $trendingPosts = TrendingHelper::getTrendingPosts($post->post_type);

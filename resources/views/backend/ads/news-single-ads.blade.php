@@ -1,6 +1,8 @@
 <div class="tab-pane fade {{ request()->query('tab') == 'news-single' ? 'active show' : '' }}" id="news-single"
     role="tabpanel" aria-labelledby="news-single-tab">
-
+   
+   <small>Please Insert the URL by clicking on the browse button and edit the file description.</small>
+   
     <div class="row mb-3">
         <div class="col-6">
             <label for="single_above_title" class="form-label">Above Title

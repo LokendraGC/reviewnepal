@@ -3,6 +3,7 @@
     <div class="row">
         <div class="mb-3 col-12">
             <label for="header_ads" class="form-label">Header Ads</label>
+                 (<small>Please Insert the URL by clicking on the browse button and edit the file description.</small>)
             <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 style="cursor: pointer;" data-field="header_ads" data-select="single">
                 <div class="input-group-prepend">

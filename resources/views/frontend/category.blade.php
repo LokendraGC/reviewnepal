@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app', ['payload' => $cat, 'payloadMeta' => $catMeta, 'title' => $cat->name])
 
-
+<main>
 @section('main-section')
         @if ($posts->count())
             @php
@@ -151,3 +151,5 @@
         </div>
     @endif
 @endsection
+
+</main>

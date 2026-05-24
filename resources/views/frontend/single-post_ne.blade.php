@@ -49,22 +49,40 @@
           {{ $post->post_title }}
         </h1>
 
-        @php
+      @php
           $author_meta = $author ? $author->GetAllMetaData() : [];
-          $author_name = $author_meta['name_ne'] ?? $user->name ?? 'Review Nepal';
+          $author_name = $author_meta['name_ne'] ?? 'रिभ्यु नेपाल';
           $category_name = ($categoryMeta['name_ne'] ?? ($category->name ?? ''));
           $date = NepaliDateHelper::toNepaliDate($post->created_at);
         @endphp
         <div class="post-meta d-flex flex-wrap align-items-center">
+          
+          
+           @if($author)
           <div class="meta-item">
             <span class="meta-label">by.</span>
-            <span class="meta-value author">{{ $author_name }}</span>
+            <span class="meta-value author cat-value">
+                  @if($author)
+                <a href="{{ route('frontend.author.index', $author->slug) }}">{{ $author_name }}</a>
+                @else 
+                {{ $author_name }}
+                @endif
+              </span>
           </div>
+          @endif
 
+          @if(!empty($category_name))
           <div class="meta-item">
             <i class="fa-solid fa-layer-group"></i>
-            <span class="meta-value">{{ $category_name }}</span>
+            <span class="meta-value cat-value">
+              @if($category)
+                <a href="{{ route('frontend.category.index', $category->slug) }}">{{ $category_name }}</a>
+              @else
+                {{ $category_name }}
+              @endif
+            </span>
           </div>
+          @endif
 
           <div class="meta-item">
             <i class="fa-regular fa-calendar-days"></i>

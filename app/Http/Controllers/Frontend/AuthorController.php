@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepository;
+use App\Helpers\LanguageHelper;
+use Illuminate\Support\Facades\Cache;
 
 class AuthorController extends Controller
 {
@@ -15,14 +17,28 @@ class AuthorController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index($id)
+    public function index($slug)
     {
-        $cat = Category::where([ 'id' => $id, 'type' => 'author' ])->firstOrFail();
+        $language = LanguageHelper::getUserLanguage();
+        $post_type = $language == 'en' ? 'post' : 'post_ne';
+        $page = request()->get('page', 1);
 
-        $catMeta = $this->categoryRepository->getMetaDatas($cat);
+        $cacheKey = "author_{$slug}_{$language}_page_{$page}";
 
-        $posts = $cat->posts()->orderBy('created_at', 'desc')->get();
+        $cached = Cache::remember($cacheKey, 10, function () use ($slug, $post_type) {
+            $cat = Category::where(['slug' => $slug, 'type' => 'author'])->firstOrFail();
+            $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        return view('frontend.category-author', compact(['cat', 'posts', 'catMeta']) );
+            $posts = $cat->posts()
+                ->with('postMeta')
+                ->where('posts.post_status', 'publish')
+                ->where('posts.post_type', $post_type)
+                ->orderBy('posts.created_at', 'desc')
+                ->paginate(19);
+
+            return compact('cat', 'posts', 'catMeta');
+        });
+
+        return view('frontend.category-author', array_merge($cached, ['language' => $language]));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\CategoryController;
+use App\Http\Controllers\Frontend\AuthorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\FrontController;
@@ -28,6 +29,9 @@ Route::get('migrate-user', [MigrateController::class, 'migrateUser'])->name('mig
 
 // category
 Route::get('category/{category_slug}/', [CategoryController::class, 'index'])->name('frontend.category.index');
+
+// author
+Route::get('author/{author_slug}/', [AuthorController::class, 'index'])->name('frontend.author.index');
 
 // must be before catch-all `{slug}` so `/set-language` is not treated as a post slug
 Route::post('set-language', [LanguageController::class, 'setLanguage'])->name('set.language');

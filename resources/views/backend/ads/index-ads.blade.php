@@ -34,6 +34,13 @@
                                             tabindex="-1">
                                             Header
                                         </a>
+                                          <a class="nav-link {{ request()->query('tab') == 'recent-news-ads' ? 'active' : '' }}"
+                                            id="recent-news-ads-tab" data-bs-toggle="pill" href="#recent-news-ads" role="tab"
+                                            aria-controls="recent-news-ads"
+                                            aria-selected="{{ request()->query('tab') == 'recent-news-ads' ? 'true' : 'false' }}"
+                                            tabindex="-1">
+                                            Recent News
+                                        </a>
                                         <a class="nav-link {{ request()->query('tab') == 'homepage' ? 'active' : '' }}"
                                             id="homepage-tab" data-bs-toggle="pill" href="#homepage" role="tab"
                                             aria-controls="homepage"
@@ -57,12 +64,14 @@
                                         </a>
                                     </div>
                                 </div>
-                                <p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>
-                                <hr>
+                                <!-- <p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>
+                                <hr> -->
                                 <div class="col-12">
                                     <div class="tab-content" id="v-pills-tabContent">
 
                                         @include('backend.ads.header-ads')
+
+                                        @include('backend.ads.recent-news-ads')
 
                                         @include('backend.ads.homepage-ads')
 

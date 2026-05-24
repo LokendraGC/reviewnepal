@@ -6,6 +6,8 @@ use App\Models\Media;
 
 class MediaHelper
 {
+    private static $cache = [];
+
     public static function getModel()
     {
         return new Media();
@@ -13,7 +15,8 @@ class MediaHelper
 
     public static function getDescriptionById($id)
     {
-        $media = Media::where('id', $id)->first();
+        if (!$id) return null;
+        $media = static::getImageById($id);
         return $media->description ?? null;
     }
 
@@ -34,7 +37,10 @@ class MediaHelper
 
     public static function getImageById($id)
     {
-        $image = Media::where('id', $id)->first();
-        return $image ?? null;
+        if (!$id) return null;
+        if (!array_key_exists($id, static::$cache)) {
+            static::$cache[$id] = Media::where('id', $id)->first();
+        }
+        return static::$cache[$id];
     }
 }

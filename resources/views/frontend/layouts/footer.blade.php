@@ -195,8 +195,8 @@
                     <div class="ok-icons">
 
                         @foreach ($social_medias as $social_media)
-                            
-                        <a href="{{ $social_media['link'] ? $social_media['link'] : 'javascript:void(0)' }}" target="{{ $social_media['link'] ? '_blank' : '_self' }}" class="ok-icon-link">
+                             
+                        <a href="{{ $social_media['link'] ? $social_media['link'] : 'javascript:void(0)' }}" target="{{ $social_media['link'] ? '_blank' : '_self' }}" class="ok-icon-link" aria-label="Follow Review Nepal">
                             <i class="fab {{ $social_media['media'] }}"></i></a>
                             @endforeach
 

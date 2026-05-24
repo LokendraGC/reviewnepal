@@ -24,30 +24,36 @@ class CategoryController extends Controller
         $post_type = $language == 'en' ? 'post' : 'post_ne';
         $page = request()->get('page', 1);
 
-        // NO CACHING - Direct database queries
-        $cat = Category::where(['slug' => $slug, 'type' => 'category'])->firstOrFail();
-        $catMeta = $this->categoryRepository->getMetaDatas($cat);
+        $cacheKey = "category_{$slug}_{$language}_page_{$page}";
 
-        // Get category ID and child category IDs
-        $childIds = $cat->children()->pluck('id')->toArray();
+        $cached = Cache::remember($cacheKey, 10, function () use ($slug, $post_type) {
+            $cat = Category::where(['slug' => $slug, 'type' => 'category'])->firstOrFail();
+            $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        if (!empty($childIds)) {
-            $allCategoryIds = array_merge([$cat->id], $childIds);
-            $posts = Post::whereHas('categories', function ($query) use ($allCategoryIds) {
-                $query->whereIn('categories.id', $allCategoryIds);
-            })
-                ->where('posts.post_status', 'publish')
-                ->where('posts.post_type', $post_type)
-                ->orderBy('posts.created_at', 'desc')
-                ->paginate(10);
-        } else {
-            $posts = $cat->posts()
-                ->where('posts.post_status', 'publish')
-                ->where('posts.post_type', $post_type)
-                ->orderBy('posts.created_at', 'desc')
-                ->paginate(10);
-        }
+            $childIds = $cat->children()->pluck('id')->toArray();
 
-        return view('frontend.category', compact('cat', 'posts', 'catMeta', 'language'));
+            if (!empty($childIds)) {
+                $allCategoryIds = array_merge([$cat->id], $childIds);
+                $posts = Post::whereHas('categories', function ($query) use ($allCategoryIds) {
+                    $query->whereIn('categories.id', $allCategoryIds);
+                })
+                    ->with('postMeta')
+                    ->where('posts.post_status', 'publish')
+                    ->where('posts.post_type', $post_type)
+                    ->orderBy('posts.created_at', 'desc')
+                    ->paginate(19);
+            } else {
+                $posts = $cat->posts()
+                    ->with('postMeta')
+                    ->where('posts.post_status', 'publish')
+                    ->where('posts.post_type', $post_type)
+                    ->orderBy('posts.created_at', 'desc')
+                    ->paginate(19);
+            }
+
+            return compact('cat', 'posts', 'catMeta');
+        });
+
+        return view('frontend.category', array_merge($cached, ['language' => $language]));
     }
 }

@@ -222,11 +222,11 @@
                                                     onclick="return confirm('Are you sure you want to delete?');"
                                                     class="text-danger">Delete</a>
                                             </span>
-                                            <!-- <span class="view">
+                                            <span class="view">
                                                 |
                                                 <a href="{{ $siteURL . '/author/' . $category->slug }}"
                                                     class="text-primary" target="_blank">View</a>
-                                            </span> -->
+                                            </span>
                                         </div>
                                     </td>
                                     <td>{{ $category->slug }}</td>

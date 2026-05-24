@@ -1,5 +1,8 @@
 <div class="tab-pane fade {{ request()->query('tab') == 'homepage' ? 'active show' : '' }}" id="homepage"
     role="tabpanel" aria-labelledby="homepage-tab">
+    
+    <small>Please Insert the URL by clicking on the browse button and edit the file description.</small>
+    
     <div class="row">
         {{-- Recent News ads --}}
                <div class="mb-3 col-6">

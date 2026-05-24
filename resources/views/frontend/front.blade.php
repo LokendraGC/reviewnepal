@@ -29,10 +29,13 @@
             }
         @endphp
 
+        @php
+            $recent_news_ads_raw = SettingHelper::get_field('recent_news_ads');
+            $recent_news_ads_list = $recent_news_ads_raw ? unserialize($recent_news_ads_raw) : [];
+        @endphp
 
-        @if (!empty($recent_posts) && count($recent_posts) > 0)
-      
-        {{-- BEFORE RECENT NEWS AD START --}}
+
+    {{-- BEFORE RECENT NEWS AD START --}}
         @php
             $above_recent_news_ad = SettingHelper::get_field('above_recent_news_ad');
             $link = MediaHelper::getDescriptionById($above_recent_news_ad);
@@ -69,13 +72,11 @@
             </div>
         @endif
         {{-- BEFORE RECENT NEWS AD END --}}
-
-
+        
+        
+        @if (!empty($recent_posts) && count($recent_posts) > 0)
             @foreach ($recent_posts as $recent_post)
                 <section class="container my-5">
-
-
-
                     <div class="news-header-section">
                         <h2 class="main-headline">
                             <a
@@ -83,7 +84,7 @@
                         </h2>
 
                         @php
-                            $author = $recent_post->categories()->where('categories.type', 'author')->first();
+                            $author = $recent_post->categories->where('type', 'author')->first();
 
                             $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -149,7 +150,7 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('frontend.post.index', $recent_post->slug) }}">
+                                <a href="{{ route('frontend.post.index', $recent_post->slug) }}" aria-label="Read more about the article">
 
                                     @if ($featured_image_url)
                                         <img src="{{ $featured_image_url }}" alt="{{ $recent_post->post_title }}"
@@ -157,10 +158,47 @@
                                     @endif
                                 </a>
                             @endif
-                        @endif                        
+                        @endif
+
                         <p class="banner-description">
-                            {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($recent_post->post_content)), 40) }}
-                         </p>                   
+                            {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($recent_post->post_content)), 35) }}
+                         </p>     
+                         
+
+        {{-- RECENT NEWS ADVERTISEMENT START --}}
+        @php
+            $adItem = $recent_news_ads_list[$loop->index] ?? null;
+            $adImageUrl = null;
+            $adLink = null;
+            if (!empty($adItem['image'])) {
+                $adMedia = MediaHelper::getImageById($adItem['image']);
+                if (!empty($adMedia?->file_name)) {
+                    $adImageUrl = asset('storage/' . $adMedia->file_name);
+                }
+                $adLink = $adItem['link'] ?? null;
+            }
+        @endphp
+
+        @if (!empty($adImageUrl))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($adLink))
+                                <a href="{{ $adLink }}" target="_blank">
+                                    <img src="{{ $adImageUrl }}" alt="{{ $websiteName }}" class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $adImageUrl }}" alt="{{ $websiteName }}" class="ad-full-width">
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        {{-- RECENT NEWS ADVERTISEMENT END --}}
+                         
                     </div>
                 </section>
             @endforeach
@@ -237,7 +275,7 @@
                             </div>
                             
                             <a href="{{ route('frontend.category.index', $news_n_features_cat->slug) }}"
-                                class="category-circle-btn">
+                                class="category-circle-btn" aria-label="View all articles">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             
@@ -250,9 +288,9 @@
 
                 <div class="morning-container">
                     <div class="hero-left-col">
-                        @foreach ($news_n_features_posts->slice(0, 4) as $post_item)
+                        @foreach ($news_n_features_posts->slice(0, 7) as $post_item)
                             @php
-                                $cate = $post_item->categories()->first();
+                                $cate = $post_item->categories()->where('categories.type', 'category')->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                                 $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -273,7 +311,7 @@
                                 }
 
                                 // AUTHOR
-                                $author = $post_item->categories()->where('categories.type', 'author')->first();
+                                $author = $post_item->categories->where('type', 'author')->first();
                                 $author_meta = $author ? $author->GetAllMetaData() : [];
                                 if ($language == 'en') {
                                     $author_name = $author->name ?? ($user->name ?? 'Review Nepal');
@@ -332,11 +370,11 @@
                                                 alt="{{ $post_item->post_title }}">
                                         </a>
                                     @endif
-                                    <h3 class="card-title">
+                                    <h2 class="card-title">
                                         <a href="{{ route('frontend.post.index', $post_item->slug) }}">
                                             {{ $post_item->post_title }}
                                         </a>
-                                    </h3>
+                                    </h2>
                                     <div class="story-meta">
                                         <span class="author">{{ $author_name }}</span>
                                         <span
@@ -352,12 +390,12 @@
         @endforeach
         </div>
 
-        @if ($news_n_features_posts->count() > 4)
+        @if ($news_n_features_posts->count() > 7)
             <div class="hero-right-col">
-                @foreach ($news_n_features_posts->slice(4) as $post_item)
+                @foreach ($news_n_features_posts->slice(7) as $post_item)
                     @php
                         // CATEGORY
-                        $cate = $post_item->categories()->first();
+                        $cate = $post_item->categories()->where('categories.type', 'category')->first();
                         $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                         $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -376,7 +414,7 @@
                             $post_image_url = null;
                         }
 
-                        $author = $post_item->categories()->where('categories.type', 'author')->first();
+                        $author = $post_item->categories->where('type', 'author')->first();
                         $author_meta = $author ? $author->GetAllMetaData() : [];
                         $author_name =
                             $language == 'en'
@@ -521,7 +559,7 @@
                             </div>
                             
                              <a href="{{ route('frontend.category.index', $sports_cat->slug) }}"
-                                class="category-circle-btn">
+                                class="category-circle-btn" aria-label="View all articles">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             
@@ -538,7 +576,7 @@
                     @foreach ($sports_cat_posts as $fourth_post)
                         @php
                             // CATEGORY
-                            $cate = $fourth_post->categories()->first();
+                            $cate = $fourth_post->categories()->where('categories.type', 'category')->first();
                             $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                             $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -558,7 +596,7 @@
                                 $post_image_url = null;
                             }
 
-                            $author = $fourth_post->categories()->where('categories.type', 'author')->first();
+                            $author = $fourth_post->categories->where('type', 'author')->first();
 
                             $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -640,7 +678,7 @@
         @if ($views_n_opinion_posts->count() > 0 && !empty($views_n_opinion_posts) && !empty($views_n_opinion_cat))
             <div class="container py-5">
 
-                  @if (!empty($views_n_opinion_cat))
+                      @if (!empty($views_n_opinion_cat))
                     <div class="mb-4">
                         <div class="category-title-flex section-header">
                             <h2 class="m-0">
@@ -669,7 +707,7 @@
                             </div>
                             
                              <a href="{{ route('frontend.category.index', $views_n_opinion_cat->slug) }}"
-                                class="category-circle-btn">
+                                class="category-circle-btn" aria-label="View all articles">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             
@@ -691,7 +729,7 @@
                             @foreach ($views_n_opinion_posts as $third_post)
                                 @php
                                     // CATEGORY
-                                    $cate = $third_post->categories()->first();
+                                     $cate = $third_post->categories()->where('categories.type', 'category')->first();
                                     $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                                     $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -713,7 +751,7 @@
                                         $post_image_url = null;
                                     }
 
-                                    $author = $third_post->categories()->where('categories.type', 'author')->first();
+                                    $author = $third_post->categories->where('type', 'author')->first();
 
                                     $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -770,10 +808,7 @@
 
                                 @foreach ($trendingPosts as $trendingPost)
                                     @php
-                                        $author = $trendingPost
-                                            ->categories()
-                                            ->where('categories.type', 'author')
-                                            ->first();
+                                        $author = $trendingPost->categories->where('type', 'author')->first();
                                         $author_meta = $author ? $author->GetAllMetaData() : [];
                                         $author_name =
                                             $language == 'en'
@@ -936,7 +971,7 @@
                         @foreach ($lifestyle_ent_posts as $fifth_left_post)
                             @php
                                 // CATEGORY
-                                $fifth_left_cate = $fifth_left_post->categories()->first();
+                                 $fifth_left_cate = $fifth_left_post->categories()->where('categories.type', 'category')->first();
                                 $fifth_left_cateMeta = $fifth_left_cate ? $fifth_left_cate->GetAllMetaData() : [];
                                 $cat_name =
                                     $language == 'en'
@@ -960,7 +995,7 @@
                                     $post_image_url = null;
                                 }
 
-                                $author = $fifth_left_post->categories()->where('categories.type', 'author')->first();
+                                $author = $fifth_left_post->categories->where('type', 'author')->first();
 
                                 $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -1008,9 +1043,9 @@
 
                         @foreach ($art_cult_lit_posts as $fifth_middle_post)
                             @php
-                                $cate = $fifth_middle_post->categories()->first();
+                                $cate = $fifth_middle_post->categories()->where('categories.type', 'category')->first();
                                 $cateMeta = $cate ? $cate->GetAllMetaData() : [];
-                                $cat_name = $language == 'en' ? $cate->name ?? '' : $catMeta['name_ne'] ?? '';
+                                $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
                                 // POST META
                                 $itemMeta = $fifth_middle_post->GetAllMetaData();
@@ -1028,7 +1063,7 @@
                                         : asset('assets/images/review_nepal_logo.webp'));
 
                                 // AUTHOR (FIXED VARIABLE)
-                                $author = $fifth_middle_post->categories()->where('categories.type', 'author')->first();
+                                $author = $fifth_middle_post->categories->where('type', 'author')->first();
 
                                 $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -1113,7 +1148,7 @@
                                 @foreach ($sci_tech_posts as $fifth_right_post)
                                     @php
                                         // CATEGORY
-                                        $cate = $fifth_right_post->categories()->first();
+                                        $cate = $fifth_right_post->categories()->where('categories.type', 'category')->first();
                                         $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                                         $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -1133,10 +1168,7 @@
                                                 : asset('assets/images/review_nepal_logo.webp'));
 
                                         // AUTHOR
-                                        $author = $fifth_right_post
-                                            ->categories()
-                                            ->where('categories.type', 'author')
-                                            ->first();
+                                        $author = $fifth_right_post->categories->where('type', 'author')->first();
 
                                         $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -1283,12 +1315,12 @@
         @endif
         {{-- ADVERTISEMENT END --}}
 
-        {{-- NOTICE START --}}
+        {{-- BUSINESS START --}}
         @if ($business_brands_posts->count() > 0 && !empty($business_brands_posts) && !empty($business_brands_cat))
             <hr style="border-color: #c7c7c7; margin: 0;">
             <div class="container py-5">
 
-                 @if (!empty($business_brands_cat))
+                       @if (!empty($business_brands_cat))
                     <div class="mb-4">
                         <div class="category-title-flex section-header">
                             <h2 class="m-0">
@@ -1317,7 +1349,7 @@
                             </div>
                             
                              <a href="{{ route('frontend.category.index', $business_brands_cat->slug) }}"
-                                class="category-circle-btn">
+                                class="category-circle-btn" aria-label="View all articles">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             
@@ -1328,14 +1360,15 @@
                         </div>
                     </div>
                 @endif
-
+                
+                
                 <div class="row gy-5 mt-4">
 
 
                     @foreach ($business_brands_posts as $seventh_post)
                         @php
                             // CATEGORY
-                            $cate = $seventh_post->categories()->first();
+                            $cate = $seventh_post->categories()->where('categories.type', 'category')->first();
                             $cateMeta = $cate ? $cate->GetAllMetaData() : [];
                             $cat_name = $language == 'en' ? $cate->name ?? '' : $cateMeta['name_ne'] ?? '';
 
@@ -1353,7 +1386,7 @@
                                     : asset('assets/images/review_nepal_logo.webp'));
 
                             // AUTHOR
-                            $author = $seventh_post->categories()->where('categories.type', 'author')->first();
+                            $author = $seventh_post->categories->where('type', 'author')->first();
 
                             $author_meta = $author ? $author->GetAllMetaData() : [];
 
@@ -1390,7 +1423,7 @@
                 </div>
             </div>
         @endif
-        {{-- NOTICE END --}}
+        {{-- BUSINESS END --}}
 
 
     </main>

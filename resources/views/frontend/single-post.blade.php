@@ -52,15 +52,33 @@
         </h1>
 
         <div class="post-meta d-flex flex-wrap align-items-center">
+        
+        @if($author || $user)
           <div class="meta-item">
             <span class="meta-label">by.</span>
-            <span class="meta-value author">{{ $author->name ?? $user->name ?? 'Unknown' }}</span>
+           
+            <span class="meta-value author cat-value">
+                @if($author)
+                <a href="{{ route('frontend.author.index', $author->slug) }}">{{ $author->name }}</a>
+                @else
+                {{ $user->name }}
+                @endif
+              </span>
           </div>
+          @endif
 
+          @if($category)
           <div class="meta-item">
             <i class="fa-solid fa-layer-group"></i>
-            <span class="meta-value">{{ $category->name ?? 'Unknown' }}</span>
+             <span class="meta-value cat-value">
+              @if($category)
+                <a href="{{ route('frontend.category.index', $category->slug) }}">{{ $category->name }}</a>
+              @else
+                {{ $category->name }}
+              @endif
+            </span>
           </div>
+          @endif
 
           <div class="meta-item">
             <i class="fa-regular fa-calendar-days"></i>

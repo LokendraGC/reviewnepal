@@ -54,7 +54,7 @@
                                             tabindex="-1">
                                             Trending
                                         </a>
-                                       
+                                    
                                     </div>
                                 </div>
                                 <!-- end col-->
@@ -66,7 +66,6 @@
                                         @include('backend.settings.tabs.footer-setting')
                                         @include('backend.settings.tabs.info-setting')
                                         @include('backend.settings.tabs.trending-setting')
-                                        @include('backend.settings.tabs.popup-ad-setting')
                                     </div> <!-- end tab-content-->
                                 </div> <!-- end col-->
                             </div>

@@ -1,39 +1,36 @@
 @if (request()->is('/'))
 
     @php
-        $advertisement = SettingHelper::get_field('header_ads');
-        $link = MediaHelper::getDescriptionById($advertisement);
         $websiteName = SettingHelper::get_field('site_title');
-
-        if ($advertisement) {
-            $media = MediaHelper::getImageById($advertisement);
-            if (!empty($media->file_name)) {
-                $image_url = asset('storage/' . $media->file_name);
-            } else {
-                $image_url = null;
-            }
-        }
+        $popupAdsSingleRaw = SettingHelper::get_field('header_popup_ads');
+        $popupAdsSingleList = $popupAdsSingleRaw ? unserialize($popupAdsSingleRaw) : [];
+        $popupAdsSingleList = array_filter($popupAdsSingleList, fn($item) => !empty($item['image']));
     @endphp
 
-    @if (!empty($image_url))
-        <div class="container py-3">
-            <div class="row">
-                <div class="col-12">
-                    <div class="ad-wrapper">
-                        <span class="ad-label">- Advertisement -</span>
-
-                        @if (!empty($link))
-                            <a href="{{ $link }}" target="_blank">
-                                <img src="{{ $image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                            </a>
-                        @else
-                            <img src="{{ $image_url }}" alt="{{ $websiteName }}" class="ad-full-width">
-                        @endif
+    @foreach ($popupAdsSingleList as $adItem)
+        @php
+            $adMedia = MediaHelper::getImageById($adItem['image']);
+            $adImageUrl = ($adMedia && !empty($adMedia->file_name)) ? asset('storage/' . $adMedia->file_name) : null;
+        @endphp
+        @if (!empty($adImageUrl))
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ad-wrapper">
+                            <span class="ad-label">- Advertisement -</span>
+                            @if (!empty($adItem['link']))
+                                <a href="{{ $adItem['link'] }}" target="_blank" rel="noopener">
+                                    <img src="{{ $adImageUrl }}" alt="{{ $websiteName }}" class="ad-full-width">
+                                </a>
+                            @else
+                                <img src="{{ $adImageUrl }}" alt="{{ $websiteName }}" class="ad-full-width">
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
+    @endforeach
 
     <hr style="border-color: #c7c7c7; margin: 0;">
 @endif
@@ -105,7 +102,7 @@
                 @endphp
                 <div class="notification-dropdown">
                     <div class="dropdown-header-notify">
-                        <h3>{{ $language == 'ne' ? 'ताजा समाचार' : 'NEWS ALERTS' }}</h3>
+                 <h3>{{ $language == 'ne' ? 'ताजा समाचार' : 'LATEST NEWS' }}</h3>
                     </div>
 
                     <div class="dropdown-alerts">

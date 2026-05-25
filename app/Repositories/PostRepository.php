@@ -237,44 +237,34 @@ class PostRepository
     }
 
     // get related posts
-    public function getRelatedPosts($id, $postType = null)
-    {
-        $post = Post::with('categories')->where('post_status', 'publish')->find($id);
+  public function getRelatedPosts($id, $postType = null)
+{
+    $categoryIds = DB::table('category_post')
+        ->where('post_id', $id)
+        ->pluck('category_id');
 
-        if (!$post) {
-            return collect();
-        }
-
-        $categories = $post->categories;
-
-        if (!$categories) {
-            return collect();
-        }
-
-        $relatedPosts = collect();
-
-        foreach ($categories as $category) {
-            $query = $category->posts()
-                ->where('posts.id', '!=', $id)
-                ->where('posts.post_status', 'publish');
-
-            if ($postType) {
-                $query->where('posts.post_type', $postType);
-            }
-
-            $relatedPosts = $relatedPosts->merge($query->latest()->take(12)->get());
-        }
-
-        $relatedPosts = $relatedPosts
-            ->unique('id')
-            ->values();
-
-        // shuffle($relatedPosts);
-
-        // return $relatedPosts;
-
-        return $relatedPosts->take(8);
+    if ($categoryIds->isEmpty()) {
+        return collect();
     }
+
+    return Post::query()
+        ->select('posts.*')
+        ->join('category_post', 'posts.id', '=', 'category_post.post_id')
+        ->whereIn('category_post.category_id', $categoryIds)
+        ->where('posts.id', '!=', $id)
+        ->where('posts.post_status', 'publish')
+        ->when($postType, function ($q) use ($postType) {
+            $q->where('posts.post_type', $postType);
+        })
+        ->with([
+            'postMeta:id,post_id,meta_key,meta_value',
+            'categories:id,name,slug'
+        ])
+        ->latest('posts.created_at')
+        ->distinct()
+        ->take(8)
+        ->get();
+}
 
     // Insert a new record if it doesn’t exist, or update it if it does — all in one query.
     public function bulkInserOrUpdate($payload, $metaDatas)

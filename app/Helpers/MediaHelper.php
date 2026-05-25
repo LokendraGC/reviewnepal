@@ -43,4 +43,25 @@ class MediaHelper
         }
         return static::$cache[$id];
     }
+
+        public static function WsrvService($image)
+    {
+
+        if (!$image || !isset($image->file_name)) {
+            return null;
+        }
+
+        $wsrv = SettingHelper::get_field('wsrv_service');
+
+        if ($wsrv == 'yes') {
+            $image_url =
+                'https://wsrv.nl/?url=' .
+                asset('storage/' . $image->file_name) .
+                '&w=1600&output=webp';
+        } else {
+            $image_url = asset('storage/' . $image->file_name);
+        }
+
+        return $image_url;
+    }
 }

@@ -21,6 +21,11 @@ Route::get('/home', function () {
 // migrate category 
 Route::get('migrate-category', [MigrateController::class, 'migrateCategory'])->name('migrate.category');
 
+
+// author
+Route::get('author/{author_slug}/', [AuthorController::class, 'index'])->name('frontend.author.index');
+
+
 // migrate post
 Route::get('migrate-post', [MigrateController::class, 'migratePost'])->name('migrate.post');
 
@@ -29,9 +34,6 @@ Route::get('migrate-user', [MigrateController::class, 'migrateUser'])->name('mig
 
 // category
 Route::get('category/{category_slug}/', [CategoryController::class, 'index'])->name('frontend.category.index');
-
-// author
-Route::get('author/{author_slug}/', [AuthorController::class, 'index'])->name('frontend.author.index');
 
 // must be before catch-all `{slug}` so `/set-language` is not treated as a post slug
 Route::post('set-language', [LanguageController::class, 'setLanguage'])->name('set.language');

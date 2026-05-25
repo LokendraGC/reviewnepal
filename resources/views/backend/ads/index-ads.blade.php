@@ -32,7 +32,7 @@
                                             aria-controls="header-advertisements"
                                             aria-selected="{{ request()->query('tab') == 'header-advertisements' ? 'true' : 'false' }}"
                                             tabindex="-1">
-                                            Header
+                                            Masthead ads
                                         </a>
                                           <a class="nav-link {{ request()->query('tab') == 'recent-news-ads' ? 'active' : '' }}"
                                             id="recent-news-ads-tab" data-bs-toggle="pill" href="#recent-news-ads" role="tab"
@@ -60,12 +60,19 @@
                                             aria-controls="popup-ads"
                                             aria-selected="{{ request()->query('tab') == 'popup-ads' ? 'true' : 'false' }}"
                                             tabindex="-1">
-                                            Popup Ads 
+                                            Homepage Popup Ads 
+                                        </a>
+                                        <a class="nav-link {{ request()->query('tab') == 'popup-ads-single' ? 'active' : '' }}"
+                                            id="popup-ads-single-tab" data-bs-toggle="pill" href="#popup-ads-single" role="tab"
+                                            aria-controls="popup-ads-single"
+                                            aria-selected="{{ request()->query('tab') == 'popup-ads-single' ? 'true' : 'false' }}"
+                                            tabindex="-1">
+                                            Single News Page Popup Ads 
                                         </a>
                                     </div>
                                 </div>
-                                <!-- <p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>
-                                <hr> -->
+                                <!--<p class="text-muted">Please Insert the URL by clicking on the browse button and edit the file description.</p>-->
+                                <!--<hr>-->
                                 <div class="col-12">
                                     <div class="tab-content" id="v-pills-tabContent">
 
@@ -78,6 +85,8 @@
                                         @include('backend.ads.news-single-ads')
 
                                         @include('backend.ads.popup-ads')
+
+                                        @include('backend.ads.popup-ads-single')
 
                                     </div>
                                 </div>

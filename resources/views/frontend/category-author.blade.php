@@ -15,7 +15,7 @@
                     $heroMeta = $heroPost->GetAllMetaData();
                     $heroImageId = $heroMeta['featured_image'] ?? null;
                     $heroMedia = MediaHelper::getImageById($heroImageId);
-                    $heroImageUrl = !empty($heroMedia?->file_name) ? asset('storage/' . $heroMedia->file_name) : null;
+                    $heroImageUrl = MediaHelper::WsrvService($heroMedia);
                 @endphp
                 <div class="row mb-5 align-items-start mt-2">
                     <div class="col-lg-4 order-2 order-lg-1">
@@ -51,13 +51,13 @@
                         $itemMeta = $post->GetAllMetaData();
                         $postImageId = $itemMeta['featured_image'] ?? null;
                         $postMedia = MediaHelper::getImageById($postImageId);
-                        $postImageUrl = !empty($postMedia?->file_name) ? asset('storage/' . $postMedia->file_name) : null;
+                        $medi = MediaHelper::WsrvService($postMedia);
                     @endphp
                     <div class="col-md-4">
                         <div class="img-wrapper grid-height mb-3">
-                            @if ($postImageUrl)
+                            @if ($medi)
                                 <a href="{{ route('frontend.post.index', $post->slug) }}">
-                                    <img src="{{ $postImageUrl }}" alt="{{ $post->post_title }}" />
+                                    <img src="{{ $medi }}" alt="{{ $post->post_title }}" />
                                 </a>
                             @else
                                 <a href="{{ route('frontend.post.index', $post->slug) }}">

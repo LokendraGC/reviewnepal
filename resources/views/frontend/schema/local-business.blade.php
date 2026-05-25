@@ -25,11 +25,6 @@
       'postalCode' => '44600',
       'addressCountry' => 'NP'
     ],
-    'geo' => [
-      '@type' => 'GeoCoordinates',
-      'latitude' => 27.680442,
-      'longitude' => 85.3305714
-    ],
     'sameAs' => url('/')
   ];
 @endphp

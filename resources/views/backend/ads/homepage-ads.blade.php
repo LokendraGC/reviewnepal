@@ -262,7 +262,7 @@
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_below_trending_news_first_ad" class="form-label">Below Trending News First
-                    Ads (Short Ad)</label>
+                    Ads (Short Head)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="homepage_below_trending_news_first_ad" data-select="single">
                     <div class="input-group-prepend">
@@ -315,7 +315,7 @@
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_below_trending_news_second_ad" class="form-label">Below Trending News Second
-                    Ads (Short Ad)</label>
+                    Ads (Short Head)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="homepage_below_trending_news_second_ad" data-select="single">
                     <div class="input-group-prepend">

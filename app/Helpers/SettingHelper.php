@@ -3,9 +3,27 @@
 namespace App\Helpers;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class SettingHelper
 {
+
+    private static $cache = [];
+    private static $loaded = false;
+
+    private static function loadAll(): void
+    {
+        if (static::$loaded) {
+            return;
+        }
+
+        static::$cache = Cache::rememberForever('settings_all', function () {
+            return Setting::pluck('setting_value', 'setting_name')->toArray();
+        });
+
+        static::$loaded = true;
+    }
+
     public static function getModel()
     {
         return new Setting();
@@ -13,38 +31,24 @@ class SettingHelper
 
     public static function get_field($selector)
     {
-        // Sanitize the input selector to prevent SQL injection
-        $fieldName = trim( $selector );
-
-        // Retrieve the setting payload from the database
-        $payload = Setting::where('setting_name', $fieldName)->first();
-
-        // Check if the payload is empty or not found
-        if ( !$payload ) { return NULL; }
-
-        // Retrieve the setting value from the payload
-        $data = $payload->setting_value;
-
-        // Return the setting value
-        return $data;
+        static::loadAll();
+        return static::$cache[trim($selector)] ?? null;
     }
 
     public static function get_home_id()
     {
-        $pageId = Setting::where('setting_name', 'page_on_front')->value('setting_value');
-
-        return $pageId;
+        static::loadAll();
+        return static::$cache['page_on_front'] ?? null;
     }
 
     public static function get_select_key_value($selector)
     {
-        $fieldName = trim( $selector );
+        static::loadAll();
+        $fieldName = trim($selector);
 
-        $payload = Setting::where('setting_name', $fieldName)->first();
+        $data = static::$cache[$fieldName] ?? null;
 
-        if ( !$payload ) { return []; }
-
-        $data = $payload->setting_value;
+        if (!$data) { return []; }
 
         $key_value_pairs = [];
         $lines = preg_split('/\r\n|\r|\n/', $data);

@@ -1,5 +1,47 @@
 @extends('frontend.layouts.app', ['payload' => $post, 'payloadMeta' => $postMeta, 'title' => $post->post_title])
 
+@push('schema')
+@php
+  $schemaWebsiteName = $settings['site_title'];
+  $schemaLogoUrl = $settings['logo_url'];
+
+  $schemaFeaturedId = $postMeta['featured_image'] ?? null;
+  $schemaFeaturedMedia = MediaHelper::getImageById($schemaFeaturedId);
+  $schemaFeaturedFile = $schemaFeaturedMedia ? $schemaFeaturedMedia->file_name : null;
+  if (!empty($schemaFeaturedId) && !empty($schemaFeaturedFile)) {
+    $schemaImageUrl = asset('storage/' . $schemaFeaturedFile);
+  } elseif (!empty($postMeta['youtube_video_id'])) {
+    $schemaImageUrl = 'https://img.youtube.com/vi/' . $postMeta['youtube_video_id'] . '/hqdefault.jpg';
+  } else {
+    $schemaImageUrl = '';
+  }
+
+  $schemaAuthorType = $author ? 'Person' : 'Organization';
+  $schemaAuthorName = $author ? $author->name : ($schemaWebsiteName ?? 'Review Nepal');
+
+  $schemaJson = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'NewsArticle',
+    'headline' => $post->post_title,
+    'image'    => $schemaImageUrl,
+    'author'   => [
+      '@type' => $schemaAuthorType,
+      'name'  => $schemaAuthorName,
+    ],
+    'publisher' => [
+      '@type' => 'Organization',
+      'name'  => $schemaWebsiteName,
+      'logo'  => [
+        '@type' => 'ImageObject',
+        'url'   => $schemaLogoUrl,
+      ],
+    ],
+    'datePublished' => $post->created_at->toIso8601String(),
+  ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+@endphp
+<script type="application/ld+json">{!! $schemaJson !!}</script>
+@endpush
+
 @section('main-section')
 
   @php
@@ -8,33 +50,21 @@
 
 
   @php
-    $single_above_title = SettingHelper::get_field('single_above_title');
-    $link = MediaHelper::getDescriptionById($single_above_title);
-    $websiteName = SettingHelper::get_field('site_title');
-
-    if ($single_above_title) {
-      $media = MediaHelper::getImageById($single_above_title);
-      if (!empty($media->file_name)) {
-        $single_above_title_url = asset('storage/' . $media->file_name);
-      } else {
-        $single_above_title_url = null;
-      }
-    }
-    
+    $websiteName = $settings['site_title'];
   @endphp
 
-  @if (!empty($single_above_title_url))
+  @if (!empty($settings['above_title']['url']))
     <div class="container py-3">
       <div class="row">
         <div class="col-12">
           <div class="ad-wrapper">
             <span class="ad-label">- Advertisement -</span>
-            @if (!empty($link))
-              <a href="{{ $link }}" target="_blank">
-                <img src="{{ $single_above_title_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+            @if (!empty($settings['above_title']['link']))
+              <a href="{{ $settings['above_title']['link'] }}" target="_blank">
+                <img src="{{ $settings['above_title']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
               </a>
             @else
-              <img src="{{ $single_above_title_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+              <img src="{{ $settings['above_title']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
             @endif
           </div>
         </div>
@@ -61,7 +91,7 @@
                 @if($author)
                 <a href="{{ route('frontend.author.index', $author->slug) }}">{{ $author->name }}</a>
                 @else
-                {{ $user->name }}
+                Review Nepal
                 @endif
               </span>
           </div>
@@ -91,33 +121,18 @@
                         <h1 class="entry-title">Global leaders unite to address climate crisis at COP26</h1>
                         <div class="meta-info">World Photo | Author</div>
                         <div class="meta-date">Updated July 12, 2024 12:32 PM</div> -->
-        @php
-          $single_below_title = SettingHelper::get_field('single_below_title');
-          $link = MediaHelper::getDescriptionById($single_below_title);
-          $websiteName = SettingHelper::get_field('site_title');
-
-          if ($single_below_title) {
-            $media = MediaHelper::getImageById($single_below_title);
-            if (!empty($media->file_name)) {
-              $single_below_title_url = asset('storage/' . $media->file_name);
-            } else {
-              $single_below_title_url = null;
-            }
-          }
-        @endphp
-
-        @if (!empty($single_below_title_url))
+        @if (!empty($settings['below_title']['url']))
           <div class="container py-3">
             <div class="row">
               <div class="col-12">
                 <div class="ad-wrapper">
                   <span class="ad-label">- Advertisement -</span>
-                  @if (!empty($link))
-                    <a href="{{ $link }}" target="_blank">
-                      <img src="{{ $single_below_title_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+                  @if (!empty($settings['below_title']['link']))
+                    <a href="{{ $settings['below_title']['link'] }}" target="_blank">
+                      <img src="{{ $settings['below_title']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
                     </a>
                   @else
-                    <img src="{{ $single_below_title_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+                    <img src="{{ $settings['below_title']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
                   @endif
                 </div>
               </div>
@@ -129,7 +144,7 @@
                     $featured_image = $postMeta['featured_image'] ?? null;
                     $media = MediaHelper::getImageById($featured_image);
                     if (!empty($featured_image) && !empty($media->file_name)) {
-                        $featured_image_url = asset('storage/' . $media->file_name);
+                        $featured_image_url = MediaHelper::WsrvService($media);
                     } elseif (!empty($postMeta['youtube_video_id'])) {
                         $featured_image_url =
                             'https://img.youtube.com/vi/' . $postMeta['youtube_video_id'] . '/hqdefault.jpg';
@@ -154,32 +169,18 @@
                 @endif
 
         {{-- ADVERTISEMENT START --}}
-        @php
-          $below_featured_image_ad = SettingHelper::get_field('below_featured_image_ad');
-          $link = MediaHelper::getDescriptionById($below_featured_image_ad);
-
-          if ($below_featured_image_ad) {
-            $media = MediaHelper::getImageById($below_featured_image_ad);
-            if (!empty($media->file_name)) {
-              $below_featured_image_url = asset('storage/' . $media->file_name);
-            } else {
-              $below_featured_image_url = null;
-            }
-          }
-        @endphp
-
-        @if (!empty($below_featured_image_url))
+        @if (!empty($settings['below_featured']['url']))
           <div class="container py-3">
             <div class="row">
               <div class="col-12">
                 <div class="ad-wrapper">
                   <span class="ad-label">- Advertisement -</span>
-                  @if (!empty($link))
-                    <a href="{{ $link }}" target="_blank">
-                      <img src="{{ $below_featured_image_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+                  @if (!empty($settings['below_featured']['link']))
+                    <a href="{{ $settings['below_featured']['link'] }}" target="_blank">
+                      <img src="{{ $settings['below_featured']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
                     </a>
                   @else
-                    <img src="{{ $below_featured_image_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+                    <img src="{{ $settings['below_featured']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
                   @endif
                 </div>
               </div>
@@ -203,7 +204,7 @@
                                 points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                             </polygon>
                         </svg>
-                        <span>News Summary</span>
+                        <span>Summary</span>
                     </div>
                 </div>
                 <div class="ai-summary-body">
@@ -234,17 +235,13 @@
 
               @foreach ($trendingPosts as $trendingPost)
                 @php
-                  $category = $trendingPost->categories()->first();
+                  $category = $trendingPost->categories->first();
                   $category_name = $category->name ?? 'Unknown';
 
                   $itemMeta = $trendingPost->GetAllMetaData();
                   $featured_image = $itemMeta['featured_image'] ?? null;
                   $media = MediaHelper::getImageById($featured_image);
-                  if (!empty($featured_image) && !empty($media->file_name)) {
-                    $featured_image_url = asset('storage/' . $media->file_name);
-                  } else {
-                    $featured_image_url = null;
-                  }
+                  $featured_image_url = MediaHelper::WsrvService($media);
                 @endphp
                 <div class="d-flex mb-3 align-items-center sidebar-item">
                   @if ($featured_image_url)
@@ -270,60 +267,30 @@
                                               <img src="{{ asset('assets/images/WhatsApp-Image-2026-02-02-at-09.46.17.jpeg') }}" alt="Sidebar Ad" class="ad-one-third">
                                             </a>
                                           </div> -->
-            @php
-              $single_news_below_trending_news_first_ad = SettingHelper::get_field('single_news_below_trending_news_first_ad');
-              $link = MediaHelper::getDescriptionById($single_news_below_trending_news_first_ad);
-
-              if ($single_news_below_trending_news_first_ad) {
-                $media = MediaHelper::getImageById($single_news_below_trending_news_first_ad);
-                if (!empty($media->file_name)) {
-                  $single_news_below_trending_url = asset('storage/' . $media->file_name);
-                } else {
-                  $single_news_below_trending_url = null;
-                }
-              }
-            @endphp
-
-            @if (!empty($single_news_below_trending_url))
+            @if (!empty($settings['sidebar_first']['url']))
               <div class="ad-wrapper py-3">
                 <span class="ad-label">- Advertisement -</span>
-                @if (!empty($link))
-                  <a href="{{ $link }}" target="_blank">
-                    <img src="{{ $single_news_below_trending_url }}" alt="{{ $websiteName }}" class="ad-one-third" />
+                @if (!empty($settings['sidebar_first']['link']))
+                  <a href="{{ $settings['sidebar_first']['link'] }}" target="_blank">
+                    <img src="{{ $settings['sidebar_first']['url'] }}" alt="{{ $websiteName }}" class="ad-one-third" />
                   </a>
                 @else
-                  <img src="{{ $single_news_below_trending_url }}" alt="{{ $websiteName }}" class="ad-one-third" />
+                  <img src="{{ $settings['sidebar_first']['url'] }}" alt="{{ $websiteName }}" class="ad-one-third" />
                 @endif
               </div>
             @endif
 
-
             <hr style="border-color: #c7c7c7; margin: 0;">
-            @php
-              $single_news_below_trending_news_second_ad = SettingHelper::get_field('single_news_below_trending_news_second_ad');
-              $link = MediaHelper::getDescriptionById($single_news_below_trending_news_second_ad);
 
-              if ($single_news_below_trending_news_second_ad) {
-                $media = MediaHelper::getImageById($single_news_below_trending_news_second_ad);
-                if (!empty($media->file_name)) {
-                  $single_news_below_trending_news_second_ad_url = asset('storage/' . $media->file_name);
-                } else {
-                  $single_news_below_trending_news_second_ad_url = null;
-                }
-              }
-            @endphp
-
-            @if (!empty($single_news_below_trending_news_second_ad_url))
+            @if (!empty($settings['sidebar_second']['url']))
               <div class="ad-wrapper py-3">
                 <span class="ad-label">- Advertisement -</span>
-                @if (!empty($link))
-                  <a href="{{ $link }}" target="_blank">
-                    <img src="{{ $single_news_below_trending_news_second_ad_url }}" alt="{{ $websiteName }}"
-                      class="ad-one-third" />
+                @if (!empty($settings['sidebar_second']['link']))
+                  <a href="{{ $settings['sidebar_second']['link'] }}" target="_blank">
+                    <img src="{{ $settings['sidebar_second']['url'] }}" alt="{{ $websiteName }}" class="ad-one-third" />
                   </a>
                 @else
-                  <img src="{{ $single_news_below_trending_news_second_ad_url }}" alt="{{ $websiteName }}"
-                    class="ad-one-third" />
+                  <img src="{{ $settings['sidebar_second']['url'] }}" alt="{{ $websiteName }}" class="ad-one-third" />
                 @endif
               </div>
             @endif
@@ -338,33 +305,19 @@
 
 
 
-    @php
-      $single_below_content = SettingHelper::get_field('single_below_content');
-      $link = MediaHelper::getDescriptionById($single_below_content);
-
-      if ($single_below_content) {
-        $media = MediaHelper::getImageById($single_below_content);
-        if (!empty($media->file_name)) {
-          $single_below_content_url = asset('storage/' . $media->file_name);
-        } else {
-          $single_below_content_url = null;
-        }
-      }
-    @endphp
-
-    @if (!empty($single_below_content_url))
+    @if (!empty($settings['below_content']['url']))
       <hr style="border-color: #c7c7c7; margin: 0" />
       <div class="container py-3">
         <div class="row">
           <div class="col-12">
             <div class="ad-wrapper">
               <span class="ad-label">- Advertisement -</span>
-              @if (!empty($link))
-                <a href="{{ $link }}" target="_blank">
-                  <img src="{{ $single_below_content_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+              @if (!empty($settings['below_content']['link']))
+                <a href="{{ $settings['below_content']['link'] }}" target="_blank">
+                  <img src="{{ $settings['below_content']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
                 </a>
               @else
-                <img src="{{ $single_below_content_url }}" alt="{{ $websiteName }}" class="ad-full-width" />
+                <img src="{{ $settings['below_content']['url'] }}" alt="{{ $websiteName }}" class="ad-full-width" />
               @endif
             </div>
           </div>
@@ -387,11 +340,7 @@
               $featured_image = $itemMeta['featured_image'] ?? null;
 
               $media = MediaHelper::getImageById($featured_image);
-              if (!empty($featured_image) && !empty($media->file_name)) {
-                $featured_image_url = asset('storage/' . $media->file_name);
-              } else {
-                 $featured_image_url = asset('assets/images/review_nepal_logo.webp');
-              }
+              $featured_image_url = MediaHelper::WsrvService($media) ?? asset('assets/images/review_nepal_logo.webp');
             @endphp
             <div class="col-md-3">
               <div class="recent-news">

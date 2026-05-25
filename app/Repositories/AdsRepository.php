@@ -11,7 +11,7 @@ class AdsRepository
     public function processMetaData($payload, $request)
     {
         $metaDatas = [];
-        $metaDatas['header_ads'] = $request->header_ads ?? null;
+        $metaDatas['header_popup_ads'] = $request->header_popup_ads ? serialize($request->header_popup_ads) : null;
         $metaDatas['banner_ads'] = $request->banner_ads ?? null;
         $metaDatas['below_recent_news'] = $request->below_recent_news ?? null;
         $metaDatas['above_nepal_insights_ad'] = $request->above_nepal_insights_ad ?? null;
@@ -24,7 +24,14 @@ class AdsRepository
         $metaDatas['popup_ads'] = $request->popup_ads ? serialize($request->popup_ads) : null;
         $metaDatas['show_popup'] = $request->show_popup ?? 0;
         $metaDatas['show_popup_on_homepage'] = $request->show_popup_on_homepage ?? 0;
+        $metaDatas['show_popup_on_english_only'] = $request->show_popup_on_english_only ?? 0;
 
+        // Single Page Popup Ads
+        $metaDatas['popup_ads_single'] = $request->popup_ads_single ? serialize($request->popup_ads_single) : null;
+        $metaDatas['show_popup_on_single'] = $request->show_popup_on_single ?? 0;
+        $metaDatas['show_popup_on_english_only_single'] = $request->show_popup_on_english_only_single ?? 0;
+        
+        
         $metaDatas['recent_news_ads'] = $request->recent_news_ads ? serialize($request->recent_news_ads) : null;
 
         $metaDatas['above_recent_news_ad'] = $request->above_recent_news_ad ?? null;

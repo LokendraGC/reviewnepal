@@ -102,7 +102,7 @@
         <div class="col-6">
             <div>
                 <label for="single_news_below_trending_news_first_ad" class="form-label">Below Trending News First
-                    Ads</label>
+                    Ads (Short Head)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="single_news_below_trending_news_first_ad" data-select="single">
                     <div class="input-group-prepend">
@@ -154,7 +154,7 @@
         <div class="col-6">
             <div>
                 <label for="single_news_below_trending_news_second_ad" class="form-label">Below Trending News Second
-                    Ads</label>
+                    Ads (Short Head)</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     style="cursor: pointer;" data-field="single_news_below_trending_news_second_ad"
                     data-select="single">

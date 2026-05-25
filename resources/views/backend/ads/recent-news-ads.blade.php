@@ -124,7 +124,7 @@
                     </table>
                     <div class="text-end mt-2">
                         <button type="button" class="btn btn-primary btn-sm add_recent_news_ads">Add
-                            Detail</button>
+                            Popup</button>
                     </div>
                 </div>
             </div>

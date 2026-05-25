@@ -460,7 +460,7 @@ body {
 
 .story-meta {
   font-size: 11px;
-  color: #888;
+  color: #595959;
   display: flex;
   align-items: center;
   margin-top: 12px;
@@ -614,10 +614,12 @@ body {
   object-fit: cover;
 }
 
+.sidebar-featured-title {
+    line-height:20px;
+}
 .sidebar-featured-title a{
   font-size: 18px;
   font-weight: 500;
-  line-height: 1.3;
   text-decoration: none;
 }
 
@@ -715,7 +717,7 @@ body {
     
     .section-header h2 {
       font-size: 26px;
-      font-weight: 400;
+      font-weight: 600;
     }
 
     /* Left Column Article Styles */
@@ -756,7 +758,7 @@ body {
 
     .meta-text {
       font-size: 12px;
-      color: #888;
+      color: #595959;
     }
 
     .meta-category {
@@ -872,7 +874,7 @@ body {
     /* Meta Data (Category & Date) */
     .featured-meta {
       font-size: 11px;
-      color: #888;
+      color: #595959;
       display: flex;
       align-items: center;
     }
@@ -1051,7 +1053,7 @@ body {
 
     /* Social Links Grid */
     .social-links a {
-      color: #888888 !important;
+      color: #595959 !important;
       text-decoration: none;
       font-size: 15px;
       display: inline-block;
@@ -1090,7 +1092,7 @@ body {
     }
 
     .subscribe-form .form-control::placeholder {
-      color: #888;
+      color: #595959;
     }
 
     .btn-subscribe {
@@ -1124,7 +1126,7 @@ body {
     }
 
     .footer-nav a {
-      color: #888888 !important;
+      color: #595959 !important;
       text-decoration: none;
       font-size: 14.5px;
       transition: color 0.2s ease;
@@ -1142,7 +1144,7 @@ body {
     }
 
     .footer-meta-text {
-      color: #888888;
+      color: #595959;
       font-size: 13.5px;
       margin: 0;
     }
@@ -1435,7 +1437,7 @@ body {
 
 .toggle-label {
   font-size: 14px;
-  color: #888;
+  color: #595959;
 }
 
 /* The Switch - Outer Track */
@@ -1658,7 +1660,7 @@ input:checked ~ .toggle-label:last-child { color: #333; }
 /* Grid Text Styling */
 .post-meta {
   font-size: 13px;
-  color: #888;
+  color: #595959;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -1696,7 +1698,7 @@ input:checked ~ .toggle-label:last-child { color: #333; }
 
 .meta-info, .meta-date {
     font-size: 12px;
-    color: #888;
+    color: #595959;
 }
 
 .main-featured-img img, .secondary-img img {
@@ -1737,8 +1739,8 @@ input:checked ~ .toggle-label:last-child { color: #333; }
 
 /* Sidebar Styling */
 .sidebar-heading {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: 600;
     margin-bottom: 5px;
 }
 
@@ -1887,7 +1889,7 @@ p { font-size: 0.92rem; color: #555; margin-bottom: 1.2rem; } */
     background-color: #f5f5f5;
 }
 .author-label { font-weight: 500; margin-top: 15px; display: block; }
-.author-sub { font-size: 0.75rem; color: #888; text-transform: uppercase; }
+.author-sub { font-size: 0.75rem; color: #595959; text-transform: uppercase; }
 
 /* FAQ Accordion */
 .faq-item { border-bottom: 1px solid #eee; }
@@ -2354,18 +2356,22 @@ form input[type=search]{
 
         .news-header-section {
             max-width: 900px;
-            margin: 40px auto;
+            margin: 15px auto;
             text-align: center;
         }
 
         /* Headline Styling */
         .main-headline a{
             font-size: 2.3rem;
+            font-weight:600;
             line-height: 1.2;
-            color: #c70000 !important; /* Dark Navy Blue from the image */
+            color: #000;  /* Dark Navy Blue from the image */
             margin-bottom: 20px;
             text-decoration: none !important;
         }
+         .main-headline a:hover{
+             color:#c70000;
+         }
 
         /* Meta Information (Author, Time, Comments) */
         .news-meta {
@@ -2441,7 +2447,7 @@ form input[type=search]{
 }
 
 .footer-contact-info a{
-  color: #888888 !important;
+  color: #595959 !important;
   font-size: 13.5px !important;
   text-decoration: none !important;
   font-weight: 500 !important;
@@ -2502,7 +2508,7 @@ form input[type=search]{
 }
 
 .footer-meta-text a{
-    color: #888888 !important;
+    color: #595959 !important;
     text-decoration: none;
 }
 
@@ -2605,7 +2611,7 @@ form input[type=search]{
   }
   
   .ok-icons a {
-      color: #ffffff;
+      color: #ffffff !important;
       font-size: 14px;
   }
   
@@ -2638,7 +2644,7 @@ form input[type=search]{
   }
   
   .ok-val a{
-    color: #888888 !important;
+    color: #d4d4d4 !important;
     text-decoration: none !important;
   }
   
@@ -2647,7 +2653,7 @@ form input[type=search]{
   }
   
   .ok-link{
-    color: #888888 !important;
+    color: #d4d4d4 !important;
     text-decoration: none !important;
   }
   
@@ -2738,7 +2744,7 @@ form input[type=search]{
   }
 
   .ok-copy a{
-    color: #888888 !important;
+    color: #d4d4d4 !important;
     text-decoration: none !important;
   }
 
@@ -3033,17 +3039,29 @@ form input[type=search]{
 
 a[href^="tel:"],
 a[href^="mailto:"] {
-    display: block;
+    /*display: block;*/
     margin-bottom: 12px; /* Pushes the email address down, giving both breathing room */
 }
 
 
+
 .cat-value a {
-    color: #888888 !important;
+    color: #595959 !important;
     text-decoration: none !important;
     font-weight: 500;
 }
 
 .cat-value a:hover {
     color: #c01818 !important;
+}
+
+.section-header h2 a::after {
+  /* 1. Insert the Font Awesome Unicode */
+  content: "\f101"; 
+  
+  /* 2. Define the correct font family and weight for Font Awesome 6 Free Solid */
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900; 
+  
+  display: inline-block; /* Allows for proper spacing and transformations if needed */
 }

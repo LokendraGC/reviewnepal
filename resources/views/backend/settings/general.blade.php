@@ -132,6 +132,23 @@
                                     </div>
                                 </div>
                             @endrole
+                            
+                            
+                                <div class="mb-2 row">
+                                    <label for="wsrv_service"
+                                        class="col-sm-3 col-form-label col-form-label-sm">Enable wsrv Service<span class="text-danger">*</span></label>
+                                    <div class="col-sm-5 mt-2">
+                                       <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" name="wsrv_service"
+                                            value="yes" id="wsrv" style="cursor: pointer"
+                                            {{ isset($settings['wsrv_service']) && $settings['wsrv_service'] == 'yes' ? 'checked' : '' }}>
+                                        <label for="wsrv" style="cursor: pointer">Enable</label>
+                                    </div>
+                                    </div>
+                                </div>
+
+
+
                             <button type="submit" class="mt-2 btn btn-primary btn-sm">Save Changes</button>
                         </div>
                     </div>

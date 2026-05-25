@@ -76,7 +76,7 @@
         
         @if (!empty($recent_posts) && count($recent_posts) > 0)
             @foreach ($recent_posts as $recent_post)
-                <section class="container my-5">
+                <section class="container my-2">
                     <div class="news-header-section">
                         <h2 class="main-headline">
                             <a
@@ -85,24 +85,20 @@
 
                         @php
                             $author = $recent_post->categories->where('type', 'author')->first();
-
+                            
                             $author_meta = $author ? $author->GetAllMetaData() : [];
-
+                            
                             if ($language == 'en') {
-                                $author_name = $author->name ?? ($user->name ?? 'Review Nepal');
+                                $author_name = $author->name ?? 'Review Nepal';
                             } else {
-                                $author_name = $author_meta['name_ne'] ?? ($user->name ?? 'Review Nepal');
+                                $author_name = $author_meta['name_ne'] ?? 'Review Nepal';
                             }
 
                             $featured_image = isset($author_meta['featured_image'])
                                 ? $author_meta['featured_image']
                                 : null;
                             $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
-                            if (!empty($featured_image) && !empty($media?->file_name)) {
-                                $featured_image_url = asset('storage/' . $media->file_name);
-                            } else {
-                                $featured_image_url = null;
-                            }
+                            $featured_image_url = MediaHelper::WsrvService($media);
                         @endphp
 
                         <div class="news-meta">
@@ -130,7 +126,7 @@
                             $media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
 
                             if (!empty($featured_image) && !empty($media?->file_name)) {
-                                $featured_image_url = asset('storage/' . $media->file_name);
+                                $featured_image_url = MediaHelper::WsrvService($media);
                             } elseif (!empty($itemMeta['youtube_video_id'])) {
                                 $featured_image_url =
                                     'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
@@ -160,9 +156,9 @@
                             @endif
                         @endif
 
-                        <p class="banner-description">
-                            {{ \Illuminate\Support\Str::words(html_entity_decode(strip_tags($recent_post->post_content)), 35) }}
-                         </p>     
+                         <p class="banner-description">
+                           {{ $recent_post->post_excerpt }}
+                         </p>  
                          
 
         {{-- RECENT NEWS ADVERTISEMENT START --}}
@@ -300,7 +296,7 @@
                                 $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                 if (!empty($post_media?->file_name)) {
-                                    $post_image_url = asset('storage/' . $post_media->file_name);
+                                    $post_image_url = MediaHelper::WsrvService($post_media);
                                 } elseif (!empty($itemMeta['youtube_video_id'])) {
                                     $post_image_url =
                                         'https://img.youtube.com/vi/' .
@@ -406,7 +402,7 @@
                         $post_image_id = $itemMeta['featured_image'] ?? null;
                         $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                         if (!empty($post_media?->file_name)) {
-                            $post_image_url = asset('storage/' . $post_media->file_name);
+                            $post_image_url = MediaHelper::WsrvService($post_media);
                         } elseif (!empty($itemMeta['youtube_video_id'])) {
                             $post_image_url =
                                 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
@@ -588,7 +584,7 @@
                             $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                             if (!empty($post_media?->file_name)) {
-                                $post_image_url = asset('storage/' . $post_media->file_name);
+                                $post_image_url = MediaHelper::WsrvService($post_media);
                             } elseif (!empty($itemMeta['youtube_video_id'])) {
                                 $post_image_url =
                                     'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg';
@@ -741,7 +737,7 @@
                                     $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                     if (!empty($post_media?->file_name)) {
-                                        $post_image_url = asset('storage/' . $post_media->file_name);
+                                        $post_image_url = MediaHelper::WsrvService($post_media);
                                     } elseif (!empty($itemMeta['youtube_video_id'])) {
                                         $post_image_url =
                                             'https://img.youtube.com/vi/' .
@@ -985,7 +981,7 @@
                                 $post_image_id = $itemMeta['featured_image'] ?? null;
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
                                 if (!empty($post_media?->file_name)) {
-                                    $post_image_url = asset('storage/' . $post_media->file_name);
+                                    $post_image_url = MediaHelper::WsrvService($post_media);
                                 } elseif (!empty($itemMeta['youtube_video_id'])) {
                                     $post_image_url =
                                         'https://img.youtube.com/vi/' .
@@ -1055,7 +1051,7 @@
                                 $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                 $post_image_url = !empty($post_media?->file_name)
-                                    ? asset('storage/' . $post_media->file_name)
+                                    ? MediaHelper::WsrvService($post_media)
                                     : (!empty($itemMeta['youtube_video_id'])
                                         ? 'https://img.youtube.com/vi/' .
                                             $itemMeta['youtube_video_id'] .
@@ -1160,7 +1156,7 @@
                                         $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                                         $post_image_url = !empty($post_media?->file_name)
-                                            ? asset('storage/' . $post_media->file_name)
+                                            ? MediaHelper::WsrvService($post_media)
                                             : (!empty($itemMeta['youtube_video_id'])
                                                 ? 'https://img.youtube.com/vi/' .
                                                     $itemMeta['youtube_video_id'] .
@@ -1380,7 +1376,7 @@
                             $post_media = $post_image_id ? MediaHelper::getImageById($post_image_id) : null;
 
                             $post_image_url = !empty($post_media?->file_name)
-                                ? asset('storage/' . $post_media->file_name)
+                                ? MediaHelper::WsrvService($post_media)
                                 : (!empty($itemMeta['youtube_video_id'])
                                     ? 'https://img.youtube.com/vi/' . $itemMeta['youtube_video_id'] . '/hqdefault.jpg'
                                     : asset('assets/images/review_nepal_logo.webp'));

@@ -34,6 +34,7 @@ class FrontController extends Controller
             $art_cult_lit_cat = $postMeta['art_cult_lit_cat'] ?? null;
             $sci_tech_cat = $postMeta['sci_tech_cat'] ?? null;
             $business_brands_cat = $postMeta['business_brands_cat'] ?? null;
+            $tender_notices_cat = $postMeta['tender_notices_cat'] ?? null;
 
             // Collect all category IDs for bulk loading
             $allCategoryIds = array_filter([
@@ -43,7 +44,8 @@ class FrontController extends Controller
                 $lifestyle_ent_cat,
                 $art_cult_lit_cat,
                 $sci_tech_cat,
-                $business_brands_cat
+                $business_brands_cat,
+                $tender_notices_cat
             ]);
 
             // Preload all categories with children and meta in ONE query
@@ -141,6 +143,7 @@ class FrontController extends Controller
                 'art_cult_lit_data' => $getCategoryWithPosts($art_cult_lit_cat, 4),
                 'sci_tech_data' => $getCategoryWithPosts($sci_tech_cat, 4),
                 'business_brands_data' => $getCategoryWithPosts($business_brands_cat, 10),
+                'tender_notices_data' => $getCategoryWithPosts($tender_notices_cat, 10),
                 'trendingPosts' => Cache::remember(
                     "trending_posts_{$post_type}",
                     now()->addHours(2),
@@ -171,6 +174,8 @@ class FrontController extends Controller
             'business_brands_cat' => $cached['business_brands_data']?->category,
             'business_brands_posts' => $cached['business_brands_data']?->posts ?? collect(),
             'trendingPosts' => $cached['trendingPosts'],
+            'tender_notices_cat' => $cached['tender_notices_data']?->category,
+            'tender_notices_posts' => $cached['tender_notices_data']?->posts ?? collect(),
         ]);
     }
 }

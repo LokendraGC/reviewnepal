@@ -227,7 +227,7 @@
 
       {{-- TRENDING NEWS START --}}
       @if (!empty($trendingPosts))
-        <div class="col-lg-3">
+        <div class="col-lg-3 trend-posts">
           <div id="sticky-sidear">
             <div class="sidebar-section mb-5">
               <h5 class="sidebar-heading">Trending News</h5>
@@ -241,9 +241,9 @@
                   $itemMeta = $trendingPost->GetAllMetaData();
                   $featured_image = $itemMeta['featured_image'] ?? null;
                   $media = MediaHelper::getImageById($featured_image);
-                  $featured_image_url = MediaHelper::WsrvService($media);
+                  $featured_image_url = MediaHelper::WsrvService($media) ?? asset('assets/images/review_nepal_logo.webp');
                 @endphp
-                <div class="d-flex mb-3 align-items-center sidebar-item">
+                <div class="d-flex align-items-center sidebar-item single-trend-post">
                   @if ($featured_image_url)
                     <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">
                       <img src="{{ $featured_image_url }}" alt="{{ $trendingPost->post_title }}" />

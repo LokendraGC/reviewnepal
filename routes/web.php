@@ -51,6 +51,10 @@ Route::get('storage', function () {
 
 Route::get('/sitemap_index.xml', [SitemapController::class, 'index']);
 
+Route::get('public/{any}', function () {
+    return redirect('/');
+})->where('any', '.*');
+
 Route::get('npreview-login', [AuthController::class, 'login'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');

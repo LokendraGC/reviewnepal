@@ -2,6 +2,9 @@
 
 User-agent: *
 
+# Block path-info URL abuse
+Disallow: /index.php/
+
 # Admin & Auth pages
 Disallow: /admin/
 Disallow: /npreview-backend/

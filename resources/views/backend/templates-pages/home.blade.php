@@ -49,8 +49,6 @@
                         </a>
                     </li>
 
-
-
                     <!-- LIFESTYLE, ART and SCIENCE Tab -->
                     <li class="nav-item">
                         <a href="#fifth-tab-news" data-bs-toggle="tab"
@@ -64,6 +62,15 @@
                         <a href="#sixth-tab-news" data-bs-toggle="tab"
                             class="nav-link {{ request()->query('tab') === 'sixth-tab-news' ? 'active' : '' }}">
                             Business/Brands
+                        </a>
+                    </li>
+
+
+                     <!-- TENDER AND NOTICES Tab -->
+                    <li class="nav-item">
+                        <a href="#tender-tab-news" data-bs-toggle="tab"
+                            class="nav-link {{ request()->query('tab') === 'tender-tab-news' ? 'active' : '' }}">
+                            Tenders and Notices
                         </a>
                     </li>
 
@@ -281,6 +288,29 @@
                     </div>
                 </div>
                 <!-- BUSINESS/BRANDS TAB NEWS -->
+
+            <!-- TENDER AND NOTICES TAB NEWS -->
+                <div class="tab-pane fade {{ request()->query('tab') === 'tender-tab-news' ? 'show active' : '' }}"
+                    id="tender-tab-news" role="tabpanel">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Choose News Category</label>
+
+                            <select name="tender_notices_cat" class="form-control">
+                                <option value="">Select Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ isset($metaDatas['tender_notices_cat']) && $metaDatas['tender_notices_cat'] == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- TENDER AND NOTICES TAB NEWS -->
 
 
             </div>

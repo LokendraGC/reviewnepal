@@ -203,7 +203,7 @@
         </div>
        
        <form action="{{ route('frontend.post.search') }}" method="get" class="d-lg-none">
-                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles..." autofocus>
+                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles...">
                 <button type="submit" class="search-submit-arrow" aria-label="Submit search">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
@@ -313,7 +313,7 @@
                 @if( !empty($latestPosts) && count($latestPosts) > 0)
                 <div class="notification-dropdown">
                     <div class="dropdown-header-notify">
-                        <h4>NEWS ALERTS</h4>
+                        <h4>{{ $language == 'ne' ? 'ताजा समाचार' : 'LATEST NEWS' }}</h4>
                     </div>
 
                     <div class="dropdown-alerts">
@@ -371,7 +371,7 @@
     <div class="overlay-content search-content-center">
         <div class="search-form-container">
             <form action="{{ route('frontend.post.search') }}" method="get">
-                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles..." autofocus>
+                <input type="text" id="search-input-main" name="search" placeholder="Search news and articles...">
                 <button type="submit" class="search-submit-arrow" aria-label="Submit search">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>

@@ -237,34 +237,36 @@ class PostRepository
     }
 
     // get related posts
-  public function getRelatedPosts($id, $postType = null)
-{
-    $categoryIds = DB::table('category_post')
-        ->where('post_id', $id)
-        ->pluck('category_id');
+    public function getRelatedPosts($id, $postType = null)
+    {
+        $categoryIds = DB::table('category_post')
+            ->join('categories', 'categories.id', '=', 'category_post.category_id')
+            ->where('category_post.post_id', $id)
+            ->where('categories.type', 'category')
+            ->pluck('categories.id');
 
-    if ($categoryIds->isEmpty()) {
-        return collect();
+        if ($categoryIds->isEmpty()) {
+            return collect();
+        }
+
+        return Post::query()
+            ->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds)
+                  ->where('categories.type', 'category');
+            })
+            ->where('id', '!=', $id)
+            ->where('post_status', 'publish')
+            ->when($postType, function ($q) use ($postType) {
+                $q->where('post_type', $postType);
+            })
+            ->with([
+                'postMeta:id,post_id,meta_key,meta_value',
+                'categories:id,name,slug'
+            ])
+            ->latest('created_at')
+            ->take(8)
+            ->get();
     }
-
-    return Post::query()
-        ->select('posts.*')
-        ->join('category_post', 'posts.id', '=', 'category_post.post_id')
-        ->whereIn('category_post.category_id', $categoryIds)
-        ->where('posts.id', '!=', $id)
-        ->where('posts.post_status', 'publish')
-        ->when($postType, function ($q) use ($postType) {
-            $q->where('posts.post_type', $postType);
-        })
-        ->with([
-            'postMeta:id,post_id,meta_key,meta_value',
-            'categories:id,name,slug'
-        ])
-        ->latest('posts.created_at')
-        ->distinct()
-        ->take(8)
-        ->get();
-}
 
     // Insert a new record if it doesn’t exist, or update it if it does — all in one query.
     public function bulkInserOrUpdate($payload, $metaDatas)

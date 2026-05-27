@@ -16,6 +16,7 @@ class HomeRepository
         $data['art_cult_lit_cat'] = isset($request->art_cult_lit_cat) ? $request->art_cult_lit_cat : NULL;
         $data['sci_tech_cat'] = isset($request->sci_tech_cat) ? $request->sci_tech_cat : NULL;
         $data['business_brands_cat'] = isset($request->business_brands_cat) ? $request->business_brands_cat : NULL;
+        $data['tender_notices_cat'] = isset($request->tender_notices_cat) ? $request->tender_notices_cat : NULL;
 
         // latest news repeater
         $data['latest_news_details'] = isset($request->latest_news_details) ? serialize($request->latest_news_details) : NULL;
@@ -26,6 +27,7 @@ class HomeRepository
 
         $data['main_title_fourth'] = isset($request->main_title_fourth) ? $request->main_title_fourth : NULL;
         $data['main_title_nepali_fourth'] = isset($request->main_title_nepali_fourth) ? $request->main_title_nepali_fourth : NULL;
+
 
         return $data;
     }

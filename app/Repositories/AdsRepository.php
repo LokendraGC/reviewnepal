@@ -48,6 +48,9 @@ class AdsRepository
         $metaDatas['single_below_content'] = $request->single_below_content ?? null;
         $metaDatas['below_featured_image_ad'] = $request->below_featured_image_ad ?? null;
 
+        $metaDatas['below_business_ad'] = $request->below_business_ad ?? null;
+        $metaDatas['below_tender_ad'] = $request->below_tender_ad ?? null;
+
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($payload, $key, $value);

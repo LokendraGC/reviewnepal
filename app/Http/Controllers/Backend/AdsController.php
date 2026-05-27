@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Repositories\AdsRepository;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class AdsController extends Controller
 {
@@ -46,6 +47,8 @@ class AdsController extends Controller
         try {
             // validation
             $this->adsRepository->processMetaData($this->setting, $request);
+
+            Cache::forget('settings_all');
 
             session()->flash('success', 'Updated.');
 

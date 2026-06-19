@@ -88,10 +88,11 @@ class Post extends Model
     }
 
     // get all post meta data
-   public function getAllMetaData(): array
+    public function getAllMetaData(): array
     {
         return $this->postMeta->pluck('meta_value', 'meta_key')->toArray();
     }
+
 
     // get specific post meta data
     public function scopeGetMetaData($query, $key)

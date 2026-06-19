@@ -39,10 +39,10 @@
             </div>
         </div>
 
-     <div class="mb-3">
-        <label for="map_iframe_url" class="form-label">Map Iframe URL</label>
-        <textarea class="form-control" name="map_iframe_url" id="map_iframe_url" cols="30" rows="10">{{ isset($settings['map_iframe_url']) ? $settings['map_iframe_url'] : '' }}</textarea>
-    </div>
+    <!-- <div class="mb-3">-->
+    <!--    <label for="map_iframe_url" class="form-label">Map Iframe URL</label>-->
+    <!--    <textarea class="form-control" name="map_iframe_url" id="map_iframe_url" cols="30" rows="10">{{ isset($settings['map_iframe_url']) ? $settings['map_iframe_url'] : '' }}</textarea>-->
+    <!--</div>-->
     </div>
     <hr />
 

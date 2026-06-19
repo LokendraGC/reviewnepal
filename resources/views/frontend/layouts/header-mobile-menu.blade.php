@@ -41,7 +41,7 @@
                             @endphp
 
                             <li class="{{ $hasChildren ? 'mobile-dropdown' : '' }}">
-                                <a href="{{ $menuItem['link'] }}"
+                                <a href="{{ $menuItem['link'] }}/"
                                     class="{{ $menuItem['css'] }} {{ $hasChildren ? 'mobile-dropdown-toggle' : '' }}"
                                     target="{{ $menuItem['target'] }}">
                                     {{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -71,7 +71,7 @@
 
                                             @if ($menuItem)
                                                 <li class="{{ $hasChildren_1 ? 'mobile-dropdown' : '' }}">
-                                                    <a href="{{ $menuItem['link'] }}"
+                                                    <a href="{{ $menuItem['link'] }}/"
                                                         class="{{ $menuItem['css'] }} {{ $hasChildren_1 ? 'mobile-dropdown-toggle' : '' }}"
                                                         target="{{ $menuItem['target'] }}">
                                                         {{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -104,7 +104,7 @@
                                                                 @if ($menuItem)
                                                                     <li
                                                                         class="{{ $hasChildren_2 ? 'mobile-dropdown' : '' }}">
-                                                                        <a href="{{ $menuItem['link'] }}"
+                                                                        <a href="{{ $menuItem['link'] }}/"
                                                                             class="{{ $menuItem['css'] }} {{ $hasChildren_2 ? 'mobile-dropdown-toggle' : '' }}"
                                                                             target="{{ $menuItem['target'] }}">
                                                                             {{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -137,7 +137,7 @@
 
                                                                                     @if ($menuItem)
                                                                                         <li>
-                                                                                            <a href="{{ $menuItem['link'] }}"
+                                                                                            <a href="{{ $menuItem['link'] }}/"
                                                                                                 class="{{ $menuItem['css'] }}"
                                                                                                 target="{{ $menuItem['target'] }}">
                                                                                                 {{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -173,7 +173,7 @@
                                 $hasChildren_0 = $frontMenuRepository->menuItemHasChildren($depth_0);
                             @endphp
                             <li class="{{ $hasChildren_0 ? 'mobile-dropdown' : '' }}">
-                                <a href="{{ $menuItem['link'] }}"
+                                <a href="{{ $menuItem['link'] }}/"
                                     class="{{ $menuItem['css'] }} {{ $hasChildren_0 ? 'mobile-dropdown-toggle' : '' }}"
                                     target="{{ $menuItem['target'] }}">{{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
                                     @if ($hasChildren_0)
@@ -209,7 +209,7 @@
                                                 @endphp
 
                                                 <li class="{{ $hasChildren_1 ? 'mobile-dropdown' : '' }}">
-                                                    <a href="{{ $menuItem['link'] }}"
+                                                    <a href="{{ $menuItem['link'] }}/"
                                                         class="{{ $menuItem['css'] }} {{ $hasChildren_1 ? 'mobile-dropdown-toggle' : '' }}"
                                                         target="{{ $menuItem['target'] }}">{{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
                                                         @if ($hasChildren_1)
@@ -237,7 +237,7 @@
                                                                 @endphp
                                                                 @if ($menuItem)
                                                                     <li>
-                                                                        <a href="{{ $menuItem['link'] }}"
+                                                                        <a href="{{ $menuItem['link'] }}/"
                                                                             class="{{ $menuItem['css'] }}"
                                                                             target="{{ $menuItem['target'] }}">{{ $language === 'ne' && ! empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}</a>
                                                                     </li>

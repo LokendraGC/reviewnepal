@@ -44,7 +44,7 @@
                         @endphp
 
                         <li class="{{ $hasChildren ? '' : '' }} nav-item-dropdown">
-                            <a href="{{ $menuItem['link'] }}" class="{{ $menuItem['css'] }}"
+                            <a href="{{ $menuItem['link'] }}/" class="{{ $menuItem['css'] }}"
                                 target="{{ $menuItem['target'] }}">
                                 {{ $menuDisplayTitle }}
                                 @if ($hasChildren)
@@ -75,7 +75,7 @@
 
                                         @if ($menuItem)
                                             <li class="{{ $hasChildren_1 ? '' : '' }}">
-                                                <a href="{{ $menuItem['link'] }}" class="{{ $menuItem['css'] }}"
+                                                <a href="{{ $menuItem['link'] }}/" class="{{ $menuItem['css'] }}"
                                                     target="{{ $menuItem['target'] }}">
                                                     {{ $language === 'ne' && !empty(trim((string) ($menuItemMeta['menu_item_title_ne'] ?? ''))) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
                                                     @if ($hasChildren_1)
@@ -109,7 +109,7 @@
 
                                                             @if ($menuItem)
                                                                 <li class="{{ $hasChildren_2 ? '' : '' }}">
-                                                                    <a href="{{ $menuItem['link'] }}"
+                                                                    <a href="{{ $menuItem['link'] }}/"
                                                                         class="{{ $menuItem['css'] }}"
                                                                         target="{{ $menuItem['target'] }}">
                                                                         {{ $language === 'ne' && !empty(trim((string) ($menuItemMeta['menu_item_title_ne'] ?? ''))) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -145,7 +145,7 @@
 
                                                                                 @if ($menuItem)
                                                                                     <li>
-                                                                                        <a href="{{ $menuItem['link'] }}"
+                                                                                        <a href="{{ $menuItem['link'] }}/"
                                                                                             class="{{ $menuItem['css'] }}"
                                                                                             target="{{ $menuItem['target'] }}">
                                                                                             {{ $language === 'ne' && !empty(trim((string) ($menuItemMeta['menu_item_title_ne'] ?? ''))) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
@@ -181,7 +181,7 @@
                             $hasChildren_0 = $frontMenuRepository->menuItemHasChildren($depth_0);
                         @endphp
                         <li class="{{ $hasChildren_0 ? '' : '' }} nav-item-dropdown">
-                            <a href="{{ $menuItem['link'] }}" class="{{ $menuItem['css'] }}"
+                            <a href="{{ $menuItem['link'] }}/" class="{{ $menuItem['css'] }}"
                                 target="{{ $menuItem['target'] }}">{{ $language === 'ne' && !empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
                                 @if ($hasChildren_0)
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -215,7 +215,7 @@
                                             @endphp
 
                                             <li class="{{ $hasChildren_1 ? '' : '' }} nav-item-dropdown">
-                                                <a href="{{ $menuItem['link'] }}" class="{{ $menuItem['css'] }}"
+                                                <a href="{{ $menuItem['link'] }}/" class="{{ $menuItem['css'] }}"
                                                     target="{{ $menuItem['target'] }}">{{ $language === 'ne' && !empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}
                                                     @if ($hasChildren_1)
                                                         <svg width="10" height="10" viewBox="0 0 24 24"
@@ -245,7 +245,7 @@
                                                             @endphp
                                                             @if ($menuItem)
                                                                 <li>
-                                                                    <a href="{{ $menuItem['link'] }}"
+                                                                    <a href="{{ $menuItem['link'] }}/"
                                                                         class="{{ $menuItem['css'] }}"
                                                                         target="{{ $menuItem['target'] }}">{{ $language === 'ne' && !empty($menuItemMeta['menu_item_title_ne']) ? $menuItemMeta['menu_item_title_ne'] : $menuItem['title'] }}</a>
                                                                 </li>

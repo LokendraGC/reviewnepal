@@ -35,24 +35,149 @@
 
         <div class="row mt-3">
             <div class="col-12">
-                <div class="card cta-box overflow-hidden">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
+                <div class="card border-0 overflow-hidden" style="border-radius: 10px;">
+                    <div class="card-body text-white"
+                        style="background: linear-gradient(135deg, #4f74f9 0%, #7758d9 55%, #8a4ec6 100%);">
+                        <h3 class="mt-0 fw-semibold">Welcome to the Admin Panel</h3>
+                        <p class="mb-0 fw-semibold">
+                            Dive in and experience the enhanced capabilities of our CMS. Enjoy seamless control and unleash
+                            your creativity. Let&apos;s make managing your content a breeze.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h3 class="mt-0 fw-normal cta-box-title">Welcome to the Admin Panel</h3>
-                                <p><b>Dive in and experience the enhanced capabilities of our CMS. Enjoy seamless control
-                                        and unleash your creativity. Let's make managing your content a breeze.</b></p>
-                                {{-- <a href="https://webtechnepal.com/" target="_blank"
-                                    class="link-success link-offset-3 fw-bold">Developed by Webtech Nepal <i
-                                        class="ri-arrow-right-line"></i></a> --}}
+                                <h5 class="mb-2 fw-semibold">English News</h5>
+                                <a href="{{ route('backend.post') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
                             </div>
-                            <img class="ms-3" src="/images/svg/email-campaign.svg" width="92"
-                                alt="Generic placeholder image">
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #e9f2ff; color: #3b82f6;">
+                                    <i class="ri-newspaper-line fs-5"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- end card-body -->
                 </div>
-            </div> <!-- end col -->
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2 fw-semibold">Nepali News</h5>
+                                <a href="{{ route('backend.post_ne') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #edf7ee; color: #22a06b;">
+                                    <i class="ri-article-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2 fw-semibold">Banner News</h5>
+                                <a href="{{ route('backend.banner') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #fdeef3; color: #d9467a;">
+                                    <i class="ri-image-2-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2 fw-semibold">Ad Manager</h5>
+                                <a href="{{ route('backend.ads.setting') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #fff5e9; color: #f59e0b;">
+                                    <i class="ri-megaphone-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2 fw-semibold">Categories</h5>
+                                <a href="{{ route('backend.category') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #e9f7ff; color: #0ea5e9;">
+                                    <i class="ri-folder-open-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2 fw-semibold">Authors</h5>
+                                <a href="{{ route('backend.author') }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    View All <i class="ri-arrow-right-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #edf3ff; color: #6366f1;">
+                                    <i class="ri-user-3-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- <div class="row d-none">

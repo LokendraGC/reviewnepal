@@ -56,8 +56,12 @@ $siteURL = SettingHelper::get_field('site_url');
                                             </span>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="category-description">Description</label>
+                                            <label class="form-label" for="category-description">Description in English</label>
                                             <textarea name="description" class="form-control" id="category-description" rows="5">{{ $category->description }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="category-description">Description in Nepali</label>
+                                            <textarea name="description_ne" class="form-control" id="category-description-ne" rows="5">{{ isset($metaDatas['description_ne']) ? $metaDatas['description_ne'] : '' }}</textarea>
                                         </div>
                                         <div>
                                             <div class="d-flex align-content-center">

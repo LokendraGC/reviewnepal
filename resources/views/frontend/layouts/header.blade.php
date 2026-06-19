@@ -257,10 +257,24 @@
     </div>
 </div>
 
+
+
+    @php
+        $header_logo_sticky = SettingHelper::get_field('header_logo_sticky');
+        $media = $header_logo_sticky ? MediaHelper::getImageById($header_logo_sticky) : null;
+        $websiteName = SettingHelper::get_field('site_title');
+
+        if (!empty($media) && !empty($media->file_name)) {
+            $sticky_image_url = asset('storage/' . $media->file_name);
+        } else {
+            $sticky_image_url = asset('assets/images/reviewnepal-logo.svg');
+        }
+    @endphp
+    
 <div id="sticky-header-fixed" class="sticky-header-container">
     <div class="sticky-inner container">
         <div class="sticky-logo">
-            <a href="{{ '/' }}"><img src="{{ $image_url }}" alt="{{ $websiteName }}"></a>
+             <a href="{{ '/' }}"><img src="{{ $sticky_image_url }}" alt="{{ $websiteName }}"></a>
         </div>
 
 

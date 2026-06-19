@@ -47,9 +47,18 @@ class AdsRepository
         $metaDatas['single_below_title'] = $request->single_below_title ?? null;
         $metaDatas['single_below_content'] = $request->single_below_content ?? null;
         $metaDatas['below_featured_image_ad'] = $request->below_featured_image_ad ?? null;
-
         $metaDatas['below_business_ad'] = $request->below_business_ad ?? null;
         $metaDatas['below_tender_ad'] = $request->below_tender_ad ?? null;
+        
+        $metaDatas['below_art_culture'] = $request->below_art_culture ?? null;
+        $metaDatas['below_science_tech'] = $request->below_science_tech ?? null;
+        
+        $metaDatas['below_lifestyle_news_first'] = $request->below_lifestyle_news_first ?? null;
+        $metaDatas['below_lifestyle_news_second'] = $request->below_lifestyle_news_second ?? null;
+        $metaDatas['below_art_news_first'] = $request->below_art_news_first ?? null;
+        $metaDatas['below_art_news_second'] = $request->below_art_news_second ?? null;
+        $metaDatas['below_science_tech_first'] = $request->below_science_tech_first ?? null;
+        $metaDatas['below_science_tech_second'] = $request->below_science_tech_second ?? null;
 
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {

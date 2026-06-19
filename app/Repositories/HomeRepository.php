@@ -28,7 +28,6 @@ class HomeRepository
         $data['main_title_fourth'] = isset($request->main_title_fourth) ? $request->main_title_fourth : NULL;
         $data['main_title_nepali_fourth'] = isset($request->main_title_nepali_fourth) ? $request->main_title_nepali_fourth : NULL;
 
-
         return $data;
     }
 }

@@ -37,7 +37,7 @@
         @endphp
         @if ($menuItem)
             <li>
-                <a href="{{ $menuItem['link'] }}" class="{{ $menuItem['css'] }}"
+                <a href="{{ $menuItem['link'] }}/" class="{{ $menuItem['css'] }}"
                     target="{{ $menuItem['target'] }}">{{ $menuDisplayTitle }}</a>
             </li>
         @endif

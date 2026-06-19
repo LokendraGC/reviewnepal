@@ -26,8 +26,8 @@ class SettingRepository
             $metaDatas['latest_news_details_ne'] = $request->latest_news_details_ne ? serialize($request->latest_news_details_ne) : null;
         } else {
             // header
-            $metaDatas['header_logo'] = $request->header_logo ?? null;
-            $metaDatas['header_logo_nepali'] = $request->header_logo_nepali ?? null;
+            $metaDatas['header_logo'] = $request->header_logo ?: null;
+            $metaDatas['header_logo_sticky'] = $request->header_logo_sticky ?: null;
             $metaDatas['map_url'] = $request->map_url ?? null;
             $metaDatas['office_timing'] = $request->office_timing ?? null;
             // Info Section
@@ -37,8 +37,8 @@ class SettingRepository
             $metaDatas['first_phone'] = $request->first_phone ?? null;
             $metaDatas['second_phone'] = $request->second_phone ?? null;
             // Footer
-            $metaDatas['footer_logo'] = $request->footer_logo ?? null;
-            $metaDatas['footer_logo_nepali'] = $request->footer_logo_nepali ?? null;
+            $metaDatas['footer_logo'] = $request->footer_logo ?: null;
+            $metaDatas['footer_logo_nepali'] = $request->footer_logo_nepali ?: null;
             $metaDatas['footer_text'] = $request->footer_text ?? null;
             $metaDatas['subscribe_text'] = $request->subscribe_text ?? null;
             $metaDatas['map_link'] = $request->map_link ?? null;
@@ -46,7 +46,7 @@ class SettingRepository
             // Social Medias
             $metaDatas['social_media'] = $request->social_media ? serialize($request->social_media) : null;
             // Banner Section
-            $metaDatas['banner_background_image'] = $request->banner_background_image ?? null;
+            $metaDatas['banner_background_image'] = $request->banner_background_image ?: null;
             $metaDatas['map_iframe_url'] = $request->map_iframe_url ?? null;
             // Popup
             $metaDatas['popup_ads'] = $request->popup_ads ? serialize($request->popup_ads) : null;

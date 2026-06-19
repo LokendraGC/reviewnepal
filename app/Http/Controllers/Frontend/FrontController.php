@@ -139,9 +139,9 @@ class FrontController extends Controller
                 'news_n_features_data' => $getCategoryWithPosts($news_n_features_cat_id, 14),
                 'sports_data' => $getCategoryWithPosts([13, $sports_cat_id], 10),
                 'views_n_opinion_data' => $getCategoryWithPosts($views_n_opinion_cat, 5),
-                'lifestyle_ent_data' => $getCategoryWithPosts($lifestyle_ent_cat, 6),
-                'art_cult_lit_data' => $getCategoryWithPosts($art_cult_lit_cat, 4),
-                'sci_tech_data' => $getCategoryWithPosts($sci_tech_cat, 4),
+                'lifestyle_ent_data' => $getCategoryWithPosts($lifestyle_ent_cat, 8),
+                'art_cult_lit_data' => $getCategoryWithPosts($art_cult_lit_cat, 8),
+                'sci_tech_data' => $getCategoryWithPosts($sci_tech_cat, 10),
                 'business_brands_data' => $getCategoryWithPosts($business_brands_cat, 10),
                 'tender_notices_data' => $getCategoryWithPosts($tender_notices_cat, 10),
                 'trendingPosts' => Cache::remember(

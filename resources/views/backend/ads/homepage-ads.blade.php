@@ -363,9 +363,9 @@
                 </div>
             </div>
         </div>
-
-
-        {{-- Lifestyles and Entertainment Brands ad --}}
+        
+        
+                {{-- Lifestyles and Entertainment Brands ad --}}
         <div class="mb-3 col-6">
             <div>
                 <label for="above_brands_ad" class="form-label">Below Lifestyles and Entertainment Ad
@@ -414,6 +414,376 @@
                 </div>
             </div>
         </div>
+        
+        
+                <!-- below art and culture ad -->
+         <div class="mb-3 col-6">
+            <div>
+                <label for="below_art_culture" class="form-label">Below Art and Culture Ad
+                    </label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_art_culture" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_art_culture']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_art_culture'])->first())
+                        )
+                        <input type="hidden" id="below_art_culture" name="below_art_culture" class="selected-files"
+                            value="{{ $settings['below_art_culture'] }}">
+                        <div id="below_art_culture_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}" data-slug="below_art_culture"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_art_culture" name="below_art_culture" class="selected-files" value="" />
+                        <div id="below_art_culture_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+
+        {{-- below Lifestyles News Ads First --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_lifestyle_news_first" class="form-label">Lifestyles News Side Ads First (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_lifestyle_news_first" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_lifestyle_news_first']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_lifestyle_news_first'])->first())
+                        )
+                        <input type="hidden" id="below_lifestyle_news_first" name="below_lifestyle_news_first" class="selected-files"
+                            value="{{ $settings['below_lifestyle_news_first'] }}">
+                        <div id="below_lifestyle_news_first_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_lifestyle_news_first"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_lifestyle_news_first" name="below_lifestyle_news_first" class="selected-files"
+                            value="" />
+                        <div id="below_lifestyle_news_first_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Lifestyles News Ads First end--}}
+
+
+         {{-- below Lifestyles News Ads Second --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_lifestyle_news_second" class="form-label">Lifestyles News Side Ads Second (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_lifestyle_news_second" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_lifestyle_news_second']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_lifestyle_news_second'])->first())
+                        )
+                        <input type="hidden" id="below_lifestyle_news_second" name="below_lifestyle_news_second" class="selected-files"
+                            value="{{ $settings['below_lifestyle_news_second'] }}">
+                        <div id="below_lifestyle_news_second_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_lifestyle_news_second"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_lifestyle_news_second" name="below_lifestyle_news_second" class="selected-files"
+                            value="" />
+                        <div id="below_lifestyle_news_second_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Lifestyles News Ads Second end--}}
+
+
+        {{-- below Art and Culture News Ads First --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_art_news_first" class="form-label">Art and Culture News Side Ads First (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_art_news_first" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_art_news_first']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_art_news_first'])->first())
+                        )
+                        <input type="hidden" id="below_art_news_first" name="below_art_news_first" class="selected-files"
+                            value="{{ $settings['below_art_news_first'] }}">
+                        <div id="below_art_news_first_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_art_news_first"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_art_news_first" name="below_art_news_first" class="selected-files"
+                            value="" />
+                        <div id="below_art_news_first_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Art and Culture News Ads First end--}}
+
+
+         {{-- below Art and Culture News Ads Second --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_art_news_second" class="form-label">Art and Culture News Side Ads Second (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_art_news_second" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_art_news_second']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_art_news_second'])->first())
+                        )
+                        <input type="hidden" id="below_art_news_second" name="below_art_news_second" class="selected-files"
+                            value="{{ $settings['below_art_news_second'] }}">
+                        <div id="below_art_news_second_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_art_news_second"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_art_news_second" name="below_art_news_second" class="selected-files"
+                            value="" />
+                        <div id="below_art_news_second_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Art and Culture News Ads Second end--}}
+
+         {{-- below Science and Technology News Ads First --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_science_tech_first" class="form-label">Science and Technology News Side Ads First (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_science_tech_first" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_science_tech_first']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_science_tech_first'])->first())
+                        )
+                        <input type="hidden" id="below_science_tech_first" name="below_science_tech_first" class="selected-files"
+                            value="{{ $settings['below_science_tech_first'] }}">
+                        <div id="below_science_tech_first_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_science_tech_first"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_science_tech_first" name="below_science_tech_first" class="selected-files"
+                            value="" />
+                        <div id="below_science_tech_first_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Science and Technology News Ads First end--}}
+
+
+         {{-- below Science and Technology News Ads Second --}}
+        <div class="mb-3 col-6">
+            <div>
+                <label for="below_science_tech_second" class="form-label">Science and Technology News Side Ads Second (Short Head)</label>
+                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    style="cursor: pointer;" data-field="below_science_tech_second" data-select="single">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                            Browse</div>
+                    </div>
+                    <div class="form-control file-amount">Choose File</div>
+                </div>
+                {{-- preview --}}
+                <div class="preview-closer">
+                    @if (
+                            isset($settings['below_science_tech_second']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_science_tech_second'])->first())
+                        )
+                        <input type="hidden" id="below_science_tech_second" name="below_science_tech_second" class="selected-files"
+                            value="{{ $settings['below_science_tech_second'] }}">
+                        <div id="below_science_tech_second_select">
+                            <div class="file-preview box sm">
+                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
+                                            alt="image" />
+                                    </div>
+                                    <div class="col body">
+                                        <h6 class="d-flex">
+                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
+                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
+                                        </h6>
+                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
+                                    </div>
+                                    <div class="remove"><button data-id="{{ $media->id }}"
+                                            data-slug="below_science_tech_second"
+                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
+                                                class="bi bi-x-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <input type="hidden" id="below_science_tech_second" name="below_science_tech_second" class="selected-files"
+                            value="" />
+                        <div id="below_science_tech_second_select"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+         {{-- below Science and Technology News Ads Second end--}}
+         
+         
 
         {{-- above Business and Brands Ads --}}
         <div class="mb-3 col-6">

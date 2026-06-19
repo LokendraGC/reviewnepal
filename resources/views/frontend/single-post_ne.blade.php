@@ -95,7 +95,7 @@
             <span class="meta-label">by.</span>
             <span class="meta-value author cat-value">
                   @if($author)
-                <a href="{{ route('frontend.author.index', $author->slug) }}">{{ $author_name }}</a>
+                <a href="{{ route('frontend.author.index', $author->slug) }}/">{{ $author_name }}</a>
                 @else 
                 {{ $author_name }}
                 @endif
@@ -108,7 +108,7 @@
             <i class="fa-solid fa-layer-group"></i>
             <span class="meta-value cat-value">
               @if($category)
-                <a href="{{ route('frontend.category.index', $category->slug) }}">{{ $category_name }}</a>
+                <a href="{{ route('frontend.category.index', $category->slug) }}/">{{ $category_name }}</a>
               @else
                 {{ $category_name }}
               @endif
@@ -226,6 +226,39 @@
         </div>
         {{-- POST CONTENT END --}}
 
+        {{-- AUTHOR DETAIL START --}}
+        @php
+            $authorImage = MediaHelper::getImageById($author_meta['featured_image'] ?? null);
+            $authorImageUrl = MediaHelper::WsrvService($authorImage);
+            $authorDescription = $author_meta['description_ne'] ?? ($author->description ?? null);
+            $authorUrl = $author ? route('frontend.author.index', $author->slug) . '/' : null;
+        @endphp
+
+        @if ($author)
+            <div class="ai-summary-card author-detail-card">
+                <div class="ai-summary-body author-detail-body">
+                    @if ($authorImageUrl)
+                        <a href="{{ $authorUrl }}" class="author-detail-img">
+                            <img src="{{ $authorImageUrl }}" alt="{{ $author_name }}">
+                        </a>
+                    @endif
+                    <div class="author-detail-info">
+                        <span class="author-detail-label">लेखक</span>
+                        <h6 class="author-detail-name">
+                            <a href="{{ $authorUrl }}">{{ $author_name }}</a>
+                        </h6>
+                        @if (!empty($authorDescription))
+                            <p class="author-detail-desc">{{ $authorDescription }}</p>
+                        @endif
+                    </div>
+                    @if ($authorUrl)
+                        <a href="{{ $authorUrl }}" class="author-detail-btn text-white">प्रोफाइल हेर्नुहोस्</a>
+                    @endif
+                </div>
+            </div>
+        @endif
+        {{-- AUTHOR DETAIL END --}}
+
 <!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
 
       </div>
@@ -251,14 +284,14 @@
                 @endphp
                 <div class="d-flex align-items-center sidebar-item single-trend-post">
                   @if ($featured_image_url)
-                    <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">
+                    <a href="{{ route('frontend.post.index', $trendingPost->slug) }}/">
                       <img src="{{ $featured_image_url }}" alt="{{ $trendingPost->post_title }}" />
                     </a>
                   @endif
                   <div class="ms-3">
                     <small class="tag-small">{{ $catMeta['name_ne'] ?? 'Unknown' }}</small>
                     <h6 class="sidebar-item-title">
-                      <a href="{{ route('frontend.post.index', $trendingPost->slug) }}">{{ $trendingPost->post_title }}</a>
+                      <a href="{{ route('frontend.post.index', $trendingPost->slug) }}/">{{ $trendingPost->post_title }}</a>
                     </h6>
                   </div>
                 </div>
@@ -355,14 +388,14 @@
               <div class="recent-news">
 
                 @if ($featured_image_url)
-                  <a href="{{ route('frontend.post.index', $relatedPost->slug) }}">
+                  <a href="{{ route('frontend.post.index', $relatedPost->slug) }}/">
                     <img src="{{ $featured_image_url }}" alt="{{ $relatedPost->post_title }}" />
                   </a>
                 @endif
 
                 <small class="text-muted d-block mt-2">{{ $date }}</small>
                 <h6 class="fw-bold mt-1 similar-news-item-title">
-                  <a href="{{ route('frontend.post.index', $relatedPost->slug) }}">{{ $relatedPost->post_title }}</a>
+                  <a href="{{ route('frontend.post.index', $relatedPost->slug) }}/">{{ $relatedPost->post_title }}</a>
                 </h6>
               </div>
             </div>

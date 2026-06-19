@@ -6,7 +6,6 @@ use App\Models\Post;
 use App\Enums\TemplateType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use App\Repositories\PageRepository;
 use App\Repositories\PostRepository;
@@ -201,9 +200,6 @@ class PageController extends Controller
                 foreach ($metaDatas as $key => $value) {
                     $this->postRepository->updateOrCreateMeta($post, $key, $value);
                 }
-
-                Cache::forget('homepage_data_en_v2');
-                Cache::forget('homepage_data_ne_v2');
 
                 session()->flash('success', 'Page Updated.');
 

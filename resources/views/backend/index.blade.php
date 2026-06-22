@@ -54,7 +54,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">English News</h5>
+                                <h5 class="mb-3 fw-semibold">English News</h5>
                                 <a href="{{ route('backend.post') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -75,7 +75,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">Nepali News</h5>
+                                <h5 class="mb-3 fw-semibold">Nepali News</h5>
                                 <a href="{{ route('backend.post_ne') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -97,7 +97,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">Banner News</h5>
+                                <h5 class="mb-3 fw-semibold">Banner News</h5>
                                 <a href="{{ route('backend.banner') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -119,7 +119,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">Ad Manager</h5>
+                                <h5 class="mb-3 fw-semibold">Ad Manager</h5>
                                 <a href="{{ route('backend.ads.setting') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -141,7 +141,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">Categories</h5>
+                                <h5 class="mb-3 fw-semibold">Categories</h5>
                                 <a href="{{ route('backend.category') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -162,7 +162,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-2 fw-semibold">Authors</h5>
+                                <h5 class="mb-3 fw-semibold">Authors</h5>
                                 <a href="{{ route('backend.author') }}"
                                     class="small fw-semibold" style="color: rgb(62 96 213);">
                                     View All <i class="ri-arrow-right-line align-middle"></i>
@@ -172,6 +172,71 @@
                                 <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
                                     style="width: 52px; height: 52px; background-color: #edf3ff; color: #6366f1;">
                                     <i class="ri-user-3-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-3 fw-semibold">Edit Homepage</h5>
+                                <a href="{{ route('backend.page.edit', 1) }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    Edit <i class="ri-edit-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #f3e8ff; color: #9333ea;">
+                                    <i class="ri-home-4-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-3 fw-semibold">Edit About Us</h5>
+                                <a href="{{ route('backend.page.edit', 2) }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    Edit <i class="ri-edit-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #e0f7fa; color: #0891b2;">
+                                    <i class="ri-information-line fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card border-0 h-100 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-3 fw-semibold">Edit Contact Us</h5>
+                                <a href="{{ route('backend.page.edit', 3) }}"
+                                    class="small fw-semibold" style="color: rgb(62 96 213);">
+                                    Edit <i class="ri-edit-line align-middle"></i>
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center ms-auto"
+                                    style="width: 52px; height: 52px; background-color: #feeceb; color: #ef4444;">
+                                    <i class="ri-customer-service-2-line fs-5"></i>
                                 </div>
                             </div>
                         </div>

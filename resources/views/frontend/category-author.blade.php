@@ -16,12 +16,9 @@
                     $heroImageId = $heroMeta['featured_image'] ?? null;
                     $heroMedia = MediaHelper::getImageById($heroImageId);
                     $heroImageUrl = MediaHelper::WsrvService($heroMedia);
-                    
                 @endphp
                 <div class="row mb-5 align-items-start mt-2">
                     <div class="col-lg-4 order-2 order-lg-1">
-
-                        
                         <h2 class="hero-headline">
                             <a href="{{ route('frontend.post.index', $heroPost->slug) }}/">
                                 {{ $heroPost->post_title }}

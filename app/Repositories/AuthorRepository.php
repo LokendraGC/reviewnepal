@@ -113,6 +113,8 @@ class AuthorRepository
         $metaDatas['name_ne'] = $request->name_ne ?? null;
         $metaDatas['featured_image'] = $request->featured_image ?? null;
         $metaDatas['description_ne'] = $request->description_ne ?? null;
+
+
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($payload, $key, $value);

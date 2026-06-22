@@ -92,7 +92,7 @@
           
            @if($author)
           <div class="meta-item">
-            <span class="meta-label">by.</span>
+            <!--<span class="meta-label">by.</span>-->
             <span class="meta-value author cat-value">
                   @if($author)
                 <a href="{{ route('frontend.author.index', $author->slug) }}/">{{ $author_name }}</a>

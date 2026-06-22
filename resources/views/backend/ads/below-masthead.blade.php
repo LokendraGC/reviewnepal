@@ -1,15 +1,12 @@
-{{-- <div class="tab-pane fade {{ request()->query('tab') == 'recent-news-ads' ? 'active show' : '' }}" id="recent-news-ads"
-    role="tabpanel" aria-labelledby="recent-news-ads-tab"> --}}
-
+{{-- <div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active show' : '' }}"
+    id="header-advertisements" role="tabpanel" aria-labelledby="header-advertisements-tab"> --}}
+      
     <div class="row">
         <div class="col-md-12">
 
             {{-- Details --}}
             <div class="mb-3">
-                <label class="form-label">Below Banner News</label>
-                  <div>
-                    <label for="show_popup" class="form-label fw-semibold mb-1">By adding this advertisement, you can display it on below each news of Recent News.</label>
-                </div>
+                <label class="form-label">Below Masthead</label>
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0">
                         <thead>
@@ -26,10 +23,10 @@
                                 <th style="width:10%" class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="addMoreRecentNewsAds">
-                            @isset($settings['recent_news_ads'])
+                        <tbody class="addMoreSliderGalleryBelowMastheadAds">
+                            @isset($settings['below_masthead_ads'])
                                 @php
-                                    $chooseUs = unserialize($settings['recent_news_ads']);
+                                    $chooseUs = unserialize($settings['below_masthead_ads']);
                                 @endphp
                                 @foreach ($chooseUs as $index => $item)
                                     <tr>
@@ -39,7 +36,7 @@
                                             <div class="media-input image-input">
                                                 <div class="input-group open-media-manager" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal" style="cursor: pointer;"
-                                                    data-field="recent_news_ads{{ $index }}_image" data-select="single">
+                                                    data-field="below_masthead_ads{{ $index }}_image" data-select="single">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text bg-soft-secondary font-weight-medium">
                                                             Browse</div>
@@ -50,10 +47,10 @@
                                                 </div>
                                                 <div class="preview-closer">
                                                     @if (isset($item['image']) && ($media = \App\Models\Media::where('id', $item['image'])->first()))
-                                                        <input type="hidden" id="recent_news_ads{{ $index }}_image"
-                                                            name="recent_news_ads[{{ $index }}][image]"
+                                                        <input type="hidden" id="below_masthead_ads{{ $index }}_image"
+                                                            name="below_masthead_ads[{{ $index }}][image]"
                                                             class="selected-files" value="{{ $item['image'] }}" />
-                                                        <div id="recent_news_ads{{ $index }}_image_select">
+                                                        <div id="below_masthead_ads{{ $index }}_image_select">
                                                             <div class="file-preview box sm">
                                                                 <div
                                                                     class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
@@ -75,7 +72,7 @@
                                                                     </div>
                                                                     <div class="remove">
                                                                         <button data-id="{{ $item['image'] }}"
-                                                                            data-slug="recent_news_ads{{ $index }}_image"
+                                                                            data-slug="below_masthead_ads{{ $index }}_image"
                                                                             class="btn btn-sm btn-link remove-attachment"
                                                                             type="button"><i
                                                                                 class="bi bi-x-circle"></i></button>
@@ -84,35 +81,35 @@
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <input type="hidden" id="recent_news_ads{{ $index }}_image"
-                                                            name="recent_news_ads[{{ $index }}][image]"
+                                                        <input type="hidden" id="below_masthead_ads{{ $index }}_image"
+                                                            name="below_masthead_ads[{{ $index }}][image]"
                                                             class="selected-files" value="" />
-                                                        <div id="recent_news_ads{{ $index }}_image_select">
+                                                        <div id="below_masthead_ads{{ $index }}_image_select">
                                                         </div>
                                                     @endif
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="url" name="recent_news_ads[{{ $index }}][link]"
+                                            <input type="url" name="below_masthead_ads[{{ $index }}][link]"
                                                 class="form-control" value="{{ $item['link'] ?? '' }}" />
                                         </td>
 
                                         <td class="text-center">
                                             <a href="javascript:void(0);"
-                                                class="text-success fs-16 px-1 add_more_recent_news_ads">
+                                                class="text-success fs-16 px-1 add_more_slider_gallery_below_masthead_ads">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                             <a href="javascript:void(0);"
-                                                class="text-danger fs-16 px-1 remove_recent_news_ads">
+                                                class="text-danger fs-16 px-1 remove_slider_gallery_below_masthead_ads">
                                                 <i class="bi bi-x-circle"></i>
                                             </a>
                                             <hr>
-                                            <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-up-recent-news-ads"
+                                            <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-up-below-masthead-ads"
                                                 title="Move Up">
                                                 <i class="bi bi-arrow-up-circle"></i>
                                             </a>
-                                            <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-down-recent-news-ads"
+                                            <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-down-below-masthead-ads"
                                                 title="Move Down">
                                                 <i class="bi bi-arrow-down-circle"></i>
                                             </a>
@@ -123,7 +120,7 @@
                         </tbody>
                     </table>
                     <div class="text-end mt-2">
-                        <button type="button" class="btn btn-primary btn-sm add_recent_news_ads">Add
+                        <button type="button" class="btn btn-primary btn-sm add_slider_gallery_below_masthead_ads">Add
                             Ad</button>
                     </div>
                 </div>
@@ -131,104 +128,109 @@
 
         </div>
     </div>
-
+    
 {{-- </div> --}}
 
 
-
-<!-- repeater script for Recent News Ads -->
+<!-- repeater script for Below Masthead Ads -->
 @push('backend-js')
 <script>
-    // Add new row - Recent News Ads section
-    $(document).on('click', '.add_recent_news_ads', function() {
-        let row = addRecentNewsAdsRow();
-        $('.addMoreRecentNewsAds').append(row);
-        updateSerialNumbersRecentNewsAds();
-        updateOrderFieldsRecentNewsAds();
-        updateRowIndicesRecentNewsAds();
-        initializeMediaManagerForRecentNewsAdsRow($('.addMoreRecentNewsAds tr:last'));
+    // Add new row - Below Masthead Ads section
+    $(document).on('click', '.add_slider_gallery_below_masthead_ads', function() {
+        let row = addSliderRowGalleryBelowMastheadAds();
+        $('.addMoreSliderGalleryBelowMastheadAds').append(row);
+        updateSerialNumbersSliderGalleryBelowMastheadAds();
+        updateOrderFieldsGalleryBelowMastheadAds();
+        updateRowIndicesGalleryBelowMastheadAds();
+        initializeMediaManagerForRowBelowMastheadAds($('.addMoreSliderGalleryBelowMastheadAds tr:last'));
     });
 
-    // Add more row after - Recent News Ads section
-    $(document).on('click', '.add_more_recent_news_ads', function() {
+    // Add more row after - Below Masthead Ads section
+    $(document).on('click', '.add_more_slider_gallery_below_masthead_ads', function() {
         let clickedRow = $(this).closest('tr');
-        let row = addRecentNewsAdsRow();
+        let row = addSliderRowGalleryBelowMastheadAds();
         clickedRow.after(row);
-        updateSerialNumbersRecentNewsAds();
-        updateOrderFieldsRecentNewsAds();
-        updateRowIndicesRecentNewsAds();
-        initializeMediaManagerForRecentNewsAdsRow(clickedRow.next());
+        updateSerialNumbersSliderGalleryBelowMastheadAds();
+        updateOrderFieldsGalleryBelowMastheadAds();
+        updateRowIndicesGalleryBelowMastheadAds();
+        initializeMediaManagerForRowBelowMastheadAds(clickedRow.next());
     });
 
-    $(document).on('click', '.addMoreRecentNewsAds .remove_recent_news_ads', function() {
+    $(document).on('click', '.addMoreSliderGalleryBelowMastheadAds .remove_slider_gallery_below_masthead_ads', function() {
         $(this).closest('tr').remove();
-        updateSerialNumbersRecentNewsAds();
-        updateOrderFieldsRecentNewsAds();
-        updateRowIndicesRecentNewsAds();
+        updateSerialNumbersSliderGalleryBelowMastheadAds();
+        updateOrderFieldsGalleryBelowMastheadAds();
+        updateRowIndicesGalleryBelowMastheadAds();
     });
 
-    // Move row up - Recent News Ads section
-    $(document).on('click', '.addMoreRecentNewsAds .move-up-recent-news-ads', function() {
+    // Move row up - Below Masthead Ads section
+    $(document).on('click', '.addMoreSliderGalleryBelowMastheadAds .move-up-below-masthead-ads', function() {
         let currentRow = $(this).closest('tr');
         let prevRow = currentRow.prev('tr');
 
         if (prevRow.length) {
             currentRow.insertBefore(prevRow);
-            updateSerialNumbersRecentNewsAds();
-            updateOrderFieldsRecentNewsAds();
-            updateRowIndicesRecentNewsAds();
+            updateSerialNumbersSliderGalleryBelowMastheadAds();
+            updateOrderFieldsGalleryBelowMastheadAds();
+            updateRowIndicesGalleryBelowMastheadAds();
+            setTimeout(function() {
+                initializeSummernoteGalleryBelowMastheadAds();
+            }, 100);
         }
     });
 
-    // Move row down - Recent News Ads section
-    $(document).on('click', '.addMoreRecentNewsAds .move-down-recent-news-ads', function() {
+    // Move row down - Below Masthead Ads section
+    $(document).on('click', '.addMoreSliderGalleryBelowMastheadAds .move-down-below-masthead-ads', function() {
         let currentRow = $(this).closest('tr');
         let nextRow = currentRow.next('tr');
 
         if (nextRow.length) {
             currentRow.insertAfter(nextRow);
-            updateSerialNumbersRecentNewsAds();
-            updateOrderFieldsRecentNewsAds();
-            updateRowIndicesRecentNewsAds();
+            updateSerialNumbersSliderGalleryBelowMastheadAds();
+            updateOrderFieldsGalleryBelowMastheadAds();
+            updateRowIndicesGalleryBelowMastheadAds();
+            setTimeout(function() {
+                initializeSummernoteGalleryBelowMastheadAds();
+            }, 100);
         }
     });
 
-    function addRecentNewsAdsRow() {
-        let numberOfRow = $('.addMoreRecentNewsAds tr').length;
+    function addSliderRowGalleryBelowMastheadAds() {
+        let numberOfRow = $('.addMoreSliderGalleryBelowMastheadAds tr').length;
 
         let tr = `
         <tr>
             <td class="custom-table-no no">${numberOfRow + 1}</td>
             <td>
                 <div class="media-input image-input">
-                    <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="recent_news_ads${numberOfRow}_image" data-select="single">
+                    <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="below_masthead_ads${numberOfRow}_image" data-select="single">
                         <div class="input-group-prepend">
                             <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
                         </div>
                         <div class="form-control file-amount">Choose File</div>
                     </div>
                     <div class="preview-closer">
-                        <input type="hidden" id="recent_news_ads${numberOfRow}_image" name="recent_news_ads[${numberOfRow}][image]" class="selected-files" value="" />
-                        <div id="recent_news_ads${numberOfRow}_image_select"></div>
+                        <input type="hidden" id="below_masthead_ads${numberOfRow}_image" name="below_masthead_ads[${numberOfRow}][image]" class="selected-files" value="" />
+                        <div id="below_masthead_ads${numberOfRow}_image_select"></div>
                     </div>
                 </div>
             </td>
             <td>
-                <input type="url" name="recent_news_ads[${numberOfRow}][link]" id="recent_news_ads_${numberOfRow}_link" class="form-control">
+                <input type="url" name="below_masthead_ads[${numberOfRow}][link]" id="below_masthead_ads_${numberOfRow}_link" class="form-control">
             </td>
 
             <td class="text-center">
-                <a href="javascript:void(0);" class="text-success fs-16 px-1 add_more_recent_news_ads">
+                <a href="javascript:void(0);" class="text-success fs-16 px-1 add_more_slider_gallery_below_masthead_ads">
                     <i class="bi bi-plus-circle"></i>
                 </a>
-                <a href="javascript:void(0);" class="text-danger fs-16 px-1 remove_recent_news_ads">
+                <a href="javascript:void(0);" class="text-danger fs-16 px-1 remove_slider_gallery_below_masthead_ads">
                     <i class="bi bi-x-circle"></i>
                 </a>
                 <hr>
-                <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-up-recent-news-ads" title="Move Up">
+                <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-up-below-masthead-ads" title="Move Up">
                     <i class="bi bi-arrow-up-circle"></i>
                 </a>
-                <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-down-recent-news-ads" title="Move Down">
+                <a href="javascript:void(0);" class="text-primary fs-16 px-1 move-down-below-masthead-ads" title="Move Down">
                     <i class="bi bi-arrow-down-circle"></i>
                 </a>
             </td>
@@ -238,90 +240,83 @@
         return tr;
     }
 
-    function updateSerialNumbersRecentNewsAds() {
-        $('.addMoreRecentNewsAds tr').each(function(index) {
+    function updateSerialNumbersSliderGalleryBelowMastheadAds() {
+        $('.addMoreSliderGalleryBelowMastheadAds tr').each(function(index) {
             $(this).find('.custom-table-no').text(index + 1);
         });
     }
 
-    function updateOrderFieldsRecentNewsAds() {
-        $('.addMoreRecentNewsAds tr').each(function(index) {
+    function updateOrderFieldsGalleryBelowMastheadAds() {
+        $('.addMoreSliderGalleryBelowMastheadAds tr').each(function(index) {
             $(this).find('.row-order').val(index);
         });
     }
 
-    function updateRowIndicesRecentNewsAds() {
-        $('.addMoreRecentNewsAds tr').each(function(index) {
+    function updateRowIndicesGalleryBelowMastheadAds() {
+        $('.addMoreSliderGalleryBelowMastheadAds tr').each(function(index) {
             let $row = $(this);
 
-            // Update all name attributes to use the new index
             $row.find('input, textarea, select').each(function() {
                 let $element = $(this);
                 let currentName = $element.attr('name');
 
-                if (currentName && currentName.includes('recent_news_ads[')) {
-                    let newName = currentName.replace(/recent_news_ads\[\d+\]/,
-                        `recent_news_ads[${index}]`);
+                if (currentName && currentName.includes('below_masthead_ads[')) {
+                    let newName = currentName.replace(/below_masthead_ads\[\d+\]/,
+                        `below_masthead_ads[${index}]`);
                     $element.attr('name', newName);
                 }
 
-                // Update IDs for image and link fields
                 let currentId = $element.attr('id');
-                if (currentId && currentId.includes('recent_news_ads')) {
+                if (currentId && currentId.includes('below_masthead_ads')) {
                     if (currentId.includes('_image') && !currentId.includes('_image_select')) {
-                        let newId = currentId.replace(/recent_news_ads\d+_image/,
-                            `recent_news_ads${index}_image`);
+                        let newId = currentId.replace(/below_masthead_ads\d+_image/,
+                            `below_masthead_ads${index}_image`);
                         $element.attr('id', newId);
                     } else if (currentId.includes('_link')) {
-                        let newId = currentId.replace(/recent_news_ads_\d+_link/,
-                            `recent_news_ads_${index}_link`);
+                        let newId = currentId.replace(/below_masthead_ads_\d+_link/,
+                            `below_masthead_ads_${index}_link`);
                         $element.attr('id', newId);
                     }
                 }
             });
 
-            // Update data-field attributes for media manager
             $row.find('.open-media-manager').each(function() {
                 let $mediaManager = $(this);
                 let currentField = $mediaManager.attr('data-field');
-                if (currentField && currentField.includes('recent_news_ads')) {
-                    let newField = currentField.replace(/recent_news_ads\d+_image/,
-                        `recent_news_ads${index}_image`);
+                if (currentField && currentField.includes('below_masthead_ads')) {
+                    let newField = currentField.replace(/below_masthead_ads\d+_image/,
+                        `below_masthead_ads${index}_image`);
                     $mediaManager.attr('data-field', newField);
                     $mediaManager.data('field', newField);
                 }
             });
 
-            // Update div IDs for image select
-            $row.find('.preview-closer div[id*="recent_news_ads"]').each(function() {
+            $row.find('.preview-closer div[id*="below_masthead_ads"]').each(function() {
                 let $div = $(this);
                 let currentId = $div.attr('id');
                 if (currentId && currentId.includes('_image_select')) {
-                    let newId = currentId.replace(/recent_news_ads\d+_image_select/,
-                        `recent_news_ads${index}_image_select`);
+                    let newId = currentId.replace(/below_masthead_ads\d+_image_select/,
+                        `below_masthead_ads${index}_image_select`);
                     $div.attr('id', newId);
                 }
             });
 
-            // Also update any divs that might be direct children of preview-closer
             $row.find('.preview-closer > div').each(function() {
                 let $div = $(this);
                 let currentId = $div.attr('id');
-                if (currentId && currentId.includes('recent_news_ads') && currentId.includes(
-                        '_image_select')) {
-                    let newId = currentId.replace(/recent_news_ads\d+_image_select/,
-                        `recent_news_ads${index}_image_select`);
+                if (currentId && currentId.includes('below_masthead_ads') && currentId.includes('_image_select')) {
+                    let newId = currentId.replace(/below_masthead_ads\d+_image_select/,
+                        `below_masthead_ads${index}_image_select`);
                     $div.attr('id', newId);
                 }
             });
 
-            // Update data-slug attributes on remove buttons
             $row.find('.remove-attachment').each(function() {
                 let $button = $(this);
                 let currentSlug = $button.attr('data-slug');
-                if (currentSlug && currentSlug.includes('recent_news_ads')) {
-                    let newSlug = currentSlug.replace(/recent_news_ads\d+_image/,
-                        `recent_news_ads${index}_image`);
+                if (currentSlug && currentSlug.includes('below_masthead_ads')) {
+                    let newSlug = currentSlug.replace(/below_masthead_ads\d+_image/,
+                        `below_masthead_ads${index}_image`);
                     $button.attr('data-slug', newSlug);
                     $button.data('slug', newSlug);
                 }
@@ -329,9 +324,67 @@
         });
     }
 
-    // Initialize media manager bindings for a specific row
-    function initializeMediaManagerForRecentNewsAdsRow($row) {
-        $row.find('.open-media-manager').off('click').on('click', function() {
+    function initializeSummernoteOnElementGalleryBelowMastheadAds($textarea) {
+        if ($textarea.length && !$textarea.next('.note-editor').length && !$textarea.data('summernote')) {
+            $textarea.summernote({
+                tabsize: 2,
+                height: 400,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['lineheight', ['lineheight']],
+                    ['view', ['codeview', 'help']]
+                ],
+                fontSizes: ['8', '10', '12', '14', '16', '18', '24', '36'],
+                lineHeights: ['1.0', '1.2', '1.4', '1.5', '1.6', '1.8', '2.0', '3.0'],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        const editor = $(this);
+                        uploadImageGalleryBelowMastheadAds(files[0], editor);
+                    }
+                }
+            });
+        }
+    }
+
+    function initializeSummernoteGalleryBelowMastheadAds() {
+        $('.addMoreSliderGalleryBelowMastheadAds textarea.editor').each(function() {
+            let $textarea = $(this);
+            initializeSummernoteOnElementGalleryBelowMastheadAds($textarea);
+        });
+    }
+
+    function uploadImageGalleryBelowMastheadAds(file, editor) {
+        let formData = new FormData();
+        formData.append("file", file);
+        editor.summernote('saveRange');
+
+        $.ajax({
+            url: "{{ route('summernote.image.upload') }}",
+            method: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                editor.summernote('restoreRange');
+                editor.summernote('focus');
+                editor.summernote('insertImage', response.url, function($image) {
+                    $image.css('width', '25%');
+                });
+            },
+            error: function(xhr) {
+                alert("Upload failed");
+            }
+        });
+    }
+
+    function initializeMediaManagerForRowBelowMastheadAds($row) {
+        $row.find('.open-media-manager').off('click.belowMastheadAds').on('click.belowMastheadAds', function() {
             var fieldValue = $(this).attr('data-field') || $(this).data('field');
             var dataSelect = $(this).attr('data-select') || $(this).data('select');
             var mediaIds = $('#' + fieldValue).val() ? $('#' + fieldValue).val() : '';
@@ -341,9 +394,9 @@
     }
 
     $(document).ready(function() {
-        // Initialize media manager for all existing rows
-        $('.addMoreRecentNewsAds tr').each(function() {
-            initializeMediaManagerForRecentNewsAdsRow($(this));
+        initializeSummernoteGalleryBelowMastheadAds();
+        $('.addMoreSliderGalleryBelowMastheadAds tr').each(function() {
+            initializeMediaManagerForRowBelowMastheadAds($(this));
         });
     });
 </script>

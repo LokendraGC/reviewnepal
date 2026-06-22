@@ -1,11 +1,12 @@
-<div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active show' : '' }}"
-    id="header-advertisements" role="tabpanel" aria-labelledby="header-advertisements-tab">
-      <div class="row">
+{{-- <div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active show' : '' }}"
+    id="header-advertisements" role="tabpanel" aria-labelledby="header-advertisements-tab"> --}}
+      
+    <div class="row">
         <div class="col-md-12">
 
             {{-- Details --}}
             <div class="mb-3">
-                <label class="form-label">Masthead ads</label>
+                <label class="form-label">Above Masthead</label>
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0">
                         <thead>
@@ -120,14 +121,15 @@
                     </table>
                     <div class="text-end mt-2">
                         <button type="button" class="btn btn-primary btn-sm add_slider_gallery_header_ads">Add
-                            Popup</button>
+                            Ad</button>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-</div>
+
+{{-- </div> --}}
 
 
 <!-- repeater script for Header Ads Popup -->

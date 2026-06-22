@@ -12,6 +12,7 @@ class AdsRepository
     {
         $metaDatas = [];
         $metaDatas['header_popup_ads'] = $request->header_popup_ads ? serialize($request->header_popup_ads) : null;
+        $metaDatas['below_masthead_ads'] = $request->below_masthead_ads ? serialize($request->below_masthead_ads) : null;
         $metaDatas['banner_ads'] = $request->banner_ads ?? null;
         $metaDatas['below_recent_news'] = $request->below_recent_news ?? null;
         $metaDatas['above_nepal_insights_ad'] = $request->above_nepal_insights_ad ?? null;

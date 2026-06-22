@@ -1,59 +1,16 @@
-<div class="tab-pane fade {{ request()->query('tab') == 'homepage' ? 'active show' : '' }}" id="homepage"
+<div class="tab-pane fade {{ !request()->has('tab') || request()->query('tab') == 'homepage' ? 'active show' : '' }}" id="homepage"
     role="tabpanel" aria-labelledby="homepage-tab">
     
-    <small>Please Insert the URL by clicking on the browse button and edit the file description.</small>
+    @include('backend.ads.header-ads')
     
+    @include('backend.ads.below-masthead')
+
+    @include('backend.ads.recent-news-ads')
+
+
+    <small>Please Insert the URL by clicking on the browse button and edit the file description.</small>
     <div class="row">
-        {{-- Recent News ads --}}
-               <div class="mb-3 col-6">
-            <div>
-                <label for="above_recent_news_ad" class="form-label">Above Recent News Ads</label>
-                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    style="cursor: pointer;" data-field="above_recent_news_ad" data-select="single">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text bg-soft-secondary font-weight-medium">
-                            Browse</div>
-                    </div>
-                    <div class="form-control file-amount">Choose File</div>
-                </div>
-                {{-- preview --}}
-                <div class="preview-closer">
-                    @if (
-                            isset($settings['above_recent_news_ad']) &&
-                            ($media = MediaHelper::getModel()->where('id', $settings['above_recent_news_ad'])->first())
-                        )
-                        <input type="hidden" id="above_recent_news_ad" name="above_recent_news_ad" class="selected-files"
-                            value="{{ $settings['above_recent_news_ad'] }}">
-                        <div id="above_recent_news_ad_select">
-                            <div class="file-preview box sm">
-                                <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
-                                    <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
-                                        <img class="img-fit" src="{{ asset('storage/' . $media->file_name) }}"
-                                            alt="image" />
-                                    </div>
-                                    <div class="col body">
-                                        <h6 class="d-flex">
-                                            <span class="text-truncate title">{{ $media->file_original_name }}</span>
-                                            <span class="flex-shrink-0 ext">.{{ $media->extension }}</span>
-                                        </h6>
-                                        <p>{{ MediaHelper::getKBorMB($media->file_size) }}
-                                    </div>
-                                    <div class="remove"><button data-id="{{ $media->id }}" data-slug="above_recent_news_ad"
-                                            class="btn btn-sm btn-link remove-attachment" type="button"><i
-                                                class="bi bi-x-circle"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <input type="hidden" id="above_recent_news_ad" name="above_recent_news_ad" class="selected-files" value="" />
-                        <div id="above_recent_news_ad_select"></div>
-                    @endif
-                </div>
-            </div>
-        </div>
- 
- 
+        
         <div class="mb-3 col-6">
             <div>
                 <label for="homepage_banner_ads" class="form-label">Below Recent News Ads</label>
@@ -106,9 +63,9 @@
         {{-- below Sports news --}}
         <div class="mb-3 col-6">
             <div>
-                <label for="homepage_below_recent_news" class="form-label">Below Sports News</label>
+                <label for="below_sports_news" class="form-label">Below Sports News</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    style="cursor: pointer;" data-field="homepage_below_recent_news" data-select="single">
+                    style="cursor: pointer;" data-field="below_sports_news" data-select="single">
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-soft-secondary font-weight-medium">
                             Browse</div>
@@ -118,12 +75,12 @@
                 {{-- preview --}}
                 <div class="preview-closer">
                     @if (
-                            isset($settings['below_recent_news']) &&
-                            ($media = MediaHelper::getModel()->where('id', $settings['below_recent_news'])->first())
+                            isset($settings['below_sports_news']) &&
+                            ($media = MediaHelper::getModel()->where('id', $settings['below_sports_news'])->first())
                         )
-                        <input type="hidden" id="homepage_below_recent_news" name="below_recent_news" class="selected-files"
-                            value="{{ $settings['below_recent_news'] }}">
-                        <div id="homepage_below_recent_news_select">
+                        <input type="hidden" id="below_sports_news" name="below_sports_news" class="selected-files"
+                            value="{{ $settings['below_sports_news'] }}">
+                        <div id="below_sports_news_select">
                             <div class="file-preview box sm">
                                 <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
                                     <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
@@ -138,7 +95,7 @@
                                         <p>{{ MediaHelper::getKBorMB($media->file_size) }}
                                     </div>
                                     <div class="remove"><button data-id="{{ $media->id }}"
-                                            data-slug="homepage_below_recent_news"
+                                            data-slug="below_sports_news"
                                             class="btn btn-sm btn-link remove-attachment" type="button"><i
                                                 class="bi bi-x-circle"></i></button>
                                     </div>
@@ -146,9 +103,9 @@
                             </div>
                         </div>
                     @else
-                        <input type="hidden" id="homepage_below_recent_news" name="below_recent_news" class="selected-files"
+                        <input type="hidden" id="below_sports_news" name="below_sports_news" class="selected-files"
                             value="" />
-                        <div id="homepage_below_recent_news_select"></div>
+                        <div id="below_sports_news_select"></div>
                     @endif
                 </div>
             </div>
@@ -158,9 +115,9 @@
         {{-- Lifestyles and Entertainment Insight --}}
         <div class="mb-3 col-6">
             <div>
-                <label for="homepage_above_nepal_insights_ad" class="form-label">Above Lifestyles and Entertainment Ads</label>
+                <label for="above_nepal_insights_ad" class="form-label">Above Lifestyles and Entertainment Ads</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    style="cursor: pointer;" data-field="homepage_above_nepal_insights_ad" data-select="single">
+                    style="cursor: pointer;" data-field="above_nepal_insights_ad" data-select="single">
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-soft-secondary font-weight-medium">
                             Browse</div>
@@ -173,9 +130,9 @@
                             isset($settings['above_nepal_insights_ad']) &&
                             ($media = MediaHelper::getModel()->where('id', $settings['above_nepal_insights_ad'])->first())
                         )
-                        <input type="hidden" id="homepage_above_nepal_insights_ad" name="above_nepal_insights_ad"
+                        <input type="hidden" id="above_nepal_insights_ad" name="above_nepal_insights_ad"
                             class="selected-files" value="{{ $settings['above_nepal_insights_ad'] }}">
-                        <div id="homepage_above_nepal_insights_ad_select">
+                        <div id="above_nepal_insights_ad_select">
                             <div class="file-preview box sm">
                                 <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
                                     <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
@@ -190,7 +147,7 @@
                                         <p>{{ MediaHelper::getKBorMB($media->file_size) }}
                                     </div>
                                     <div class="remove"><button data-id="{{ $media->id }}"
-                                            data-slug="homepage_above_nepal_insights_ad"
+                                            data-slug="above_nepal_insights_ad"
                                             class="btn btn-sm btn-link remove-attachment" type="button"><i
                                                 class="bi bi-x-circle"></i></button>
                                     </div>
@@ -198,9 +155,9 @@
                             </div>
                         </div>
                     @else
-                        <input type="hidden" id="homepage_above_nepal_insights_ad" name="above_nepal_insights_ad"
+                        <input type="hidden" id="above_nepal_insights_ad" name="above_nepal_insights_ad"
                             class="selected-files" value="" />
-                        <div id="homepage_above_nepal_insights_ad_select"></div>
+                        <div id="above_nepal_insights_ad_select"></div>
                     @endif
                 </div>
             </div>
@@ -210,9 +167,9 @@
         {{-- Sports News --}}
         <div class="mb-3 col-6">
             <div>
-                <label for="homepage_below_nepal_insights_ad" class="form-label">Above Sports News Ads</label>
+                <label for="above_sports_ad" class="form-label">Above Sports News Ads</label>
                 <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    style="cursor: pointer;" data-field="homepage_below_nepal_insights_ad" data-select="single">
+                    style="cursor: pointer;" data-field="above_sports_ad" data-select="single">
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-soft-secondary font-weight-medium">
                             Browse</div>
@@ -225,9 +182,9 @@
                             isset($settings['below_nepal_insights_ad']) &&
                             ($media = MediaHelper::getModel()->where('id', $settings['below_nepal_insights_ad'])->first())
                         )
-                        <input type="hidden" id="homepage_below_nepal_insights_ad" name="below_nepal_insights_ad"
+                        <input type="hidden" id="above_sports_ad" name="below_nepal_insights_ad"
                             class="selected-files" value="{{ $settings['below_nepal_insights_ad'] }}">
-                        <div id="homepage_below_nepal_insights_ad_select">
+                        <div id="above_sports_ad_select">
                             <div class="file-preview box sm">
                                 <div class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
                                     <div class="align-items-center align-self-stretch d-flex justify-content-center thumb">
@@ -242,7 +199,7 @@
                                         <p>{{ MediaHelper::getKBorMB($media->file_size) }}
                                     </div>
                                     <div class="remove"><button data-id="{{ $media->id }}"
-                                            data-slug="homepage_below_nepal_insights_ad"
+                                            data-slug="above_sports_ad"
                                             class="btn btn-sm btn-link remove-attachment" type="button"><i
                                                 class="bi bi-x-circle"></i></button>
                                     </div>
@@ -250,9 +207,9 @@
                             </div>
                         </div>
                     @else
-                        <input type="hidden" id="homepage_below_nepal_insights_ad" name="below_nepal_insights_ad"
+                        <input type="hidden" id="above_sports_ad" name="below_nepal_insights_ad"
                             class="selected-files" value="" />
-                        <div id="homepage_below_nepal_insights_ad_select"></div>
+                        <div id="above_sports_ad_select"></div>
                     @endif
                 </div>
             </div>

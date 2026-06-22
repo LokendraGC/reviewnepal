@@ -27,42 +27,28 @@
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <div class="nav  nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'header-advertisements' ? 'active' : '' }}"
-                                            id="header-advertisements-tab" data-bs-toggle="pill" href="#header-advertisements" role="tab"
-                                            aria-controls="header-advertisements"
-                                            aria-selected="{{ request()->query('tab') == 'header-advertisements' ? 'true' : 'false' }}"
-                                            tabindex="-1">
-                                            Masthead ads
-                                        </a>
-                                          <a class="nav-link {{ request()->query('tab') == 'recent-news-ads' ? 'active' : '' }}"
-                                            id="recent-news-ads-tab" data-bs-toggle="pill" href="#recent-news-ads" role="tab"
-                                            aria-controls="recent-news-ads"
-                                            aria-selected="{{ request()->query('tab') == 'recent-news-ads' ? 'true' : 'false' }}"
-                                            tabindex="-1">
-                                            Recent News
-                                        </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'homepage' ? 'active' : '' }}"
+                                        <a class="nav-link border mb-2 me-1 {{ !request()->has('tab') || request()->query('tab') == 'homepage' ? 'active' : '' }}"
                                             id="homepage-tab" data-bs-toggle="pill" href="#homepage" role="tab"
                                             aria-controls="homepage"
                                             aria-selected="{{ request()->query('tab') == 'homepage' ? 'true' : 'false' }}"
                                             tabindex="-1">
-                                            Home Page
+                                            Home Page Ads
                                         </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'news-single' ? 'active' : '' }}"
+                                        <a class="nav-link border mb-2 me-1 {{ request()->query('tab') == 'news-single' ? 'active' : '' }}"
                                             id="news-single-tab" data-bs-toggle="pill" href="#news-single" role="tab"
                                             aria-controls="news-single"
                                             aria-selected="{{ request()->query('tab') == 'news-single' ? 'true' : 'false' }}"
                                             tabindex="-1">
-                                            Single News Page    
+                                            Single Page Ads    
                                         </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'popup-ads' ? 'active' : '' }}"
+                                        <a class="nav-link border mb-2 me-1 {{ request()->query('tab') == 'popup-ads' ? 'active' : '' }}"
                                             id="popup-ads-tab" data-bs-toggle="pill" href="#popup-ads" role="tab"
                                             aria-controls="popup-ads"
                                             aria-selected="{{ request()->query('tab') == 'popup-ads' ? 'true' : 'false' }}"
                                             tabindex="-1">
                                             Homepage Popup Ads 
                                         </a>
-                                        <a class="nav-link {{ request()->query('tab') == 'popup-ads-single' ? 'active' : '' }}"
+                                        <a class="nav-link border mb-2 me-1 {{ request()->query('tab') == 'popup-ads-single' ? 'active' : '' }}"
                                             id="popup-ads-single-tab" data-bs-toggle="pill" href="#popup-ads-single" role="tab"
                                             aria-controls="popup-ads-single"
                                             aria-selected="{{ request()->query('tab') == 'popup-ads-single' ? 'true' : 'false' }}"
@@ -75,10 +61,6 @@
                                 <!--<hr>-->
                                 <div class="col-12">
                                     <div class="tab-content" id="v-pills-tabContent">
-
-                                        @include('backend.ads.header-ads')
-
-                                        @include('backend.ads.recent-news-ads')
 
                                         @include('backend.ads.homepage-ads')
 
